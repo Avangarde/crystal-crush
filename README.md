@@ -1,4 +1,4 @@
-cristal-crush
+Crystal-crush
 =============
 
-match-cristal puzzle video game for web and mobile devices
+match-crystal puzzle video game for web and mobile devices
