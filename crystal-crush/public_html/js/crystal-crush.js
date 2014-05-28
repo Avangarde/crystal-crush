@@ -1,7 +1,12 @@
 // Example by https://twitter.com/awapblog
+// Modified by Avantgarde
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'crystal-crush', { preload: preload, create: create, update: update });
+var canvasWidth = window.innerWidth;
+var canvasHeight = window.innerHeight;
+var scorePanelWidth = canvasWidth * 0.3;
+var gamePanelWidth = canvasWidth * 0.7;
 
+var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, '', {preload: preload, create: create});
 var BOARD_COLS = 6;
 var BOARD_ROWS = 6;
 var ELEM_SIZE;
@@ -12,20 +17,23 @@ var CU = "CU";
 var ZN = "ZN";
 var NA = "NA";
 var CL = "CL";
+var A = "A";
+var B = "B";
 
 var elements;
 
-
 function preload() {
-    
+    game.load.image('logo', 'phaser.png');
 }
 
 function create() {
     fillBoard();
+    var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+    logo.anchor.setTo(0.5, 0.5);
 }
 
 function update() {
-    
+
 }
 
 function fillBoard() {
