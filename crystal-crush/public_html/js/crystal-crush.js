@@ -29,8 +29,8 @@ function fillBoard() {
             canvasWidth / BOARD_COLS;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
-            //TODO Cambiar por un elemento aleatorio
-            var element = elements.create(i * ELEM_SIZE_SPACED, j * ELEM_SIZE_SPACED, CU);
+            var rndIndex = game.rnd.integerInRange(0, elemNames.length-1);
+            var element = elements.create(i * ELEM_SIZE_SPACED, j * ELEM_SIZE_SPACED, elemNames[rndIndex]);
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             setElementPosition(element, i, j);
