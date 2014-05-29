@@ -1,5 +1,5 @@
-var canvasWidth = window.innerWidth;
-var canvasHeight = canvasWidth * 10 / 16;
+var canvasWidth = window.innerWidth * 10/16 < window.innerHeight ? window.innerWidth : window.innerHeight * 16/10;
+var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
 var scorePanelWidth = (canvasWidth * 0.3) - (2 * margin);
 var scorePanelHeight = canvasHeight - (2 * margin);

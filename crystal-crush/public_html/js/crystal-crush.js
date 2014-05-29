@@ -3,6 +3,8 @@
 
 
 var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, '', {preload: preload, create: create, update: update});
+var xgamePanel;
+var ygamePanel;
 
 function preload() {
     game.load.image(CU, 'assets/sprites/Cu.png');
@@ -50,22 +52,22 @@ function update() {
     }
 
     if (selectedElement !== null && typeof selectedElement !== 'undefined') {
-        var cursorElemPosX = getElementPos(game.input.mousePointer.x);
-        var cursorElemPosY = getElementPos(game.input.mousePointer.y);
+        var cursorElemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
+        var cursorElemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
 
         if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorElemPosX, cursorElemPosY)) {
             if (cursorElemPosX !== selectedElement.posX || cursorElemPosY !== selectedElement.posY) {
 
-                // move currently selected gem
+                // move currently selected element
                 if (selectedElemTween !== null) {
                     game.tweens.remove(selectedElemTween);
                 }
-                selectedElemTween = tweenElemPos(selectedElement, cursorElemPosX, cursorElemPosY);
+                selectedElemTween = tweenElemPos(selectedElement, cursorElemPosX, cursorElemPosY, 3);
                 elements.bringToTop(selectedElement);
 
                 // if we moved a gem to make way for the selected gem earlier, move it back into its starting position
                 if (tempShiftedElem !== null) {
-                    tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY);
+                    tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY, 3);
                     swapElemPosition(selectedElement, tempShiftedElem);
                 }
 
@@ -74,7 +76,7 @@ function update() {
                 if (tempShiftedElem === selectedElement) {
                     tempShiftedElem = null;
                 } else {
-                    tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY);
+                    tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY, 3);
                     swapElemPosition(selectedElement, tempShiftedElem);
                 }
             }
@@ -85,12 +87,13 @@ function update() {
 function fillBoard() {
     elements = game.add.group();
     var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
-    var xgamePanel = game.world.centerX + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
+    xgamePanel = game.world.centerX + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
+    ygamePanel = 2*margin;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
-            var element = elements.create(i * ELEM_SIZE,
-                    j * ELEM_SIZE, elemNames[rndIndex]);
+            var element = elements.create(i * ELEM_SIZE + xgamePanel,
+                    j * ELEM_SIZE + ygamePanel, elemNames[rndIndex]);
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
@@ -111,7 +114,7 @@ function refillBoard() {
             if (elem === null) {
                 elementsMissingFromCol++;
                 elem = elements.getFirstDead();
-                elem.reset(i * ELEM_SIZE, -elementsMissingFromCol * ELEM_SIZE);
+                elem.reset(i * ELEM_SIZE + xgamePanel, -elementsMissingFromCol * ELEM_SIZE);
                 //TODO Randomize ?
 //                randomizeGemColor(elem);
                 setElementPosition(elem, i, j);
@@ -129,8 +132,12 @@ function getElement(posX, posY) {
 }
 
 // convert world coordinates to board position
-function getElementPos(coordinate) {
-    return Phaser.Math.floor(coordinate / ELEM_SIZE);
+function getRelativeElementPos(coordinate, axisX) {
+    if (axisX) {
+        return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
+    } else {
+        return Phaser.Math.floor((coordinate - (2*margin)) / ELEM_SIZE);
+    }
 }
 
 function setElementPosition(elem, posX, posY) {
@@ -167,10 +174,10 @@ function checkAndKillElemMatches(elem, matchedElems) {
                 if (selectedElemTween !== null) {
                     game.tweens.remove(selectedElemTween);
                 }
-                selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y);
+                selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
 
                 if (tempShiftedElem !== null) {
-                    tweenElemPos(tempShiftedElem, elem.posX, elem.posY);
+                    tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
                 }
 
                 swapElemPosition(elem, tempShiftedElem);
@@ -215,7 +222,7 @@ function tweenElemPos(elem, newPosX, newPosY, durationMultiplier) {
         durationMultiplier = 1;
     }
     return game.add.tween(elem).to(
-            {x: newPosX * ELEM_SIZE, y: newPosY * ELEM_SIZE}, 100 * durationMultiplier,
+            {x: newPosX * ELEM_SIZE + xgamePanel, y: newPosY * ELEM_SIZE + ygamePanel}, 100 * durationMultiplier,
             Phaser.Easing.Linear.None, true);
 }
 
