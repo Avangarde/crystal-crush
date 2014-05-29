@@ -24,7 +24,7 @@ function create() {
     var scorePanel = game.add.sprite(margin, margin, 'scorePanel');
     scorePanel.width = scorePanelWidth;
     scorePanel.height = scorePanelHeight;
-    var gamePanel = game.add.sprite(game.world.centerX + scorePanelWidth/2 + margin, game.world.centerY, 'gamePanel');
+    var gamePanel = game.add.sprite(game.world.centerX + scorePanelWidth / 2 + margin, game.world.centerY, 'gamePanel');
     gamePanel.width = gamePanelWidth;
     gamePanel.height = gamePanelHeight;
     gamePanel.anchor.setTo(0.5, 0.5);
@@ -49,7 +49,7 @@ function update() {
         }
     }
 
-    if (selectedElement !== null) {
+    if (selectedElement !== null && typeof selectedElement !== 'undefined') {
         var cursorElemPosX = getElementPos(game.input.mousePointer.x);
         var cursorElemPosY = getElementPos(game.input.mousePointer.y);
 
@@ -84,8 +84,8 @@ function update() {
 
 function fillBoard() {
     elements = game.add.group();
-    var boardRowsAndColumns = (gamePanelHeight - (2*margin)) / BOARD_ROWS;
-    var xgamePanel = game.world.centerX + scorePanelWidth/2 + 2*margin - gamePanelWidth/2;
+    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
+    var xgamePanel = game.world.centerX + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
