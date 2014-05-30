@@ -2,7 +2,7 @@
 // Modified by Avantgarde
 
 
-var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, '', {preload: preload, create: create, update: update});
+var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, 'phaser-example', {preload: preload, create: create, update: update, render: render});
 var xgamePanel;
 var ygamePanel;
 
@@ -17,30 +17,38 @@ function preload() {
     game.load.image('background', 'assets/background.png');
     game.load.image('scorePanel', 'assets/scorePanel.png');
     game.load.image('gamePanel', 'assets/gamePanel.png');
+
+    game.load.image('player', 'assets/sprites/phaser-dude.png');
+    game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+
 }
 
 function create() {
+    game.world.setBounds(0, 0, canvasWidth * 2, canvasHeight);
     var background = game.add.sprite(0, 0, 'background');
     background.width = canvasWidth;
     background.height = canvasHeight;
     var scorePanel = game.add.sprite(margin, margin, 'scorePanel');
     scorePanel.width = scorePanelWidth;
     scorePanel.height = scorePanelHeight;
-    var gamePanel = game.add.sprite(game.world.centerX + scorePanelWidth / 2 + margin, game.world.centerY, 'gamePanel');
+    var gamePanel = game.add.sprite(canvasWidth / 2 + scorePanelWidth / 2 + margin, canvasHeight / 2, 'gamePanel');
     gamePanel.width = gamePanelWidth;
     gamePanel.height = gamePanelHeight;
     gamePanel.anchor.setTo(0.5, 0.5);
     fillBoard();
     selectedElementStartPos = {x: 0, y: 0};
     allowInput = true;
+    //Buttons to change the position of the camera to construct panel
+    game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
+    game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
 }
 
 function update() {
     if (game.input.mousePointer.justReleased()) {
         if (selectedElement !== null) {
-            checkAndKillElemMatches(selectedElement);
+//            checkAndKillElemMatches(selectedElement);
             if (tempShiftedElem !== null && typeof tempShiftedElem !== 'undefined') {
-                checkAndKillElemMatches(tempShiftedElem);
+//                checkAndKillElemMatches(tempShiftedElem);
             }
             removeKilledElems();
             var dropElementDuration = dropElements();
@@ -84,11 +92,15 @@ function update() {
     }
 }
 
+function render() {
+//    game.debug.cameraInfo(game.camera, 32, 32);
+}
+
 function fillBoard() {
     elements = game.add.group();
     var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
-    xgamePanel = game.world.centerX + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
-    ygamePanel = 2*margin;
+    xgamePanel = canvasWidth / 2 + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
+    ygamePanel = 2 * margin;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
@@ -136,7 +148,7 @@ function getRelativeElementPos(coordinate, axisX) {
     if (axisX) {
         return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
     } else {
-        return Phaser.Math.floor((coordinate - (2*margin)) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - (2 * margin)) / ELEM_SIZE);
     }
 }
 
@@ -288,4 +300,12 @@ function canMove(fromPosX, fromPosY, toPosX, toPosY) {
         return true;
     }
     return false;
+}
+
+function actionOnClick() {
+    game.camera.x = canvasWidth;
+}
+
+function actionOnClick2() {
+    game.camera.x = 0;
 }
