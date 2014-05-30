@@ -35,7 +35,7 @@ function create() {
     allowInput = true;
 }
 
-function update() {
+function update() {    
     if (game.input.mousePointer.justReleased()) {
         if (selectedElement !== null) {
             checkAndKillElemMatches(selectedElement);
@@ -50,6 +50,7 @@ function update() {
             tempShiftedElem = null;
         }
     }
+    
 
     if (selectedElement !== null && typeof selectedElement !== 'undefined') {
         var cursorElemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
@@ -65,13 +66,13 @@ function update() {
                 selectedElemTween = tweenElemPos(selectedElement, cursorElemPosX, cursorElemPosY, 3);
                 elements.bringToTop(selectedElement);
 
-                // if we moved a gem to make way for the selected gem earlier, move it back into its starting position
+                // if we moved an element to make way for the selected element earlier, move it back into its starting position
                 if (tempShiftedElem !== null) {
                     tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY, 3);
                     swapElemPosition(selectedElement, tempShiftedElem);
                 }
 
-                // when the player moves the selected gem, we need to swap the position of the selected gem with the gem currently in that position 
+                // when the player moves the selected element, we need to swap the position of the selected element with the element currently in that position 
                 tempShiftedElem = getElement(cursorElemPosX, cursorElemPosY);
                 if (tempShiftedElem === selectedElement) {
                     tempShiftedElem = null;
@@ -107,16 +108,20 @@ function fillBoard() {
 // look for any empty spots on the board and spawn new gems in their place that fall down from above
 function refillBoard() {
     var maxElementsMissingFromCol = 0;
+    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
             var elem = getElement(i, j);
             if (elem === null) {
                 elementsMissingFromCol++;
-                elem = elements.getFirstDead();
-                elem.reset(i * ELEM_SIZE + xgamePanel, -elementsMissingFromCol * ELEM_SIZE);
-                //TODO Randomize ?
-//                randomizeGemColor(elem);
+                var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
+                var elem = elements.create(i * ELEM_SIZE + xgamePanel,
+                        -elementsMissingFromCol * ELEM_SIZE, elemNames[rndIndex]);
+                elem.width = boardRowsAndColumns;
+                elem.height = boardRowsAndColumns;
+                elem.inputEnabled = true;
+                elem.events.onInputDown.add(selectElement);
                 setElementPosition(elem, i, j);
                 tweenElemPos(elem, elem.posX, elem.posY, elementsMissingFromCol * 2);
             }
@@ -136,7 +141,7 @@ function getRelativeElementPos(coordinate, axisX) {
     if (axisX) {
         return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
     } else {
-        return Phaser.Math.floor((coordinate - (2*margin)) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - ygamePanel) / ELEM_SIZE);
     }
 }
 
