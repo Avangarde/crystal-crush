@@ -42,6 +42,8 @@ function create() {
     allowInput = true;
     text = game.add.text(250, 16, '', {fill: '#ffffff'});
     text2 = game.add.text(250, 50, '', {fill: '#ffffff'});
+    game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
+    game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
 }
 
 function update() {
