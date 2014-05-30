@@ -5,6 +5,8 @@
 var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, 'phaser-example', {preload: preload, create: create, update: update, render: render});
 var xgamePanel;
 var ygamePanel;
+var text;
+var text2;
 
 function preload() {
     game.load.image(CU, 'assets/sprites/Cu.png');
@@ -38,58 +40,12 @@ function create() {
     fillBoard();
     selectedElementStartPos = {x: 0, y: 0};
     allowInput = true;
-    //Buttons to change the position of the camera to construct panel
-    game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
-    game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
+    text = game.add.text(250, 16, '', {fill: '#ffffff'});
+    text2 = game.add.text(250, 50, '', {fill: '#ffffff'});
 }
 
 function update() {
-    if (game.input.mousePointer.justReleased()) {
-        if (selectedElement !== null) {
-//            checkAndKillElemMatches(selectedElement);
-            if (tempShiftedElem !== null && typeof tempShiftedElem !== 'undefined') {
-//                checkAndKillElemMatches(tempShiftedElem);
-            }
-            removeKilledElems();
-            var dropElementDuration = dropElements();
-            game.time.events.add(dropElementDuration * 10, refillBoard);
-            allowInput = false;
-            selectedElement = null;
-            tempShiftedElem = null;
-        }
-    }
-
-    if (selectedElement !== null && typeof selectedElement !== 'undefined') {
-        var cursorElemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
-        var cursorElemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
-
-        if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorElemPosX, cursorElemPosY)) {
-            if (cursorElemPosX !== selectedElement.posX || cursorElemPosY !== selectedElement.posY) {
-
-                // move currently selected element
-                if (selectedElemTween !== null) {
-                    game.tweens.remove(selectedElemTween);
-                }
-                selectedElemTween = tweenElemPos(selectedElement, cursorElemPosX, cursorElemPosY, 3);
-                elements.bringToTop(selectedElement);
-
-                // if we moved a gem to make way for the selected gem earlier, move it back into its starting position
-                if (tempShiftedElem !== null) {
-                    tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY, 3);
-                    swapElemPosition(selectedElement, tempShiftedElem);
-                }
-
-                // when the player moves the selected gem, we need to swap the position of the selected gem with the gem currently in that position 
-                tempShiftedElem = getElement(cursorElemPosX, cursorElemPosY);
-                if (tempShiftedElem === selectedElement) {
-                    tempShiftedElem = null;
-                } else {
-                    tweenElemPos(tempShiftedElem, selectedElement.posX, selectedElement.posY, 3);
-                    swapElemPosition(selectedElement, tempShiftedElem);
-                }
-            }
-        }
-    }
+    //TODO game draging the elements
 }
 
 function render() {
@@ -99,7 +55,7 @@ function render() {
 function fillBoard() {
     elements = game.add.group();
     var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
-    xgamePanel = canvasWidth / 2 + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
+    xgamePanel = game.world.centerX + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
     ygamePanel = 2 * margin;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
@@ -119,16 +75,20 @@ function fillBoard() {
 // look for any empty spots on the board and spawn new gems in their place that fall down from above
 function refillBoard() {
     var maxElementsMissingFromCol = 0;
+    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
             var elem = getElement(i, j);
             if (elem === null) {
                 elementsMissingFromCol++;
-                elem = elements.getFirstDead();
-                elem.reset(i * ELEM_SIZE + xgamePanel, -elementsMissingFromCol * ELEM_SIZE);
-                //TODO Randomize ?
-//                randomizeGemColor(elem);
+                var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
+                var elem = elements.create(i * ELEM_SIZE + xgamePanel,
+                        -elementsMissingFromCol * ELEM_SIZE, elemNames[rndIndex]);
+                elem.width = boardRowsAndColumns;
+                elem.height = boardRowsAndColumns;
+                elem.inputEnabled = true;
+                elem.events.onInputDown.add(selectElement);
                 setElementPosition(elem, i, j);
                 tweenElemPos(elem, elem.posX, elem.posY, elementsMissingFromCol * 2);
             }
@@ -148,7 +108,7 @@ function getRelativeElementPos(coordinate, axisX) {
     if (axisX) {
         return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
     } else {
-        return Phaser.Math.floor((coordinate - (2 * margin)) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - ygamePanel) / ELEM_SIZE);
     }
 }
 
@@ -162,7 +122,7 @@ function calcElementId(posX, posY) {
     return posX + posY * BOARD_COLS;
 }
 
-function checkAndKillElemMatches(elem, matchedElems) {
+function checkAndKillElemMatches(elem) {
     if (elem !== null) {
 //        console.log("Elem = " + elem.key);
         var countUp = countSameElemElements(elem, 0, -1);
@@ -175,27 +135,35 @@ function checkAndKillElemMatches(elem, matchedElems) {
 
         if (countVert >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            matched = true;
         }
 
         if (countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+            matched = true;
         }
 
         if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
-                if (selectedElemTween !== null) {
-                    game.tweens.remove(selectedElemTween);
+                if (!matched) {
+                    game.time.events.add(400, swapNoMatch, this, elem);
                 }
-                selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
-
-                if (tempShiftedElem !== null) {
-                    tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
-                }
-
-                swapElemPosition(elem, tempShiftedElem);
             }
+            matched = false;
         }
     }
+}
+
+function swapNoMatch(elem) {
+    if (selectedElemTween !== null) {
+        game.tweens.remove(selectedElemTween);
+    }  
+    selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
+
+    if (tempShiftedElem !== null) {
+        tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
+    }
+    swapElemPosition(elem, tempShiftedElem);
 }
 
 // count how many elements of the same color lie in a given direction
@@ -255,6 +223,11 @@ function removeKilledElems() {
     });
 }
 
+function dropAndRefill() {
+    var dropElementDuration = dropElements();
+    game.time.events.add(dropElementDuration * 10 + 100, refillBoard);
+}
+
 // look for elements with empty space beneath them and move them down
 function dropElements() {
     var dropRowCountMax = 0;
@@ -280,11 +253,39 @@ function boardRefilled() {
 }
 
 // select a gem and remember its starting position
-function selectElement(element, pointer) {
+function selectElement(element) {
     if (allowInput) {
-        selectedElement = element;
-        selectedElementStartPos.x = element.posX;
-        selectedElementStartPos.y = element.posY;
+        if (selectedElement !== null && typeof selectedElement !== 'undefined') {
+            if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, element.posX, element.posY)) {
+                if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
+                    tempShiftedElem = element;
+                    allowInput = false;
+                    
+                    //Swap animation
+                    selectedElemTween = tweenElemPos(selectedElement, tempShiftedElem.posX, tempShiftedElem.posY, 3);
+                    tweenElemPos(element, selectedElement.posX, selectedElement.posY, 3);
+                    swapElemPosition(selectedElement, tempShiftedElem);
+                    
+                    checkAndKillElemMatches(tempShiftedElem);
+                    checkAndKillElemMatches(selectedElement);
+                                        
+                    removeKilledElems();
+                    game.time.events.add(400, dropAndRefill);                    
+                    
+                    selectedElement = null;
+                    //tempShiftedElem = null;
+                }
+            } else {
+                selectedElement = element;
+                selectedElementStartPos.x = element.posX;
+                selectedElementStartPos.y = element.posY;
+            }
+        } else {
+            selectedElement = element;
+            selectedElementStartPos.x = element.posX;
+            selectedElementStartPos.y = element.posY;
+        }
+        text.text = "You clicked the element " + selectedElementStartPos.x + " , " + selectedElementStartPos.y;
     }
 }
 
