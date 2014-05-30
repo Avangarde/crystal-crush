@@ -20,7 +20,6 @@ function preload() {
     game.load.image('scorePanel', 'assets/scorePanel.png');
     game.load.image('gamePanel', 'assets/gamePanel.png');
 
-    game.load.image('player', 'assets/sprites/phaser-dude.png');
     game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
 }
@@ -57,7 +56,7 @@ function render() {
 function fillBoard() {
     elements = game.add.group();
     var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
-    xgamePanel = game.world.centerX + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
+    xgamePanel = canvasWidth / 2 + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
     ygamePanel = 2 * margin;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
@@ -110,7 +109,7 @@ function getRelativeElementPos(coordinate, axisX) {
     if (axisX) {
         return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
     } else {
-        return Phaser.Math.floor((coordinate - ygamePanel) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - (2 * margin)) / ELEM_SIZE);
     }
 }
 
