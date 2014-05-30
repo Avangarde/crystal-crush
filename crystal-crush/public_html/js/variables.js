@@ -25,6 +25,7 @@ var selectedElement;
 var selectedElementStartPos;
 var selectedElemTween;
 var tempShiftedElem = null;
+var matched = false;
 
 
 
