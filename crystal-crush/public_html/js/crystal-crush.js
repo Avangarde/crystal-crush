@@ -13,6 +13,7 @@ function preload() {
     game.load.image(CL, 'assets/sprites/Cl.png');
     game.load.image(A, 'assets/sprites/A.png');
     game.load.image(B, 'assets/sprites/B.png');
+    game.load.image(SELECT, 'assets/sprites/selection.png');
 
     game.load.image('background', 'assets/background.png');
     game.load.image('scorePanel', 'assets/scorePanel.png');
@@ -273,6 +274,7 @@ function checkGame() {
     checkAndKillElemMatches(tempShiftedElem);
     checkAndKillElemMatches(selectedElement);
     selectedElement = null;
+    selection.kill();
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
 }
@@ -298,14 +300,26 @@ function selectElement(element) {
                     game.time.events.add(300, checkGame);
                 }
             } else {
+                if (selection !== null && typeof selection !== 'undefined') {
+                    selection.kill();
+                }                
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + xgamePanel, selectedElement.posY * ELEM_SIZE + ygamePanel, SELECT);
+                selection.width = selectedElement.width;
+                selection.height = selectedElement.height;
             }
         } else {
+            if (selection !== null && typeof selection !== 'undefined') {
+                selection.kill();
+            }
             selectedElement = element;
             selectedElementStartPos.x = element.posX;
             selectedElementStartPos.y = element.posY;
+            selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + xgamePanel, selectedElement.posY * ELEM_SIZE + ygamePanel, SELECT);
+            selection.width = selectedElement.width;
+            selection.height = selectedElement.height;
         }
     }
 }

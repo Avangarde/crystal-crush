@@ -17,6 +17,7 @@ var NA = "NA";
 var CL = "CL";
 var A = "A";
 var B = "B";
+var SELECT = "SELECT";
 var elemNames = [CU, ZN, NA, CL, A, B];
 
 var allowInput;
@@ -26,6 +27,7 @@ var selectedElementStartPos;
 var selectedElemTween;
 var tempShiftedElem = null;
 var matched = false;
+var selection;
 
 
 
