@@ -5,8 +5,6 @@
 var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, 'phaser-example', {preload: preload, create: create, update: update, render: render});
 var xgamePanel;
 var ygamePanel;
-var text;
-var text2;
 
 function preload() {
     game.load.image(CU, 'assets/sprites/Cu.png');
@@ -39,14 +37,31 @@ function create() {
     fillBoard();
     selectedElementStartPos = {x: 0, y: 0};
     allowInput = true;
-    text = game.add.text(250, 16, '', {fill: '#ffffff'});
-    text2 = game.add.text(250, 50, '', {fill: '#ffffff'});
     game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
     game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
 }
 
 function update() {
-    //TODO game draging the elements
+    if (game.input.mousePointer.isDown) {
+        if (selectedElement !== null && typeof selectedElement !== 'undefined') {
+            
+            var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
+            var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
+            
+            if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
+                if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
+                    tempShiftedElem = getElement(cursorGemPosX, cursorGemPosY);
+                    
+                    allowInput = false;
+                    
+                    //Swap animation
+                    swapElements(selectedElement, tempShiftedElem);
+                    //Check game logic
+                    game.time.events.add(300, checkGame);
+                }
+            }
+        }
+    }
 }
 
 function render() {
@@ -147,7 +162,7 @@ function checkAndKillElemMatches(elem) {
         if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched) {
-                    game.time.events.add(400, swapNoMatch, this, elem);
+                    game.time.events.add(300, swapNoMatch, this, elem);
                 }
             }
             matched = false;
@@ -251,9 +266,24 @@ function dropElements() {
 // when the board has finished refilling, re-enable player input
 function boardRefilled() {
     allowInput = true;
+    tempShiftedElem = null;
 }
 
-// select a gem and remember its starting position
+function checkGame() {
+    checkAndKillElemMatches(tempShiftedElem);
+    checkAndKillElemMatches(selectedElement);
+    selectedElement = null;
+    removeKilledElems();
+    game.time.events.add(300, dropAndRefill);
+}
+
+function swapElements(elem1, elem2) {
+    tweenElemPos(elem1, elem2.posX, elem2.posY, 3);
+    tweenElemPos(elem2, elem1.posX, elem1.posY, 3);
+    swapElemPosition(elem1, elem2); 
+}
+
+// select an element and remember its starting position
 function selectElement(element) {
     if (allowInput) {
         if (selectedElement !== null && typeof selectedElement !== 'undefined') {
@@ -263,18 +293,9 @@ function selectElement(element) {
                     allowInput = false;
                     
                     //Swap animation
-                    selectedElemTween = tweenElemPos(selectedElement, tempShiftedElem.posX, tempShiftedElem.posY, 3);
-                    tweenElemPos(element, selectedElement.posX, selectedElement.posY, 3);
-                    swapElemPosition(selectedElement, tempShiftedElem);
-                    
-                    checkAndKillElemMatches(tempShiftedElem);
-                    checkAndKillElemMatches(selectedElement);
-                                        
-                    removeKilledElems();
-                    game.time.events.add(400, dropAndRefill);                    
-                    
-                    selectedElement = null;
-                    //tempShiftedElem = null;
+                    swapElements(selectedElement, tempShiftedElem);
+                    //Check game logic
+                    game.time.events.add(300, checkGame);
                 }
             } else {
                 selectedElement = element;
@@ -286,7 +307,6 @@ function selectElement(element) {
             selectedElementStartPos.x = element.posX;
             selectedElementStartPos.y = element.posY;
         }
-        text.text = "You clicked the element " + selectedElementStartPos.x + " , " + selectedElementStartPos.y;
     }
 }
 
