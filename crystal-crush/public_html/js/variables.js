@@ -32,6 +32,8 @@ var SELECT = "SELECT";
 var elemNames = [CU, ZN, NA, CL, A, B];
 
 var allowInput;
+var animationScreen=false;
+var inAlchemyPanel=false;
 var elements;
 var selectedElement;
 var selectedElementStartPos;
@@ -42,4 +44,3 @@ var selection;
 
 var style1 = { font: "20px Arial", fill: "#ff0000", align: "center" };
 var style2 = { font: "12px Arial", fill: "#00ffff", align: "center" };
-
