@@ -51,7 +51,7 @@ function actionOnClick() {
 
 function animationCamera() {
     if (!inAlchemyPanel) {
-        if (game.camera.x >= -canvasWidth + scorePanelWidth + 2 * margin)
+        if (game.camera.x >= -canvasWidth + scorePanel.width + 2 * margin)
             game.camera.x -= margin;
         else {
             animationScreen = false;
