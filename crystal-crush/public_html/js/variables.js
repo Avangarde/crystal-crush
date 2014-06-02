@@ -40,16 +40,6 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 
-var elemCount = [0, 0, 0, 0, 0, 0]; 
-var score_general = 0;
-var score_text = 'Score: ' + score_general;
-var count_cu_text = 'Cu: ' + elemCount[0];
-var count_zn_text = 'Zn: ' + elemCount[1];;
-var count_na_text = 'Na: ' + elemCount[2];;
-var count_cl_text = 'Cl: ' + elemCount[3];;
-var count_a_text  = 'A:  ' + elemCount[4];;
-var count_b_text  = 'B:  ' + elemCount[5];;
-
 var style1 = { font: "20px Arial", fill: "#ff0000", align: "center" };
 var style2 = { font: "12px Arial", fill: "#00ffff", align: "center" };
 
