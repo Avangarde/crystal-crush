@@ -1,9 +1,11 @@
 
-ScorePanel = function(game) {
+ScorePanel = function(game, x ,y, width, heigth) {
 
     this.game = game;
-    this.xgamePanel;
-    this.ygamePanel;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.heigth = heigth;
     this.background;
     this.abc0;
     this.abc1;
@@ -17,17 +19,17 @@ ScorePanel = function(game) {
 
 ScorePanel.prototype = {
 preload: function() {
-             game.load.image('scorePanel', 'assets/scorePanel.png');
+             game.load.image('scorePanelBackgroung', 'assets/scorePanel.png');
              game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
          },
 
 create: function() {
-            this.background = game.add.sprite(margin, margin, 'scorePanel');
-            this.background.width = scorePanelWidth;
-            this.background.height = scorePanelHeight;
+            this.background = game.add.sprite(this.x, this.y, 'scorePanelBackgroung');
+            this.background.width = this.width;
+            this.background.height = this.height;
 
-            game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
-            game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
+            game.add.button(this.width/2-193/2 + this.x, this.height/2 + this.y, 'createButton', actionOnClick, this, 2, 1, 0);
+            game.add.button(this.width/2-193/2 + this.x, this.height/2 + this.y,'createButton', actionOnClick2, this, 2, 1, 0);
 
 
             var decal = 17;
