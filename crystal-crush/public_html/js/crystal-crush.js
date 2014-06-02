@@ -24,7 +24,7 @@ function preload() {
 }
 
 function create() {
-    game.world.setBounds(0, 0, canvasWidth * 2, canvasHeight);
+    game.world.setBounds(-canvasWidth, 0, canvasWidth * 2, canvasHeight);
     var background = game.add.sprite(0, 0, 'background');
     background.width = canvasWidth;
     background.height = canvasHeight;
@@ -38,23 +38,26 @@ function create() {
     fillBoard();
     selectedElementStartPos = {x: 0, y: 0};
     allowInput = true;
-    game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
-    game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
+    game.add.button(canvasWidth + scorePanelWidth / 2 - 193 / 2, scorePanelHeight / 2, 'createButton', actionOnClick, this, 2, 1, 0);
 }
 
 function update() {
+    if (animationScreen) {
+        console.log("Animation Screen");
+        animationCamera();
+    }
     if (game.input.mousePointer.isDown) {
         if (selectedElement !== null && typeof selectedElement !== 'undefined') {
-            
+
             var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
             var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
-            
+
             if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
                 if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
                     tempShiftedElem = getElement(cursorGemPosX, cursorGemPosY);
-                    
+
                     allowInput = false;
-                    
+
                     //Swap animation
                     swapElements(selectedElement, tempShiftedElem);
                     //Check game logic
@@ -174,7 +177,7 @@ function checkAndKillElemMatches(elem) {
 function swapNoMatch(elem) {
     if (selectedElemTween !== null) {
         game.tweens.remove(selectedElemTween);
-    }  
+    }
     selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
 
     if (tempShiftedElem !== null) {
@@ -282,7 +285,7 @@ function checkGame() {
 function swapElements(elem1, elem2) {
     tweenElemPos(elem1, elem2.posX, elem2.posY, 3);
     tweenElemPos(elem2, elem1.posX, elem1.posY, 3);
-    swapElemPosition(elem1, elem2); 
+    swapElemPosition(elem1, elem2);
 }
 
 // select an element and remember its starting position
@@ -293,7 +296,7 @@ function selectElement(element) {
                 if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
                     tempShiftedElem = element;
                     allowInput = false;
-                    
+
                     //Swap animation
                     swapElements(selectedElement, tempShiftedElem);
                     //Check game logic
@@ -302,7 +305,7 @@ function selectElement(element) {
             } else {
                 if (selection !== null && typeof selection !== 'undefined') {
                     selection.kill();
-                }                
+                }
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
@@ -339,9 +342,23 @@ function canMove(fromPosX, fromPosY, toPosX, toPosY) {
 }
 
 function actionOnClick() {
-    game.camera.x = canvasWidth;
+    animationScreen = true;
 }
 
-function actionOnClick2() {
-    game.camera.x = 0;
+function animationCamera() {
+    if (!inAlchemyPanel) {
+        if (game.camera.x >= -canvasWidth + scorePanelWidth + 2 * margin)
+            game.camera.x -= margin;
+        else {
+            animationScreen = false;
+            inAlchemyPanel = true;
+        }
+    } else {
+        if (game.camera.x < 0)
+            game.camera.x += margin;
+        else {
+            animationScreen = false;
+            inAlchemyPanel = false;
+        }
+    }
 }

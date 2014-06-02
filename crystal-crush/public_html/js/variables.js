@@ -21,6 +21,8 @@ var SELECT = "SELECT";
 var elemNames = [CU, ZN, NA, CL, A, B];
 
 var allowInput;
+var animationScreen=false;
+var inAlchemyPanel=false;
 var elements;
 var selectedElement;
 var selectedElementStartPos;
@@ -28,6 +30,4 @@ var selectedElemTween;
 var tempShiftedElem = null;
 var matched = false;
 var selection;
-
-
 
