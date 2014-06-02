@@ -90,7 +90,7 @@ function fillBoard() {
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
             var element = elements.create(i * ELEM_SIZE + gamePanel.internalX,
                     j * ELEM_SIZE + gamePanel.internalY, elemNames[rndIndex]);
-            elem.name = elemNames[rndIndex];
+            element.name = elemNames[rndIndex];
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
@@ -165,7 +165,6 @@ function checkGame() {
     checkAndKillElemMatches(selectedElement);
     selectedElement = null;
     selection.kill();
-    score_general ++;
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
 }
@@ -204,19 +203,16 @@ function checkAndKillElemMatches(elem) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             scorePanel.addMatch(countHoriz, countVert, elem.name);
+        }else if (countVert >= MATCH_MIN) {
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            matched = true;
+            scorePanel.addMatch(countHoriz, countVert, elem.name);
+        }else if (countHoriz >= MATCH_MIN) {
+            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+            matched = true;
+            scorePanel.addMatch(countHoriz, countVert, elem.name);
         }else{
-            if (countVert >= MATCH_MIN) {
-                killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
-                matched = true;
-                scorePanel.addMatch(countHoriz, countVert, elem.name);
-            }
-            if (countHoriz >= MATCH_MIN) {
-                killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
-                matched = true;
-                scorePanel.addMatch(countHoriz, countVert, elem.name);
-            }
-        }
-        if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
+        //if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched) {
                     game.time.events.add(300, swapNoMatch, this, elem);

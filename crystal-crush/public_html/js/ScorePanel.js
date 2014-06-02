@@ -44,5 +44,15 @@ create: function() {
 
 update: function() {
         this.abc0.text = 'Score: ' + score_general;
-        }
+        },
+
+addMatch: function(countHoriz, countVert, elem_name) {
+    if(countHoriz < MATCH_MIN){
+        score_general = score_general + countVert;
+    }else if (countVert < MATCH_MIN){
+        score_general = score_general + countHoriz;
+    }else{
+        score_general = score_general + (countHoriz + countVert)*3;
+    }
+    }
 };
