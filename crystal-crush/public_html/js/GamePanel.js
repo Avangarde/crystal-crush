@@ -3,7 +3,7 @@ GamePanel = function(game) {
     this.game = game;
     this.xgamePanel;
     this.ygamePanel;
-
+    this.background;
 };
 
 GamePanel.prototype = {
@@ -18,10 +18,10 @@ GamePanel.prototype = {
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
     },
     create: function() {
-        var gamePanel = game.add.sprite(canvasWidth / 2 + scorePanelWidth / 2 + margin, canvasHeight / 2, 'gamePanel');
-        gamePanel.width = gamePanelWidth;
-        gamePanel.height = gamePanelHeight;
-        gamePanel.anchor.setTo(0.5, 0.5);
+        this.background = game.add.sprite(canvasWidth / 2 + scorePanelWidth / 2 + margin, canvasHeight / 2, 'gamePanel');
+        this.background.width = gamePanelWidth;
+        this.background.height = gamePanelHeight;
+        this.background.anchor.setTo(0.5, 0.5);
         fillBoard();
         selectedElementStartPos = {x: 0, y: 0};
         allowInput = true;
@@ -113,6 +113,7 @@ function selectElement(element) {
             } else {
                 if (selection !== null && typeof selection !== 'undefined') {
                     selection.kill();
+                    score_general++;
                 }                
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
@@ -124,6 +125,7 @@ function selectElement(element) {
         } else {
             if (selection !== null && typeof selection !== 'undefined') {
                 selection.kill();
+            score_general ++;
             }
             selectedElement = element;
             selectedElementStartPos.x = element.posX;
@@ -160,6 +162,7 @@ function checkGame() {
     checkAndKillElemMatches(selectedElement);
     selectedElement = null;
     selection.kill();
+            score_general ++;
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
 }
@@ -252,6 +255,7 @@ function killElemRange(fromX, fromY, toX, toY) {
         for (var j = fromY; j <= toY; j++) {
             var elem = getElement(i, j);
             elem.kill();
+            score_general ++;
         }
     }
 }
