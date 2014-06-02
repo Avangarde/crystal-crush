@@ -21,6 +21,7 @@ function preload() {
 
     game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
 
+
 }
 
 function create() {
@@ -40,6 +41,16 @@ function create() {
     allowInput = true;
     game.add.button(scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick, this, 2, 1, 0);
     game.add.button(canvasWidth+scorePanelWidth/2-193/2, scorePanelHeight/2, 'createButton', actionOnClick2, this, 2, 1, 0);
+
+
+    var decal = 17;
+    game.add.text(10,10,score_text,style1);
+    game.add.text(10,10+1*decal,count_cu_text,style2);
+    game.add.text(10,10+2*decal,count_zn_text,style2);
+    game.add.text(10,10+3*decal,count_na_text,style2);
+    game.add.text(10,10+4*decal,count_cl_text,style2);
+    game.add.text(10,10+5*decal,count_a_text,style2);
+    game.add.text(10,10+6*decal,count_b_text,style2);
 }
 
 function update() {
