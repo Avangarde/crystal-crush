@@ -6,6 +6,9 @@ var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, 'phaser-examp
 var xgamePanel;
 var ygamePanel;
 
+var BUTTONWIDTH = 193;
+var BUTTONHEIGHT = 71;
+
 function preload() {
     game.load.image(CU, 'assets/sprites/Cu.png');
     game.load.image(ZN, 'assets/sprites/Zn.png');
@@ -19,12 +22,12 @@ function preload() {
     game.load.image('scorePanel', 'assets/scorePanel.png');
     game.load.image('gamePanel', 'assets/gamePanel.png');
 
-    game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+    game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', BUTTONWIDTH, BUTTONHEIGHT);
 
 }
 
 function create() {
-    game.world.setBounds(-canvasWidth, 0, canvasWidth * 2, canvasHeight);
+    game.world.setBounds(-canvasWidth + scorePanel, 0, canvasWidth * 2, canvasHeight);
     var background = game.add.sprite(0, 0, 'background');
     background.width = canvasWidth;
     background.height = canvasHeight;
@@ -38,7 +41,11 @@ function create() {
     fillBoard();
     selectedElementStartPos = {x: 0, y: 0};
     allowInput = true;
-    game.add.button(canvasWidth + scorePanelWidth / 2 - 193 / 2, scorePanelHeight / 2, 'createButton', actionOnClick, this, 2, 1, 0);
+    var buttonGame = game.add.button(2 * margin, scorePanelHeight - margin - BUTTONHEIGHT, 'createButton', actionOnClick, this, 2, 1, 0);
+    var buttonWidth = scorePanelWidth - 2 * margin;
+    var scalingFactor = scorePanelWidth/buttonWidth ;
+    buttonGame.width = buttonWidth;
+    buttonGame.height = scalingFactor * buttonGame.height;
 }
 
 function update() {
