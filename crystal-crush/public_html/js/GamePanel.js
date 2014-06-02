@@ -1,53 +1,59 @@
-GamePanel = function(game) {
-
+GamePanel = function(game,x,y,width,height) {
     this.game = game;
-    this.xgamePanel;
-    this.ygamePanel;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
     this.background;
+    this.internalX = this.x + margin;
+    this.internalY = this.y + margin;
+    this.internalWidth =this.width - 2*margin;
+    this.internalHeight =this.height - 2*margin;
+
 };
 
 GamePanel.prototype = {
-    preload: function() {
-        this.game.load.image(CU, 'assets/sprites/Cu.png');
-        this.game.load.image(ZN, 'assets/sprites/Zn.png');
-        this.game.load.image(NA, 'assets/sprites/Na.png');
-        this.game.load.image(CL, 'assets/sprites/Cl.png');
-        this.game.load.image(A, 'assets/sprites/A.png');
-        this.game.load.image(B, 'assets/sprites/B.png');
-        this.game.load.image(SELECT, 'assets/sprites/selection.png');
-        this.game.load.image('gamePanel', 'assets/gamePanel.png');
-    },
-    create: function() {
-        this.background = game.add.sprite(canvasWidth / 2 + scorePanelWidth / 2 + margin, canvasHeight / 2, 'gamePanel');
-        this.background.width = gamePanelWidth;
-        this.background.height = gamePanelHeight;
-        this.background.anchor.setTo(0.5, 0.5);
-        fillBoard();
-        selectedElementStartPos = {x: 0, y: 0};
-        allowInput = true;
-    },
-    update: function() {
-        if (game.input.mousePointer.isDown) {
-            if (selectedElement !== null && typeof selectedElement !== 'undefined') {
+preload: function() {
+             this.game.load.image(CU, 'assets/sprites/Cu.png');
+             this.game.load.image(ZN, 'assets/sprites/Zn.png');
+             this.game.load.image(NA, 'assets/sprites/Na.png');
+             this.game.load.image(CL, 'assets/sprites/Cl.png');
+             this.game.load.image(A, 'assets/sprites/A.png');
+             this.game.load.image(B, 'assets/sprites/B.png');
+             this.game.load.image(SELECT, 'assets/sprites/selection.png');
+             this.game.load.image('gamePanel', 'assets/gamePanel.png');
+         },
+create: function() {
+            this.background = game.add.sprite(this.x, this.y, 'gamePanel');
+            this.background.width = this.width;
+            this.background.height = this.height;
+            //this.background.anchor.setTo(0.5, 0.5);
+            fillBoard();
+            selectedElementStartPos = {x: 0, y: 0};
+            allowInput = true;
+        },
+update: function() {
+            if (game.input.mousePointer.isDown) {
+                if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
-                var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
-                var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
+                    var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
+                    var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
 
-                if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
-                    if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
-                        tempShiftedElem = getElement(cursorGemPosX, cursorGemPosY);
+                    if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
+                        if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
+                            tempShiftedElem = getElement(cursorGemPosX, cursorGemPosY);
 
-                        allowInput = false;
+                            allowInput = false;
 
-                        //Swap animation
-                        swapElements(selectedElement, tempShiftedElem);
-                        //Check game logic
-                        game.time.events.add(300, checkGame);
+                            //Swap animation
+                            swapElements(selectedElement, tempShiftedElem);
+                            //Check game logic
+                            game.time.events.add(300, checkGame);
+                        }
                     }
                 }
             }
         }
-    }
 };
 
 
@@ -60,9 +66,9 @@ function getElement(posX, posY) {
 // convert world coordinates to board position
 function getRelativeElementPos(coordinate, axisX) {
     if (axisX) {
-        return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - gamePanel.internalX) / ELEM_SIZE);
     } else {
-        return Phaser.Math.floor((coordinate - (2 * margin)) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - gamePanel.internalY) / ELEM_SIZE);
     }
 }
 
@@ -78,14 +84,13 @@ function calcElementId(posX, posY) {
 
 function fillBoard() {
     elements = game.add.group();
-    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
-    xgamePanel = canvasWidth / 2 + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
-    ygamePanel = 2 * margin;
+    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
-            var element = elements.create(i * ELEM_SIZE + xgamePanel,
-                    j * ELEM_SIZE + ygamePanel, elemNames[rndIndex]);
+            var element = elements.create(i * ELEM_SIZE + gamePanel.internalX,
+                    j * ELEM_SIZE + gamePanel.internalY, elemNames[rndIndex]);
+            element.name = elemNames[rndIndex];
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
@@ -93,7 +98,7 @@ function fillBoard() {
             setElementPosition(element, i, j);
         }
     }
-//    selectedElement = getElement(0, 0);
+    //    selectedElement = getElement(0, 0);
 }
 
 // select an element and remember its starting position
@@ -104,7 +109,7 @@ function selectElement(element) {
                 if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
                     tempShiftedElem = element;
                     allowInput = false;
-                    
+
                     //Swap animation
                     swapElements(selectedElement, tempShiftedElem);
                     //Check game logic
@@ -113,24 +118,22 @@ function selectElement(element) {
             } else {
                 if (selection !== null && typeof selection !== 'undefined') {
                     selection.kill();
-                    score_general++;
                 }                
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
-                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + xgamePanel, selectedElement.posY * ELEM_SIZE + ygamePanel, SELECT);
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
         } else {
             if (selection !== null && typeof selection !== 'undefined') {
                 selection.kill();
-            score_general ++;
             }
             selectedElement = element;
             selectedElementStartPos.x = element.posX;
             selectedElementStartPos.y = element.posY;
-            selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + xgamePanel, selectedElement.posY * ELEM_SIZE + ygamePanel, SELECT);
+            selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
             selection.width = selectedElement.width;
             selection.height = selectedElement.height;
         }
@@ -162,7 +165,6 @@ function checkGame() {
     checkAndKillElemMatches(selectedElement);
     selectedElement = null;
     selection.kill();
-            score_general ++;
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
 }
@@ -173,7 +175,7 @@ function tweenElemPos(elem, newPosX, newPosY, durationMultiplier) {
         durationMultiplier = 1;
     }
     return game.add.tween(elem).to(
-            {x: newPosX * ELEM_SIZE + xgamePanel, y: newPosY * ELEM_SIZE + ygamePanel}, 100 * durationMultiplier,
+            {x: newPosX * ELEM_SIZE + gamePanel.internalX, y: newPosY * ELEM_SIZE + gamePanel.internalY}, 100 * durationMultiplier,
             Phaser.Easing.Linear.None, true);
 }
 
@@ -187,7 +189,7 @@ function swapElemPosition(elem1, elem2) {
 
 function checkAndKillElemMatches(elem) {
     if (elem !== null) {
-//        console.log("Elem = " + elem.key);
+        //        console.log("Elem = " + elem.key);
         var countUp = countSameElemElements(elem, 0, -1);
         var countDown = countSameElemElements(elem, 0, 1);
         var countLeft = countSameElemElements(elem, -1, 0);
@@ -196,17 +198,21 @@ function checkAndKillElemMatches(elem) {
         var countHoriz = countLeft + countRight + 1;
         var countVert = countUp + countDown + 1;
 
-        if (countVert >= MATCH_MIN) {
+        if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
-            matched = true;
-        }
-
-        if (countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
-        }
-
-        if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
+            scorePanel.addMatch(countHoriz, countVert, elem.name);
+        }else if (countVert >= MATCH_MIN) {
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            matched = true;
+            scorePanel.addMatch(countHoriz, countVert, elem.name);
+        }else if (countHoriz >= MATCH_MIN) {
+            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+            matched = true;
+            scorePanel.addMatch(countHoriz, countVert, elem.name);
+        }else{
+        //if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched) {
                     game.time.events.add(300, swapNoMatch, this, elem);
@@ -255,7 +261,7 @@ function killElemRange(fromX, fromY, toX, toY) {
         for (var j = fromY; j <= toY; j++) {
             var elem = getElement(i, j);
             elem.kill();
-            score_general ++;
+            //score_general ++;
         }
     }
 }
@@ -263,10 +269,10 @@ function killElemRange(fromX, fromY, toX, toY) {
 // move elements that have been killed off the board
 function removeKilledElems() {
     elements.forEach(function(element) {
-        if (!element.alive) {
+            if (!element.alive) {
             setElementPosition(element, -1, -1);
-        }
-    });
+            }
+            });
 }
 
 function dropAndRefill() {
@@ -296,7 +302,7 @@ function dropElements() {
 // look for any empty spots on the board and spawn new gems in their place that fall down from above
 function refillBoard() {
     var maxElementsMissingFromCol = 0;
-    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
+    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
@@ -304,8 +310,9 @@ function refillBoard() {
             if (elem === null) {
                 elementsMissingFromCol++;
                 var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
-                var elem = elements.create(i * ELEM_SIZE + xgamePanel,
+                var elem = elements.create(i * ELEM_SIZE + gamePanel.internalX,
                         -elementsMissingFromCol * ELEM_SIZE, elemNames[rndIndex]);
+                elem.name = elemNames[rndIndex];
                 elem.width = boardRowsAndColumns;
                 elem.height = boardRowsAndColumns;
                 elem.inputEnabled = true;

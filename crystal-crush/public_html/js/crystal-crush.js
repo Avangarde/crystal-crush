@@ -11,9 +11,8 @@ function preload() {
     
     game.load.image('background', 'assets/background.png');
     
-    gamePanel = new GamePanel(game);
-    scorePanel = new ScorePanel(game);
-    alchemyPanel = new AlchemyPanel(game);
+    gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
+    scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel);
 
     gamePanel.preload();
     scorePanel.preload();
