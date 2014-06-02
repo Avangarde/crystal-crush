@@ -5,6 +5,7 @@
 var game = new Phaser.Game(canvasWidth, canvasHeight, Phaser.AUTO, 'phaser-example', {preload: preload, create: create, update: update, render: render});
 var gamePanel = null;
 var scorePanel = null;
+var alchemyPanel = null;
 
 var BUTTONWIDTH = 193;
 var BUTTONHEIGHT = 71;
@@ -13,11 +14,13 @@ function preload() {
     
     game.load.image('background', 'assets/background.png');
     
-    gamePanel = new GamePanel(game);
-    scorePanel = new ScorePanel(game);
+    gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
+    scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel);
+    alchemyPanel = new AlchemyPanel(game, xAlchemyPanel, yAlchemyPanel, widthAlchemyPanel, heightAlchemyPanel);
 
     gamePanel.preload();
     scorePanel.preload();
+    alchemyPanel.preload();
 }
 
 function create() {
@@ -28,12 +31,14 @@ function create() {
     
     gamePanel.create();
     scorePanel.create();
+    alchemyPanel.create();
 
 }
 
 function update() {
     gamePanel.update();
     scorePanel.update();
+    alchemyPanel.update();
 }
 
 function render() {
