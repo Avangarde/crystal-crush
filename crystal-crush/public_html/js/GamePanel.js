@@ -33,7 +33,7 @@ create: function() {
             allowInput = true;
         },
 update: function() {
-            if (game.input.mousePointer.isDown) {
+            if (game.input.mousePointer.isDown && allowInput ) {
                 if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
                     var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
@@ -231,8 +231,8 @@ function swapNoMatch(elem) {
 
     if (tempShiftedElem !== null) {
         tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
-    }
-    swapElemPosition(elem, tempShiftedElem);
+        swapElemPosition(elem, tempShiftedElem);
+    }    
 }
 
 // count how many elements of the same color lie in a given direction
