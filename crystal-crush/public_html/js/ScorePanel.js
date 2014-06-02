@@ -1,11 +1,11 @@
 
-ScorePanel = function(game, x ,y, width, heigth) {
+ScorePanel = function(game, x ,y, width, height) {
 
     this.game = game;
     this.x = x;
     this.y = y;
     this.width = width;
-    this.heigth = heigth;
+    this.height = height;
     this.background;
     this.abc0;
     this.abc1;
@@ -19,12 +19,12 @@ ScorePanel = function(game, x ,y, width, heigth) {
 
 ScorePanel.prototype = {
 preload: function() {
-             game.load.image('scorePanelBackgroung', 'assets/scorePanel.png');
+             game.load.image('scorePanelBackground', 'assets/scorePanel.png');
              game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
          },
 
 create: function() {
-            this.background = game.add.sprite(this.x, this.y, 'scorePanelBackgroung');
+            this.background = game.add.sprite(this.x, this.y, 'scorePanelBackground');
             this.background.width = this.width;
             this.background.height = this.height;
 
