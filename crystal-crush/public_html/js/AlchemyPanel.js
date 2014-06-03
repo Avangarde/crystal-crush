@@ -41,12 +41,13 @@ AlchemyPanel.prototype = {
         createButton.height = this.heightButton;
         createButton.anchor.setTo(0.5, 0.5);
         this.alcElements = this.game.add.group();
+        this.elementToCombine;
     },
     update: function() {
 
     },
     receiveElement: function(element_name) {
-        elementToCombine = element_name;
+        this.elementToCombine = element_name;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
@@ -74,7 +75,7 @@ AlchemyPanel.prototype = {
         if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
             if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
-                        curY * ELEM_SIZE + alchemyPanel.gridY, elementToCombine);
+                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToCombine);
 
                 elem.width = ELEM_SIZE;
                 elem.height = ELEM_SIZE;
