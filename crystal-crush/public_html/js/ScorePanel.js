@@ -31,20 +31,32 @@ ScorePanel.prototype = {
     preload: function() {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+        game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
     },
     create: function() {
+        // Background
         this.background = game.add.sprite(this.x, this.y, 'scorePanelBackground');
         this.background.width = this.width;
         this.background.height = this.height;
 
+        // Button
         var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - BUTTONHEIGHT, 'createButton', actionOnClick, this, 2, 1, 0);
         var buttonWidth = scorePanel.width - 2 * margin;
         var scalingFactor = scorePanel.width / buttonWidth;
         buttonGame.width = buttonWidth;
         buttonGame.height = scalingFactor * buttonGame.height;
 
+        // ScoreLabel
+        this.scoreLabel = game.add.sprite(this.x + margin, this.y + margin, 'scoreLabel');
+        var tmp = this.scoreLabel.width;
+        this.scoreLabel.width = this.width - 2 * margin;
+        this.scoreLabel.height = this.scoreLabel.height /tmp * this.scoreLabel.width;
+
+
         var decal = 17;
-        this.score_txt = game.add.text(10, 10, 'Score : ' + this.score_general, style1);
+        //Score
+        this.score_txt = game.add.text(this.x + this.width *0.4, this.y + margin, ''+this.score_general, style1);
+        
         this.cu_txt = game.add.text(10, 10 + 1 * decal, 'Cu : ' + this.cu_count, style2);
         this.zn_txt = game.add.text(10, 10 + 2 * decal, 'Zn : ' + this.zn_count, style2);
         this.na_txt = game.add.text(10, 10 + 3 * decal, 'Na : ' + this.na_count, style2);
@@ -53,13 +65,15 @@ ScorePanel.prototype = {
         this.b_txt = game.add.text(10, 10 + 6 * decal, 'B : ' + this.b_count, style2);
     },
     update: function() {
-        this.score_txt.text = 'Score : ' + this.score_general;
+        this.score_txt.text =  ''+this.score_general;
+    /*
         this.cu_txt.text = 'Cu : ' + this.cu_count;
         this.zn_txt.text = 'Zn : ' + this.zn_count;
         this.na_txt.text = 'Na : ' + this.na_count;
         this.cl_txt.text = 'Cl : ' + this.cl_count;
         this.a_txt.text = 'A : ' + this.a_count;
         this.b_txt.text = 'B : ' + this.b_count;
+        */
     },
     addMatch2: function(elem_name, count) {
         if (elem_name === 'CU') {
