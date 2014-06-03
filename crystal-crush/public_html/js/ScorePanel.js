@@ -197,5 +197,6 @@ sendElementToAlchemy: function(element){
     },
 decreaseElement: function(elem_name){
     //TODO
+    return true;
     }
 };

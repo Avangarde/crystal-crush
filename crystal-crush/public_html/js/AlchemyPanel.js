@@ -86,6 +86,31 @@ AlchemyPanel.prototype = {
     },
     createCrystal: function() {
         //console.log("create");
+        //TODO Compare structure new element
+        alchemyPanel.killElemRange(0, 0, 3, 3);
+        alchemyPanel.removeKilledElems();
+        scorePanel.createElement("NaCl");
+    },
+    killElemRange: function(fromX, fromY, toX, toY) {
+        fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
+        fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
+        toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
+        toY = Phaser.Math.clamp(toY, 0, BOARD_ROWS - 1);
+        for (var i = fromX; i <= toX; i++) {
+            for (var j = fromY; j <= toY; j++) {
+                var elem = alchemyPanel.getElement(i, j);
+                if (elem !== null) {
+                    elem.kill();
+                }
+            }
+        }
+    },
+    removeKilledElems: function() {
+        alchemyPanel.alcElements.forEach(function(element) {
+            if (!element.alive) {
+                alchemyPanel.setElementPosition(element, -1, -1);
+            }
+        });
     }
 };
 
