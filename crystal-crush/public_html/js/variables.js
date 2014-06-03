@@ -28,6 +28,7 @@ var NA = "NA";
 var CL = "CL";
 var A = "A";
 var B = "B";
+var NACL = "NACL";
 var SELECT = "SELECT";
 var elemNames = [CU, ZN, NA, CL, A, B];
 

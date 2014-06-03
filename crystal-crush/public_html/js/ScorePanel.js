@@ -11,6 +11,11 @@ ScorePanel = function(game, x, y, width, height) {
     this.background;
 
     this.score_general = 0;
+    this.score_txt;
+
+    /////////////////
+    //// LEVEL 1 ////
+    /////////////////
     this.cu_count = 0;
     this.zn_count = 0;
     this.na_count = 0;
@@ -18,7 +23,6 @@ ScorePanel = function(game, x, y, width, height) {
     this.a_count = 0;
     this.b_count = 0;
 
-    this.score_txt;
     this.cu_txt;
     this.zn_txt;
     this.na_txt;
@@ -34,6 +38,16 @@ ScorePanel = function(game, x, y, width, height) {
     this.cl_img;
     this.a_img;
     this.b_img;
+
+    /////////////////
+    //// LEVEL 2 ////
+    /////////////////
+
+    this.nacl_count = 0;
+
+    this.nacl_txt;
+
+    this.nacl_img;
 
 };
 
@@ -62,8 +76,8 @@ ScorePanel.prototype = {
         this.scoreLabel.height = this.scoreLabel.height /tmp * this.scoreLabel.width;
 
 
-        //Score
-        this.score_txt = game.add.text(this.x + this.width *0.4, this.y + 2 * margin, ''+this.score_general, style1);
+        //Score_txt
+        this.score_txt = game.add.text(this.x + this.width *0.4, this.y + 2.5 * margin, this.score_general, style1);
         var tmp = this.score_txt.height;
         this.score_txt.height = this.scoreLabel.height - 2*margin;
         this.score_txt.width  = this.score_txt.width /tmp * this.score_txt.height;
@@ -71,12 +85,10 @@ ScorePanel.prototype = {
         
         //Elems_img
         var img_size = this.width * 0.20;
-
         var X1 = this.x + this.width*0.15;
         var X2 = this.x + this.width*0.55;
         var inter_img = this.width*0.2;
         var startY = this.y + this.scoreLabel.height + margin;// + inter_img;
-
         this.img_group = game.add.group();
 
         this.cu_img = this.img_group.create(X1, startY, CU);
@@ -122,7 +134,7 @@ ScorePanel.prototype = {
         this.b_img.events.onInputDown.add(this.sendElementToAlchemy);
 
 
-        //Elems_count
+        //Elems_txt
         this.cu_txt = game.add.text(X1+img_size , startY + img_size/2, '' + this.cu_count, style1);
         var tmp = this.cu_txt.height;
         this.cu_txt.height = img_size/2;
@@ -153,6 +165,28 @@ ScorePanel.prototype = {
         this.b_txt.height = img_size/2;
         this.b_txt.width = this.b_txt.width /tmp * this.b_txt.height;
 
+
+        // Separator
+        var separator = game.add.sprite(this.x + margin, this.y + this.height * 0.37, 'scoreLabel');
+        separator.width  = this.width - 2 * margin;
+        separator.height = this.height * 0.01;
+
+        // Elems lvl2
+
+        this.nacl_img = this.img_group.create(this.x + (this.width - img_size)/2, this.y + this.height * 0.41, A);
+        this.nacl_img.width = img_size;
+        this.nacl_img.height = img_size;
+        this.nacl_img.name = NACL;
+        this.nacl_img.inputEnabled = true;
+        this.nacl_img.events.onInputDown.add(this.sendElementToAlchemy);
+        
+
+        var X1 = this.x+(this.width + img_size)/2;
+        var Y1 = this.y + this.height * 0.41;
+        this.nacl_txt = game.add.text(X1 , Y1 , '' + this.nacl_count, style1);
+        var tmp = this.nacl_txt.height;
+        this.nacl_txt.height = img_size/2;
+        this.nacl_txt.width = this.nacl_txt.width /tmp * this.nacl_txt.height;
     },
     update: function() {
         this.score_txt.text = this.score_general;
@@ -162,6 +196,7 @@ ScorePanel.prototype = {
         this.cl_txt.text    = this.cl_count;
         this.a_txt.text     = this.a_count;
         this.b_txt.text     = this.b_count;
+        this.nacl_txt.text  = this.nacl_count;
     },
     addMatch2: function(elem_name, count) {
         if (elem_name === 'CU') {
@@ -193,9 +228,57 @@ ScorePanel.prototype = {
 
 
 sendElementToAlchemy: function(element){
-    alchemyPanel.receiveElement(element.name);
+    alchemyPanel.receiveElement(element);
     },
 decreaseElement: function(elem_name){
-    //TODO
+        if (elem_name === 'CU') {
+            if(this.cu_count > 0){
+                this.cu_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'ZN') {
+            if(this.zn_count > 0){
+                this.zn_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'NA') {
+            if(this.na_count > 0){
+                this.na_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'CL') {
+            if(this.cl_count > 0){
+                this.cl_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'A') {
+            if(this.a_count > 0){
+                this.a_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'B') {
+            if(this.b_count > 0){
+                this.b_count--;
+                return true;
+            }else{
+                return false;
+            }
+        }
+    
+    },
+createElement: function(elem_name){
+    if(elem_name === 'NACL'){
+        nacl_count++;
     }
+}
 };
