@@ -206,14 +206,17 @@ function checkAndKillElemMatches(elem) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
         }else if (countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);            
             matched = true;
             stillGame = true;
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
         }else if (countVert >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);                        
             matched = true;
             stillGame = true;
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
         }
         else{
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
