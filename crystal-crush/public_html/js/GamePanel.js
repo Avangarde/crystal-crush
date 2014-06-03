@@ -236,10 +236,8 @@ function swapNoMatch(elem) {
     selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
     if (tempShiftedElem !== null) {
         tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
-    }
-    selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
-    tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
-    swapElemPosition(elem, tempShiftedElem);
+        swapElemPosition(elem, tempShiftedElem);
+    }     
 }
 
 // count how many elements of the same color lie in a given direction
