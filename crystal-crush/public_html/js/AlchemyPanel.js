@@ -43,6 +43,17 @@ AlchemyPanel.prototype = {
         this.alcElements = game.add.group();
     },
     update: function() {
+        
+    },
+receiveElement: function(element_name){
+    // TODO
+    }
+};
+/*
+// find a elem on the board according to its position on the board
+function getElement(posX, posY) {
+    return this.alcElements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
+}
 
     },
     calcElementId: function(posX, posY) {
