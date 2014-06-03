@@ -28,6 +28,7 @@ var selectedElemTween;
 var tempShiftedElem = null;
 var matched = false;
 var selection;
+var stillGame;
 
 var elemCount = [0, 0, 0, 0, 0, 0]; 
 var score_general = 0;
