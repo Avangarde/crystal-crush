@@ -43,11 +43,11 @@ ScorePanel = function(game, x, y, width, height) {
     //// LEVEL 2 ////
     /////////////////
 
-    this.nacl_count = 0;
+    this.cuzn_count = 0;
 
-    this.nacl_txt;
+    this.cuzn_txt;
 
-    this.nacl_img;
+    this.cuzn_img;
 
 };
 
@@ -56,6 +56,7 @@ ScorePanel.prototype = {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
         game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
+        this.game.load.image(CUZN, 'assets/sprites/CuZn.png');
     },
     create: function() {
         // Background
@@ -173,20 +174,20 @@ ScorePanel.prototype = {
 
         // Elems lvl2
 
-        this.nacl_img = this.img_group.create(this.x + (this.width - img_size)/2, this.y + this.height * 0.41, A);
-        this.nacl_img.width = img_size;
-        this.nacl_img.height = img_size;
-        this.nacl_img.name = NACL;
-        this.nacl_img.inputEnabled = true;
-        this.nacl_img.events.onInputDown.add(this.sendElementToAlchemy);
+        this.cuzn_img = this.img_group.create(this.x + (this.width - img_size)/2, this.y + this.height * 0.41, A);
+        this.cuzn_img.width = img_size;
+        this.cuzn_img.height = img_size;
+        this.cuzn_img.name = CUZN;
+        this.cuzn_img.inputEnabled = true;
+        this.cuzn_img.events.onInputDown.add(this.sendElementToAlchemy);
         
 
         var X1 = this.x+(this.width + img_size)/2;
         var Y1 = this.y + this.height * 0.41;
-        this.nacl_txt = game.add.text(X1 , Y1 , '' + this.nacl_count, style1);
-        var tmp = this.nacl_txt.height;
-        this.nacl_txt.height = img_size/2;
-        this.nacl_txt.width = this.nacl_txt.width /tmp * this.nacl_txt.height;
+        this.cuzn_txt = game.add.text(X1 , Y1 , '' + this.cuzn_count, style1);
+        var tmp = this.cuzn_txt.height;
+        this.cuzn_txt.height = img_size/2;
+        this.cuzn_txt.width = this.cuzn_txt.width /tmp * this.cuzn_txt.height;
     },
     update: function() {
         this.score_txt.text = this.score_general;
@@ -196,7 +197,7 @@ ScorePanel.prototype = {
         this.cl_txt.text    = this.cl_count;
         this.a_txt.text     = this.a_count;
         this.b_txt.text     = this.b_count;
-        this.nacl_txt.text  = this.nacl_count;
+        this.cuzn_txt.text  = this.cuzn_count;
     },
     addMatch2: function(elem_name, count) {
         if (elem_name === 'CU') {
@@ -279,8 +280,8 @@ decreaseElement: function(elem_name){
     */
     },
 createElement: function(elem_name){
-    if(elem_name === 'NACL'){
-        nacl_count++;
+    if(elem_name === 'CUZN'){
+        cuzn_count++;
     }
 }
 };

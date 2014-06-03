@@ -71,6 +71,7 @@ AlchemyPanel.prototype = {
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
+        console.log("("+curX+','+curY+")");
         if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
             if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
