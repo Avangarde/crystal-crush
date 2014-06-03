@@ -37,11 +37,11 @@ ScorePanel.prototype = {
         this.background.width = this.width;
         this.background.height = this.height;
 
-        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - BUTTONHEIGHT, 'createButton', actionOnClick, this, 2, 1, 0);
         var buttonWidth = scorePanel.width - 2 * margin;
-        var scalingFactor = scorePanel.width / buttonWidth;
+        var buttonHeight = buttonWidth * BUTTONHEIGHT / BUTTONWIDTH;
+        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createButton', actionOnClick, this, 2, 1, 0);
+        buttonGame.height = buttonHeight;
         buttonGame.width = buttonWidth;
-        buttonGame.height = scalingFactor * buttonGame.height;
 
         var decal = 17;
         this.score_txt = game.add.text(10, 10, 'Score : ' + this.score_general, style1);
