@@ -24,6 +24,9 @@ AlchemyPanel.prototype = {
     },
     update: function() {
         
+    },
+receiveElement: function(element_name){
+    // TODO
     }
 };
 /*
