@@ -43,5 +43,6 @@ var matched = false;
 var selection;
 var stillGame;
 
-var style1 = { font: "20px Arial", fill: "#ff0000", align: "center" };
-var style2 = { font: "12px Arial", fill: "#00ffff", align: "center" };
+var tipoFuente = "20px Candela";
+var style1 = { font: "20px Arial", fill: "#ffffff", align: "center" };
+var style2 = { font: "20px Arial", fill: "#00ffff", align: "center" };

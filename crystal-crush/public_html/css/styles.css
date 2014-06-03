@@ -1,9 +1,23 @@
 /* 
-    Created on : 28 mai 2014, 15:56:47
-    Author     : juanmanuelmartinezromero
-*/
+   Created on : 28 mai 2014, 15:56:47
+Author     : juanmanuelmartinezromero
+ */
 
 * {
-   margin: 0px;
-   padding: 0px;
+margin: 0px;
+padding: 0px;
+
+
 }
+<style> 
+@font-face
+{
+font-family: finalOld;
+src: url(assets/FINALOLD.TTF);
+}
+
+div
+{
+    font-family:finalOld;
+}
+</style>
