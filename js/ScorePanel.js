@@ -40,7 +40,7 @@ ScorePanel = function(game, x, y, width, height) {
 ScorePanel.prototype = {
     preload: function() {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
-        game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+        game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet_base.png', 193, 71);
         game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
     },
     create: function() {
