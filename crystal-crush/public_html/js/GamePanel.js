@@ -1,8 +1,14 @@
-GamePanel = function(game) {
-
+GamePanel = function(game, x, y, width, height) {
     this.game = game;
-    this.xgamePanel;
-    this.ygamePanel;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.background;
+    this.internalX = this.x + margin;
+    this.internalY = this.y + margin;
+    this.internalWidth = this.width - 2 * margin;
+    this.internalHeight = this.height - 2 * margin;
 
 };
 
@@ -18,17 +24,21 @@ GamePanel.prototype = {
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
     },
     create: function() {
-        var gamePanel = game.add.sprite(canvasWidth / 2 + scorePanelWidth / 2 + margin, canvasHeight / 2, 'gamePanel');
-        gamePanel.width = gamePanelWidth;
-        gamePanel.height = gamePanelHeight;
-        gamePanel.anchor.setTo(0.5, 0.5);
+        this.background = game.add.sprite(this.x, this.y, 'gamePanel');
+        this.background.width = this.width;
+        this.background.height = this.height;
+        //this.background.anchor.setTo(0.5, 0.5);
+        fillBoard();
         selectedElementStartPos = {x: 0, y: 0};
         fillBoard();
         
         allowInput = true;
     },
     update: function() {
-        if (game.input.mousePointer.isDown && allowInput) {
+        if (animationScreen) {
+            animationCamera();
+        }
+        if (game.input.mousePointer.isDown) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
                 var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
@@ -61,9 +71,9 @@ function getElement(posX, posY) {
 // convert world coordinates to board position
 function getRelativeElementPos(coordinate, axisX) {
     if (axisX) {
-        return Phaser.Math.floor((coordinate - xgamePanel) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - gamePanel.internalX) / ELEM_SIZE);
     } else {
-        return Phaser.Math.floor((coordinate - (2 * margin)) / ELEM_SIZE);
+        return Phaser.Math.floor((coordinate - gamePanel.internalY) / ELEM_SIZE);
     }
 }
 
@@ -79,14 +89,13 @@ function calcElementId(posX, posY) {
 
 function fillBoard() {
     elements = game.add.group();
-    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
-    xgamePanel = canvasWidth / 2 + scorePanelWidth / 2 + 2 * margin - gamePanelWidth / 2;
-    ygamePanel = 2 * margin;
+    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
-            var element = elements.create(i * ELEM_SIZE + xgamePanel,
-                    j * ELEM_SIZE + ygamePanel, elemNames[rndIndex]);
+            var element = elements.create(i * ELEM_SIZE + gamePanel.internalX,
+                    j * ELEM_SIZE + gamePanel.internalY, elemNames[rndIndex]);
+            element.name = elemNames[rndIndex];
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
@@ -119,7 +128,7 @@ function selectElement(element) {
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
-                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + xgamePanel, selectedElement.posY * ELEM_SIZE + ygamePanel, SELECT);
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
@@ -130,7 +139,7 @@ function selectElement(element) {
             selectedElement = element;
             selectedElementStartPos.x = element.posX;
             selectedElementStartPos.y = element.posY;
-            selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + xgamePanel, selectedElement.posY * ELEM_SIZE + ygamePanel, SELECT);
+            selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
             selection.width = selectedElement.width;
             selection.height = selectedElement.height;
         }
@@ -172,7 +181,7 @@ function tweenElemPos(elem, newPosX, newPosY, durationMultiplier) {
         durationMultiplier = 1;
     }
     return game.add.tween(elem).to(
-            {x: newPosX * ELEM_SIZE + xgamePanel, y: newPosY * ELEM_SIZE + ygamePanel}, 100 * durationMultiplier,
+            {x: newPosX * ELEM_SIZE + gamePanel.internalX, y: newPosY * ELEM_SIZE + gamePanel.internalY}, 100 * durationMultiplier,
             Phaser.Easing.Linear.None, true);
 }
 
@@ -186,7 +195,7 @@ function swapElemPosition(elem1, elem2) {
 
 function checkAndKillElemMatches(elem) {
     if (elem !== null) {
-//        console.log("Elem = " + elem.key);
+        //        console.log("Elem = " + elem.key);
         var countUp = countSameElemElements(elem, 0, -1);
         var countDown = countSameElemElements(elem, 0, 1);
         var countLeft = countSameElemElements(elem, -1, 0);
@@ -195,7 +204,7 @@ function checkAndKillElemMatches(elem) {
         var countHoriz = countLeft + countRight + 1;
         var countVert = countUp + countDown + 1;
 
-        if (countVert >= MATCH_MIN) {
+        if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             matched = true;
             stillGame = true;
@@ -221,6 +230,11 @@ function checkAndKillElemMatches(elem) {
 function swapNoMatch(elem) {
     if (selectedElemTween !== null) {
         game.tweens.remove(selectedElemTween);
+    }
+    selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
+
+    if (tempShiftedElem !== null) {
+        tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
     }
     selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
     tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
@@ -255,6 +269,7 @@ function killElemRange(fromX, fromY, toX, toY) {
         for (var j = fromY; j <= toY; j++) {
             var elem = getElement(i, j);
             elem.kill();
+            //score_general ++;
         }
     }
 }
@@ -295,7 +310,7 @@ function dropElements() {
 // look for any empty spots on the board and spawn new gems in their place that fall down from above
 function refillBoard() {
     var maxElementsMissingFromCol = 0;
-    var boardRowsAndColumns = (gamePanelHeight - (2 * margin)) / BOARD_ROWS;
+    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
@@ -303,8 +318,9 @@ function refillBoard() {
             if (elem === null) {
                 elementsMissingFromCol++;
                 var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
-                var elem = elements.create(i * ELEM_SIZE + xgamePanel,
+                var elem = elements.create(i * ELEM_SIZE + gamePanel.internalX,
                         -elementsMissingFromCol * ELEM_SIZE, elemNames[rndIndex]);
+                elem.name = elemNames[rndIndex];
                 elem.width = boardRowsAndColumns;
                 elem.height = boardRowsAndColumns;
                 elem.inputEnabled = true;
