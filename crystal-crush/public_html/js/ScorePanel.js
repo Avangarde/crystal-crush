@@ -231,6 +231,8 @@ sendElementToAlchemy: function(element){
     alchemyPanel.receiveElement(element);
     },
 decreaseElement: function(elem_name){
+    return true;
+    /*
         if (elem_name === 'CU') {
             if(this.cu_count > 0){
                 this.cu_count--;
@@ -274,7 +276,7 @@ decreaseElement: function(elem_name){
                 return false;
             }
         }
-    
+    */
     },
 createElement: function(elem_name){
     if(elem_name === 'NACL'){

@@ -9,15 +9,3 @@ padding: 0px;
 
 
 }
-<style> 
-@font-face
-{
-font-family: finalOld;
-src: url(assets/FINALOLD.TTF);
-}
-
-div
-{
-    font-family:finalOld;
-}
-</style>

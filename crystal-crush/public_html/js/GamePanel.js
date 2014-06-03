@@ -27,20 +27,19 @@ GamePanel.prototype = {
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
-        //this.background.anchor.setTo(0.5, 0.5);
-        fillBoard();
         selectedElementStartPos = {x: 0, y: 0};
+        fillBoard();
         allowInput = true;
     },
     update: function() {
         if (animationScreen) {
             animationCamera();
         }
-        if (game.input.mousePointer.isDown) {
+        if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
-                var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
-                var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
+                var cursorGemPosX = getRelativeElementPos(game.input.activePointer.x, true);
+                var cursorGemPosY = getRelativeElementPos(game.input.activePointer.y, false);
 
                 if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
                     if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
@@ -101,7 +100,8 @@ function fillBoard() {
             setElementPosition(element, i, j);
         }
     }
-    //    selectedElement = getElement(0, 0);
+    boardRefilled();
+//    selectedElement = getElement(0, 0);
 }
 
 // select an element and remember its starting position
@@ -112,7 +112,6 @@ function selectElement(element) {
                 if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
                     tempShiftedElem = element;
                     allowInput = false;
-
                     //Swap animation
                     swapElements(selectedElement, tempShiftedElem);
                     //Check game logic
@@ -191,6 +190,7 @@ function swapElemPosition(elem1, elem2) {
 }
 
 function checkAndKillElemMatches(elem) {
+
     if (elem !== null) {
         //        console.log("Elem = " + elem.key);
         var countUp = countSameElemElements(elem, 0, -1);
@@ -202,22 +202,25 @@ function checkAndKillElemMatches(elem) {
         var countVert = countUp + countDown + 1;
 
         if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);            
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.name);
-        } else if (countVert >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            stillGame = true;
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
+        }else if (countHoriz >= MATCH_MIN) {
+            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);            
             matched = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.name);
-        } else if (countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+            stillGame = true;
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
+        }else if (countVert >= MATCH_MIN) {
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);                        
             matched = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.name);
-        } else {
-            //if (countVert < MATCH_MIN && countHoriz < MATCH_MIN) {
+            stillGame = true;
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
+        }
+        else{
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
-                if (!matched) {
+                if (!matched && tempShiftedElem !== null) {
                     game.time.events.add(300, swapNoMatch, this, elem);
                 }
             }
@@ -231,11 +234,10 @@ function swapNoMatch(elem) {
         game.tweens.remove(selectedElemTween);
     }
     selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
-
     if (tempShiftedElem !== null) {
         tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
-    }
-    swapElemPosition(elem, tempShiftedElem);
+        swapElemPosition(elem, tempShiftedElem);
+    }    
 }
 
 // count how many elements of the same color lie in a given direction
@@ -246,11 +248,13 @@ function countSameElemElements(elem, moveX, moveY) {
     var curY = elem.posY + moveY;
     var count = 0;
     while (curX >= 0 && curY >= 0 && curX < BOARD_COLS && curY < BOARD_ROWS
-            && getElement(curX, curY).key === elem.key) {
+            && getElement(curX, curY) !== null &&
+            getElement(curX, curY).key === elem.key) {
         count++;
         curX += moveX;
         curY += moveY;
     }
+
     return count;
 }
 
@@ -331,6 +335,18 @@ function refillBoard() {
 
 // when the board has finished refilling, re-enable player input
 function boardRefilled() {
+    tempShiftedElem = null;    
+    stillGame = false;
+    for (var j = 0; j < BOARD_ROWS; j++) {
+        for (var i = 0; i < BOARD_COLS; i++) {
+            var elem = getElement(i, j);
+            checkAndKillElemMatches(elem);
+        }
+    }
+    removeKilledElems();
+    if (stillGame) {
+        game.time.events.add(300, dropAndRefill);
+    }
     allowInput = true;
-    tempShiftedElem = null;
 }
+
