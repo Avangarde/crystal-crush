@@ -18,7 +18,7 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.heightButton = ELEM_SIZE;
     this.buttonX = this.gridX + this.widthGrid / 2;
     this.buttonY = this.gridY + this.heightGrid + this.heightButton;
-    this.selectedElement;
+    this.elementToCombine;
 };
 
 AlchemyPanel.prototype = {
@@ -40,35 +40,27 @@ AlchemyPanel.prototype = {
         createButton.width = this.widthButton;
         createButton.height = this.heightButton;
         createButton.anchor.setTo(0.5, 0.5);
-        this.alcElements = game.add.group();
+        this.alcElements = this.game.add.group();
     },
     update: function() {
-        
-    },
-receiveElement: function(element_name){
-    // TODO
-    }
-};
-/*
-// find a elem on the board according to its position on the board
-function getElement(posX, posY) {
-    return this.alcElements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
-}
 
+    },
+    receiveElement: function(element_name) {
+        elementToCombine = element_name;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
     },
     // find a elem on the board according to its position on the board
     getElement: function(posX, posY) {
-        return this.alcElements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
+        return alchemyPanel.alcElements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
     },
     // convert world coordinates to board position
     getRelativeElementPos: function(coordinate, axisX) {
         if (axisX) {
-            return Phaser.Math.floor((coordinate - this.gridX + game.camera.x) / ELEM_SIZE);
+            return Phaser.Math.floor((coordinate - alchemyPanel.gridX + game.camera.x) / ELEM_SIZE);
         } else {
-            return Phaser.Math.floor((coordinate - this.gridY) / ELEM_SIZE);
+            return Phaser.Math.floor((coordinate - alchemyPanel.gridY) / ELEM_SIZE);
         }
     },
     setElementPosition: function(elem, posX, posY) {
@@ -77,16 +69,22 @@ function getElement(posX, posY) {
         elem.id = calcElementId(posX, posY);
     },
     addElementToGrid: function() {
-        var cursorPosX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
-        var cursorPosY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
+        var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
+        var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
+        if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
+            if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
+                var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
+                        curY * ELEM_SIZE + alchemyPanel.gridY, elementToCombine);
 
-        if (alchemyPanel.getElement(cursorPosX, cursorPosY) === null) {
-            //console.log("Can place");
+                elem.width = ELEM_SIZE;
+                elem.height = ELEM_SIZE;
+                alchemyPanel.setElementPosition(elem, curX, curY);
+            }
         } else {
             //console.log("Can't place");
         }
     },
-    createCrystal:function () {
+    createCrystal: function() {
         //console.log("create");
     }
 };

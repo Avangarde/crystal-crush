@@ -67,7 +67,6 @@ function getElement(posX, posY) {
 
 // convert world coordinates to board position
 function getRelativeElementPos(coordinate, axisX) {
-    console.log("whaaaaaaa");
     if (axisX) {
         return Phaser.Math.floor((coordinate - gamePanel.internalX) / ELEM_SIZE);
     } else {
