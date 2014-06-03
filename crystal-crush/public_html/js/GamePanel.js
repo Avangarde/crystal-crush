@@ -36,11 +36,11 @@ GamePanel.prototype = {
         if (animationScreen) {
             animationCamera();
         }
-        if (game.input.mousePointer.isDown) {
+        if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
-                var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
-                var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
+                var cursorGemPosX = getRelativeElementPos(game.input.activePointer.x, true);
+                var cursorGemPosY = getRelativeElementPos(game.input.activePointer.y, false);
 
                 if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
                     if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
@@ -68,6 +68,7 @@ function getElement(posX, posY) {
 
 // convert world coordinates to board position
 function getRelativeElementPos(coordinate, axisX) {
+    console.log("whaaaaaaa");
     if (axisX) {
         return Phaser.Math.floor((coordinate - gamePanel.internalX) / ELEM_SIZE);
     } else {

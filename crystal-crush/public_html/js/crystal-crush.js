@@ -24,7 +24,7 @@ function preload() {
 }
 
 function create() {
-    game.world.setBounds(-canvasWidth + scorePanel, 0, canvasWidth * 2, canvasHeight);
+    game.world.setBounds(-canvasWidth + scorePanel, 0, canvasWidth, canvasHeight);
     var background = game.add.sprite(0, 0, 'background');
     background.width = canvasWidth;
     background.height = canvasHeight;
