@@ -28,6 +28,7 @@ GamePanel.prototype = {
         this.background.width = this.width;
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
+        
         fillBoard();
         allowInput = true;
     },
@@ -35,11 +36,11 @@ GamePanel.prototype = {
         if (animationScreen) {
             animationCamera();
         }
-        if (game.input.mousePointer.isDown) {
+        if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
-                var cursorGemPosX = getRelativeElementPos(game.input.mousePointer.x, true);
-                var cursorGemPosY = getRelativeElementPos(game.input.mousePointer.y, false);
+                var cursorGemPosX = getRelativeElementPos(game.input.activePointer.x, true);
+                var cursorGemPosY = getRelativeElementPos(game.input.activePointer.y, false);
 
                 if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
                     if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
@@ -337,6 +338,7 @@ function refillBoard() {
 function boardRefilled() {
     tempShiftedElem = null;    
     stillGame = false;
+    allowInput = false;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
             var elem = getElement(i, j);
