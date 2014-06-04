@@ -1,4 +1,4 @@
-var canvasWidth = window.innerWidth * 10/16 < window.innerHeight ? window.innerWidth : window.innerHeight * 16/10;
+var canvasWidth = window.innerWidth;// * 10/16 < window.innerHeight ? window.innerWidth : window.innerHeight * 16/10;
 var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
 
