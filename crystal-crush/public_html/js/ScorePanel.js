@@ -18,7 +18,6 @@ ScorePanel = function(game, x, y, width, height) {
     this.txt_group = [];
     this.img_group;
 
-    this.animationScreen = false;
     this.inAlchemyPanel = false;
     this.camera;
     this.highScore = 0;
@@ -37,7 +36,7 @@ ScorePanel.prototype = {
     create: function() {
         panelElements = elemNames.concat(powerNames);
         //Camera
-        this.camera = game.add.sprite(canvasWidth / 2,canvasHeight / 2,'camera');
+        this.camera = game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'camera');
         game.camera.follow(this.camera);
         // Background
         this.background = game.add.sprite(this.x, this.y, 'scorePanelBackground');
@@ -137,63 +136,21 @@ ScorePanel.prototype = {
     sendElementToAlchemy: function(element) {
         alchemyPanel.receiveElement(element);
     },
-sendPowerToGame: function(element){
-    gamePanel.receivePower(element);
-},
-decreaseElement: function(elem_name){
-        //TODO
-        return true;
-           /*
-        if (elem_name === 'CU') {
-            if(this.cu_count > 0){
-                this.cu_count--;
+    sendPowerToGame: function(element) {
+        gamePanel.receivePower(element);
+    },
+    decreaseElement: function(elem_id) {
+        if (this.countElems[elem_id] > 0) {
+            this.countElems[elem_id]--;
                 return true;
-            }else{
+        } else {
                 return false;
             }
-        } else if (elem_name === 'ZN') {
-            if(this.zn_count > 0){
-                this.zn_count--;
-                return true;
-            }else{
-                return false;
-            }
-        } else if (elem_name === 'NA') {
-            if(this.na_count > 0){
-                this.na_count--;
-                return true;
-            }else{
-                return false;
-            }
-        } else if (elem_name === 'CL') {
-            if(this.cl_count > 0){
-                this.cl_count--;
-                return true;
-            }else{
-                return false;
-            }
-        } else if (elem_name === 'A') {
-            if(this.a_count > 0){
-                this.a_count--;
-                return true;
-            }else{
-                return false;
-            }
-        } else if (elem_name === 'B') {
-            if(this.b_count > 0){
-                this.b_count--;
-                return true;
-            }else{
-                return false;
-            }
-        }
-    */
     },
     getElement: function(id) {
         return scorePanel.img_group[id];
     },
     actionOnClick: function() {
-        this.animationScreen = true;
         alchemyPanel.elementToAdd = null;
         if (!this.inAlchemyPanel) {
             alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
