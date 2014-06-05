@@ -1,6 +1,3 @@
-var CREATE_BUTTON_WIDTH = 408;
-var CREATE_BUTTON_HEIGHT = 80;
-
 AlchemyPanel = function(game, x, y, width, height) {
 
     this.game = game;
@@ -13,44 +10,44 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.alcElements;
     this.columns = 3;
     this.rows = 3;
-    this.gridWidth = this.columns * ELEM_SIZE;
-    this.gridHeight = this.rows * ELEM_SIZE;
-    this.gridX = this.x + this.width / 2 - this.gridWidth / 2;
+    this.widthGrid = this.columns * ELEM_SIZE;
+    this.heightGrid = this.rows * ELEM_SIZE;
+    this.gridX = this.x + this.width / 2 - this.widthGrid / 2;
     this.gridY = this.y + margin;
-    this.buttonWidth = this.columns * ELEM_SIZE;
-    this.buttonHeight = this.buttonWidth * CREATE_BUTTON_HEIGHT / CREATE_BUTTON_WIDTH;
-    this.buttonX = this.gridX + this.gridWidth / 2;
-    this.buttonY = this.gridY + this.gridHeight + this.buttonHeight;
-    this.elementToCombine;
+    this.widthButton = 2 * ELEM_SIZE;
+    this.heightButton = ELEM_SIZE;
+    this.buttonX = this.gridX + this.widthGrid / 2;
+    this.buttonY = this.gridY + this.heightGrid + this.heightButton;
+    this.elementToAdd;
 };
 
 AlchemyPanel.prototype = {
     preload: function() {
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
-        this.game.load.image('grid', 'assets/sprites/Grille2.png');
-        this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', 394, 80);
+        this.game.load.image('grid', 'assets/sprites/Grille_2.png');
+        this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', 193, 71);
     },
     create: function() {
         this.background = game.add.sprite(this.x, this.y, 'alchemyPanel');
         this.background.width = this.width;
         this.background.height = this.height;
         this.grid = game.add.sprite(this.gridX, this.gridY, 'grid');
-        this.grid.width = this.gridWidth;
-        this.grid.height = this.gridHeight;
+        this.grid.width = this.widthGrid;
+        this.grid.height = this.heightGrid;
         this.grid.inputEnabled = true;
         this.grid.events.onInputDown.add(this.addElementToGrid);
         var createButton = game.add.button(this.buttonX, this.buttonY, 'createButton2', this.createCrystal, this, 2, 1, 0);
-        createButton.width = this.buttonWidth;
-        createButton.height = this.buttonHeight;
+        createButton.width = this.widthButton;
+        createButton.height = this.heightButton;
         createButton.anchor.setTo(0.5, 0.5);
         this.alcElements = this.game.add.group();
-        this.elementToCombine;
+        this.elementToAdd;
     },
     update: function() {
 
     },
-    receiveElement: function(element_name) {
-        this.elementToCombine = element_name;
+    receiveElement: function(element) {
+        this.elementToAdd = element;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
@@ -75,10 +72,10 @@ AlchemyPanel.prototype = {
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
-        if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
-            if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
+        if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
+            if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.key)) {
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
-                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToCombine);
+                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
 
                 elem.width = ELEM_SIZE;
                 elem.height = ELEM_SIZE;
