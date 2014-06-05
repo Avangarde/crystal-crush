@@ -143,6 +143,51 @@ sendPowerToGame: function(element){
 decreaseElement: function(elem_name){
         //TODO
         return true;
+           /*
+        if (elem_name === 'CU') {
+            if(this.cu_count > 0){
+                this.cu_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'ZN') {
+            if(this.zn_count > 0){
+                this.zn_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'NA') {
+            if(this.na_count > 0){
+                this.na_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'CL') {
+            if(this.cl_count > 0){
+                this.cl_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'A') {
+            if(this.a_count > 0){
+                this.a_count--;
+                return true;
+            }else{
+                return false;
+            }
+        } else if (elem_name === 'B') {
+            if(this.b_count > 0){
+                this.b_count--;
+                return true;
+            }else{
+                return false;
+            }
+        }
+    */
     },
     getElement: function(id) {
         return scorePanel.img_group[id];
