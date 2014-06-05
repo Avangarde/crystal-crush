@@ -1,5 +1,5 @@
 var canvasWidth = window.innerWidth;
-var canvasHeight = window.innerHeight;
+var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
 
 var xScorePanel = margin;
