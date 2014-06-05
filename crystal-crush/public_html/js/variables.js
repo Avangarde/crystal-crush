@@ -42,6 +42,7 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 var stillGame;
+var numMoves=5;
 
 var tipoFuente = "20px Candela";
 var style1 = { font: "20px Arial", fill: "#ffffff", align: "center" };
