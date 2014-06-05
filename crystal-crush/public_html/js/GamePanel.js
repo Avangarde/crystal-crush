@@ -32,6 +32,7 @@ GamePanel.prototype = {
         allowInput = true;
     },
     update: function() {
+        
         if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
@@ -52,10 +53,92 @@ GamePanel.prototype = {
                 }
             }
         }
+    },
+    //we receive the power element from the score panel
+    receivePower: function(element){
+        for(var i = 0; i < BOARD_ROWS; i++){
+            for(var j = 0; j < BOARD_COLS; j++){
+                var elem = getElement(i,j);
+                elem.events.onInputDown.remove(selectElement);
+                if(element.name === "PowerA"){
+                    elem.events.onInputDown.add(PowerA);
+                }
+                else if(element.name === "PowerB"){
+                    elem.events.onInputDown.add(PowerB);
+                }
+                else if(element.name === "PowerC"){
+                    elem.events.onInputDown.add(PowerC);
+                }
+            }
+        }
+    
     }
 };
 
+//Power A
+function PowerA(element){
+    allowInput = false;
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            var elem = getElement(i,j);
+            elem.events.onInputDown.remove(PowerA);
+            elem.events.onInputDown.add(selectElement);
+        }
+    }
+    var rowElem = element.posY;
+    for(var i = 0; i < BOARD_COLS; i++){
+        var elem = getElement(i , rowElem);
+        elem.kill();        
+    }
+    removeKilledElems();
+    game.time.events.add(300, dropAndRefill);
+    
+}
 
+//Power B
+function PowerB(element){
+    allowInput = false;
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            var elem = getElement(i,j);
+            elem.events.onInputDown.remove(PowerB);
+            elem.events.onInputDown.add(selectElement);
+        }
+    }
+    var colElem = element.posX;
+    for(var i = 0; i < BOARD_ROWS; i++){
+        var elem = getElement(colElem , i);
+        elem.kill();        
+    }
+    removeKilledElems();
+    game.time.events.add(300, dropAndRefill);
+    
+}
+
+//Power C
+function PowerC(element){
+    allowInput = false;
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            var elem = getElement(i,j);
+            elem.events.onInputDown.remove(PowerC);
+            elem.events.onInputDown.add(selectElement);
+        }
+    }
+    var rowElem = element.posY;    
+    for(var i = 0; i < BOARD_COLS; i++){
+        var elem = getElement(i , rowElem);
+        elem.kill();        
+    }
+    var colElem = element.posX;
+    for(var i = 0; i < BOARD_ROWS; i++){
+        var elem = getElement(colElem , i);
+        elem.kill();        
+    }
+    removeKilledElems();
+    game.time.events.add(300, dropAndRefill);
+    
+}
 
 // find a elem on the board according to its position on the board
 function getElement(posX, posY) {
@@ -93,6 +176,7 @@ function fillBoard() {
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
+            
             element.events.onInputDown.add(selectElement);
             setElementPosition(element, i, j);
         }
@@ -199,23 +283,23 @@ function checkAndKillElemMatches(elem) {
         var countVert = countUp + countDown + 1;
 
         if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);            
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
-        } else if (countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
+        }else if (countHoriz >= MATCH_MIN) {
+            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);            
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
-        } else if (countVert >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
+        }else if (countVert >= MATCH_MIN) {
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);                        
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            scorePanel.addMatch(countHoriz,countVert,elem.key);
         }
-        else {
+        else{
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched && tempShiftedElem !== null) {
                     game.time.events.add(300, swapNoMatch, this, elem);
@@ -332,7 +416,7 @@ function refillBoard() {
 
 // when the board has finished refilling, re-enable player input
 function boardRefilled() {
-    tempShiftedElem = null;
+    tempShiftedElem = null;    
     stillGame = false;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
