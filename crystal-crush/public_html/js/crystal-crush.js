@@ -11,9 +11,9 @@ var BUTTONWIDTH = 193;
 var BUTTONHEIGHT = 71;
 
 function preload() {
-    
+
     game.load.image('background', 'assets/background.png');
-    
+
     gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
     scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel);
     alchemyPanel = new AlchemyPanel(game, xAlchemyPanel, yAlchemyPanel, widthAlchemyPanel, heightAlchemyPanel);
@@ -24,11 +24,11 @@ function preload() {
 }
 
 function create() {
-    game.world.setBounds(-canvasWidth + scorePanel, 0, 2*canvasWidth - scorePanel, canvasHeight);
+    game.world.setBounds(-canvasWidth + scorePanel, 0, 2 * canvasWidth - scorePanel, canvasHeight);
     var background = game.add.sprite(-canvasWidth + scorePanel.width, 0, 'background');
-    background.width = canvasWidth*2 - scorePanel.width;
+    background.width = canvasWidth * 2 - scorePanel.width;
     background.height = canvasHeight;
-    
+
     gamePanel.create();
     scorePanel.create();
     alchemyPanel.create();
