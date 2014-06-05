@@ -46,8 +46,8 @@ AlchemyPanel.prototype = {
     update: function() {
 
     },
-    receiveElement: function(element_name) {
-        this.elementToAdd = element_name;
+    receiveElement: function(element) {
+        this.elementToAdd = element;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
@@ -72,10 +72,10 @@ AlchemyPanel.prototype = {
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
-        if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
-            if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
+        if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
+            if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.key)) {
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
-                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToCombine);
+                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
 
                 elem.width = ELEM_SIZE;
                 elem.height = ELEM_SIZE;

@@ -35,8 +35,9 @@ function create() {
     background.height = canvasHeight;
     
     gamePanel.create();
-    scorePanel.create();
     alchemyPanel.create();
+    scorePanel.create();
+    
     
     var t = game.cache.getText('crystals');
     crystals = t.split('\n');
