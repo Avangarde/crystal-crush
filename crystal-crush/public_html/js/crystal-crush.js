@@ -10,6 +10,8 @@ var alchemyPanel = null;
 var BUTTONWIDTH = 193;
 var BUTTONHEIGHT = 71;
 
+var crystals;
+
 function preload() {
     
     game.load.image('background', 'assets/background.png');
@@ -21,6 +23,9 @@ function preload() {
     gamePanel.preload();
     scorePanel.preload();
     alchemyPanel.preload();
+    
+    game.load.text('crystals', 'files/crystals.txt');
+    
 }
 
 function create() {
@@ -30,8 +35,12 @@ function create() {
     background.height = canvasHeight;
     
     gamePanel.create();
-    scorePanel.create();
     alchemyPanel.create();
+    scorePanel.create();
+    
+    
+    var t = game.cache.getText('crystals');
+    crystals = t.split('\n');
 
 }
 
@@ -43,26 +52,4 @@ function update() {
 
 function render() {
 //    game.debug.cameraInfo(game.camera, 32, 32);
-}
-
-function actionOnClick() {
-    animationScreen = true;
-}
-
-function animationCamera() {
-    if (!inAlchemyPanel) {
-        if (game.camera.x >= -canvasWidth + scorePanel.width + 2 * margin)
-            game.camera.x -= margin;
-        else {
-            animationScreen = false;
-            inAlchemyPanel = true;
-        }
-    } else {
-        if (game.camera.x < 0)
-            game.camera.x += margin;
-        else {
-            animationScreen = false;
-            inAlchemyPanel = false;
-        }
-    }
 }

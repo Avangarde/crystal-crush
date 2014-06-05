@@ -32,9 +32,6 @@ GamePanel.prototype = {
         allowInput = true;
     },
     update: function() {
-        if (animationScreen) {
-            animationCamera();
-        }
         if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
@@ -202,23 +199,23 @@ function checkAndKillElemMatches(elem) {
         var countVert = countUp + countDown + 1;
 
         if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);            
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz,countVert,elem.key);
-        }else if (countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);            
+            scorePanel.addMatch(countHoriz, countVert, elem.key);
+        } else if (countHoriz >= MATCH_MIN) {
+            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz,countVert,elem.key);
-        }else if (countVert >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);                        
+            scorePanel.addMatch(countHoriz, countVert, elem.key);
+        } else if (countVert >= MATCH_MIN) {
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz,countVert,elem.key);
+            scorePanel.addMatch(countHoriz, countVert, elem.key);
         }
-        else{
+        else {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched && tempShiftedElem !== null) {
                     game.time.events.add(300, swapNoMatch, this, elem);
@@ -335,7 +332,7 @@ function refillBoard() {
 
 // when the board has finished refilling, re-enable player input
 function boardRefilled() {
-    tempShiftedElem = null;    
+    tempShiftedElem = null;
     stillGame = false;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {

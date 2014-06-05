@@ -11,44 +11,15 @@ ScorePanel = function(game, x, y, width, height) {
     this.background;
 
     this.score_general = 0;
+    this.countElems = [];
+
     this.score_txt;
-
-    /////////////////
-    //// LEVEL 1 ////
-    /////////////////
-    this.cu_count = 0;
-    this.zn_count = 0;
-    this.na_count = 0;
-    this.cl_count = 0;
-    this.a_count = 0;
-    this.b_count = 0;
-
-    this.cu_txt;
-    this.zn_txt;
-    this.na_txt;
-    this.cl_txt;
-    this.a_txt;
-    this.b_txt;
-
+    this.txt_group = [];
     this.img_group;
 
-    this.cu_img;
-    this.zn_img;
-    this.na_img;
-    this.cl_img;
-    this.a_img;
-    this.b_img;
-
-    /////////////////
-    //// LEVEL 2 ////
-    /////////////////
-
-    this.cuzn_count = 0;
-
-    this.cuzn_txt;
-
-    this.cuzn_img;
-
+    this.animationScreen = false;
+    this.inAlchemyPanel = false;
+    this.camera;
 };
 
 ScorePanel.prototype = {
@@ -56,9 +27,12 @@ ScorePanel.prototype = {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
         game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
-        this.game.load.image(CUZN, 'assets/sprites/CuZn.png');
+        game.load.image('camera', 'assets/camera.png');
     },
     create: function() {
+        //Camera
+        this.camera = game.add.sprite(canvasWidth/2, canvasHeight/2, 'camera');
+        game.camera.follow(this.camera);
         // Background
         this.background = game.add.sprite(this.x, this.y, 'scorePanelBackground');
         this.background.width = this.width;
@@ -66,7 +40,7 @@ ScorePanel.prototype = {
 
         var buttonWidth = scorePanel.width - 2 * margin;
         var buttonHeight = buttonWidth * BUTTONHEIGHT / BUTTONWIDTH;
-        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createButton', actionOnClick, this, 2, 1, 0);
+        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createButton', this.actionOnClick, this, 2, 1, 0);
         buttonGame.height = buttonHeight;
         buttonGame.width = buttonWidth;
 
@@ -77,8 +51,8 @@ ScorePanel.prototype = {
         this.scoreLabel.height = this.scoreLabel.height /tmp * this.scoreLabel.width;
 
 
-        //Score_txt
-        this.score_txt = game.add.text(this.x + this.width *0.4, this.y + 2.5 * margin, this.score_general, style1);
+        //Score
+        this.score_txt = game.add.text(this.x + this.width *0.4, this.y + 2 * margin, ''+this.score_general, style1);
         var tmp = this.score_txt.height;
         this.score_txt.height = this.scoreLabel.height - 2*margin;
         this.score_txt.width  = this.score_txt.width /tmp * this.score_txt.height;
@@ -86,133 +60,55 @@ ScorePanel.prototype = {
         
         //Elems_img
         var img_size = this.width * 0.20;
+
         var X1 = this.x + this.width*0.15;
         var X2 = this.x + this.width*0.55;
         var inter_img = this.width*0.2;
         var startY = this.y + this.scoreLabel.height + margin;// + inter_img;
+
         this.img_group = game.add.group();
-
-        this.cu_img = this.img_group.create(X1, startY, CU);
-        this.cu_img.width = img_size;
-        this.cu_img.height = img_size;
-        this.cu_img.name = CU;
-        this.cu_img.inputEnabled = true;
-        this.cu_img.events.onInputDown.add(this.sendElementToAlchemy);
-
-        this.zn_img = this.img_group.create(X2, startY, ZN);
-        this.zn_img.width = img_size;
-        this.zn_img.height = img_size;
-        this.zn_img.name = ZN;
-        this.zn_img.inputEnabled = true;
-        this.zn_img.events.onInputDown.add(this.sendElementToAlchemy);
-
-        this.na_img = this.img_group.create(X1, startY+inter_img, NA);
-        this.na_img.width = img_size;
-        this.na_img.height = img_size;
-        this.na_img.name = NA;
-        this.na_img.inputEnabled = true;
-        this.na_img.events.onInputDown.add(this.sendElementToAlchemy);
-
-        this.cl_img = this.img_group.create(X2, startY+inter_img, CL);
-        this.cl_img.width = img_size;
-        this.cl_img.height = img_size;
-        this.cl_img.name = CL;
-        this.cl_img.inputEnabled = true;
-        this.cl_img.events.onInputDown.add(this.sendElementToAlchemy);
-
-        this.a_img = this.img_group.create(X1, startY + 2 * inter_img, A);
-        this.a_img.width = img_size;
-        this.a_img.height = img_size;
-        this.a_img.name = A;
-        this.a_img.inputEnabled = true;
-        this.a_img.events.onInputDown.add(this.sendElementToAlchemy);
-
-        this.b_img = this.img_group.create(X2, startY + 2 * inter_img, B);
-        this.b_img.width = img_size;
-        this.b_img.height = img_size;
-        this.b_img.name = B;
-        this.b_img.inputEnabled = true;
-        this.b_img.events.onInputDown.add(this.sendElementToAlchemy);
-
-
-        //Elems_txt
-        this.cu_txt = game.add.text(X1+img_size , startY + img_size/2, '' + this.cu_count, style1);
-        var tmp = this.cu_txt.height;
-        this.cu_txt.height = img_size/2;
-        this.cu_txt.width = this.cu_txt.width /tmp * this.cu_txt.height;
-
-        this.zn_txt = game.add.text(X2+img_size , startY + img_size/2, '' + this.zn_count, style1);
-        var tmp = this.zn_txt.height;
-        this.zn_txt.height = img_size/2;
-        this.zn_txt.width = this.zn_txt.width /tmp * this.zn_txt.height;
-
-        this.na_txt = game.add.text(X1+img_size , startY + inter_img + img_size/2, '' + this.na_count, style1);
-        var tmp = this.na_txt.height;
-        this.na_txt.height = img_size/2;
-        this.na_txt.width = this.na_txt.width /tmp * this.na_txt.height;
-
-        this.cl_txt = game.add.text(X2+img_size , startY + inter_img + img_size/2, '' + this.cl_count, style1);
-        var tmp = this.cl_txt.height;
-        this.cl_txt.height = img_size/2;
-        this.cl_txt.width = this.cl_txt.width /tmp * this.cl_txt.height;
-
-        this.a_txt = game.add.text(X1+img_size , startY + 2 * inter_img + img_size/2, '' + this.a_count, style1);
-        var tmp = this.a_txt.height;
-        this.a_txt.height = img_size/2;
-        this.a_txt.width = this.a_txt.width /tmp * this.a_txt.height;
-
-        this.b_txt = game.add.text(X2+img_size , startY + 2 * inter_img + img_size/2, '' + this.b_count, style1);
-        var tmp = this.b_txt.height;
-        this.b_txt.height = img_size/2;
-        this.b_txt.width = this.b_txt.width /tmp * this.b_txt.height;
-
-
-        // Separator
-        var separator = game.add.sprite(this.x + margin, this.y + this.height * 0.37, 'scoreLabel');
-        separator.width  = this.width - 2 * margin;
-        separator.height = this.height * 0.01;
-
-        // Elems lvl2
-
-        this.cuzn_img = this.img_group.create(this.x + (this.width - img_size)/2, this.y + this.height * 0.41, A);
-        this.cuzn_img.width = img_size;
-        this.cuzn_img.height = img_size;
-        this.cuzn_img.name = CUZN;
-        this.cuzn_img.inputEnabled = true;
-        this.cuzn_img.events.onInputDown.add(this.sendElementToAlchemy);
         
+        for (var i = 0; i < elemNames.length; i++) {
+            if (i % 2 === 0) {
+                var elem = this.img_group.create(X1, startY + inter_img*(i/2), elemNames[i]);
+            } else {
+                var elem = this.img_group.create(X2, startY + inter_img*((i-1)/2), elemNames[i]);
+            }
+            elem.width = img_size;
+            elem.height = img_size;
+            elem.name = elemNames[i];
+            elem.id = i;
+            elem.inputEnabled = true;
+            elem.events.onInputDown.add(this.sendElementToAlchemy);
+            elem.inputEnabled = true;
+            elem.input.enableDrag(false, true);
+        }
 
-        var X1 = this.x+(this.width + img_size)/2;
-        var Y1 = this.y + this.height * 0.41;
-        this.cuzn_txt = game.add.text(X1 , Y1 , '' + this.cuzn_count, style1);
-        var tmp = this.cuzn_txt.height;
-        this.cuzn_txt.height = img_size/2;
-        this.cuzn_txt.width = this.cuzn_txt.width /tmp * this.cuzn_txt.height;
+        //Elems_count
+        for (var i = 0; i < elemNames.length; i++) {
+            this.countElems[i] = 0;
+            if (i % 2 === 0) {
+                var txt = this.game.add.text(X1+img_size , startY + img_size/2 + inter_img*(i/2), '' + this.countElems[i], style1);
+            } else {
+                var txt = this.game.add.text(X2+img_size , startY + img_size/2 + inter_img*((i-1)/2), '' + this.countElems[i+1], style1);
+            }
+            var tmp = txt.height;
+            txt.height = img_size / 2;
+            txt.width = txt.width / tmp * txt.height;
+            this.txt_group[i] = txt;
+            this.countElems[i+1] = 0;
+        }
+
     },
     update: function() {
         this.score_txt.text = this.score_general;
-        this.cu_txt.text    = this.cu_count;
-        this.zn_txt.text    = this.zn_count;
-        this.na_txt.text    = this.na_count;
-        this.cl_txt.text    = this.cl_count;
-        this.a_txt.text     = this.a_count;
-        this.b_txt.text     = this.b_count;
-        this.cuzn_txt.text  = this.cuzn_count;
+        for (var i = 0; i < elemNames.length; i++) {
+            this.txt_group[i].text = this.countElems[i];
+        }
     },
     addMatch2: function(elem_name, count) {
-        if (elem_name === 'CU') {
-            this.cu_count = this.cu_count + count;
-        } else if (elem_name === 'ZN') {
-            this.zn_count = this.zn_count + count;
-        } else if (elem_name === 'NA') {
-            this.na_count = this.na_count + count;
-        } else if (elem_name === 'CL') {
-            this.cl_count = this.cl_count + count;
-        } else if (elem_name === 'A') {
-            this.a_count = this.a_count + count;
-        } else if (elem_name === 'B') {
-            this.b_count = this.b_count + count;
-        }
+        var idx = elemNames.indexOf(elem_name);
+        this.countElems[idx] += count;
     },
     addMatch: function(countHoriz, countVert, elem_name) {
         if (countHoriz < MATCH_MIN) {
@@ -228,11 +124,12 @@ ScorePanel.prototype = {
     },
 
 
-sendElementToAlchemy: function(element){
-    alchemyPanel.receiveElement(element.key);
+    sendElementToAlchemy: function(element) {
+        alchemyPanel.receiveElement(element);
     },
-decreaseElement: function(elem_name){
-    return true;
+    decreaseElement: function(elem_name) {
+        //TODO
+        return true;
     /*
         if (elem_name === 'CU') {
             if(this.cu_count > 0){
@@ -279,9 +176,18 @@ decreaseElement: function(elem_name){
         }
     */
     },
-createElement: function(elem_name){
-    if(elem_name === 'CUZN'){
-        cuzn_count++;
+    getElement: function(id) {
+        return scorePanel.img_group[id];
+    },
+    actionOnClick: function() {
+        this.animationScreen = true;
+        alchemyPanel.elementToAdd = null;
+        if (!this.inAlchemyPanel) {
+            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
+            this.inAlchemyPanel = true;
+        } else {
+            alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
+            this.inAlchemyPanel = false;
+        }
     }
-}
 };

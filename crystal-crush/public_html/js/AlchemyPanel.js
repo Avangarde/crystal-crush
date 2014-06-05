@@ -8,8 +8,8 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.background;
     this.grid;
     this.alcElements;
-    this.columns = 4;
-    this.rows = 4;
+    this.columns = 3;
+    this.rows = 3;
     this.widthGrid = this.columns * ELEM_SIZE;
     this.heightGrid = this.rows * ELEM_SIZE;
     this.gridX = this.x + this.width / 2 - this.widthGrid / 2;
@@ -18,13 +18,13 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.heightButton = ELEM_SIZE;
     this.buttonX = this.gridX + this.widthGrid / 2;
     this.buttonY = this.gridY + this.heightGrid + this.heightButton;
-    this.elementToCombine;
+    this.elementToAdd;
 };
 
 AlchemyPanel.prototype = {
     preload: function() {
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
-        this.game.load.image('grid', 'assets/sprites/Grille2.png');
+        this.game.load.image('grid', 'assets/sprites/Grille_2.png');
         this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', 193, 71);
     },
     create: function() {
@@ -41,13 +41,26 @@ AlchemyPanel.prototype = {
         createButton.height = this.heightButton;
         createButton.anchor.setTo(0.5, 0.5);
         this.alcElements = this.game.add.group();
-        this.elementToCombine;
+        this.elementToAdd;
     },
     update: function() {
-
+        if (game.input.activePointer.justReleased()) {
+            if (this.elementToAdd !== null && typeof this.elementToAdd !== 'undefined') {
+                if (this.elementToAdd.x !== this.elementToAdd.startX || this.elementToAdd.y !== this.elementToAdd.startY) {
+                    if (this.elementToAdd.x >= this.gridX && this.elementToAdd.x <= this.gridX + this.widthGrid
+                            && this.elementToAdd.y >= this.gridY && this.elementToAdd.y <= this.gridY + this.heightGrid ) {
+                        this.addElementToGrid();
+                    }
+                    this.tweenElemPos(this.elementToAdd, this.elementToAdd.startX, this.elementToAdd.startY,
+                            Phaser.Math.distance(this.elementToAdd.startX, this.elementToAdd.startY, this.elementToAdd.x, this.elementToAdd.y)/canvasWidth);
+                }
+            }
+        }
     },
-    receiveElement: function(element_name) {
-        this.elementToCombine = element_name;
+    receiveElement: function(element) {
+        this.elementToAdd = element;
+        this.elementToAdd.startX = element.x;
+        this.elementToAdd.startY = element.y;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
@@ -72,19 +85,19 @@ AlchemyPanel.prototype = {
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
-        console.log("("+curX+','+curY+")");
-        if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
-            if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
-                console.log(alchemyPanel.elementToCombine);
+        if (curX < this.columns && curY < this.rows) {
+        if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
+            if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.key)) {
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
-                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToCombine);
+                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
 
                 elem.width = ELEM_SIZE;
                 elem.height = ELEM_SIZE;
                 alchemyPanel.setElementPosition(elem, curX, curY);
-            }
         } else {
-            //console.log("Can't place");
+                    alchemyPanel.elementToAdd = null;
+        }
+            } 
         }
     },
     createCrystal: function() {
@@ -114,6 +127,13 @@ AlchemyPanel.prototype = {
                 alchemyPanel.setElementPosition(element, -1, -1);
             }
         });
+    },
+    tweenElemPos: function(elem, newPosX, newPosY, durationMultiplier) {
+        if (durationMultiplier === null) {
+            durationMultiplier = 1;
+    }
+        return game.add.tween(elem).to(
+                {x: newPosX, y: newPosY}, 100 * durationMultiplier, Phaser.Easing.Linear.None, true);
     }
 };
 
