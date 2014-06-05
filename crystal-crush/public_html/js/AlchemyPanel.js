@@ -8,8 +8,8 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.background;
     this.grid;
     this.alcElements;
-    this.columns = 4;
-    this.rows = 4;
+    this.columns = 3;
+    this.rows = 3;
     this.widthGrid = this.columns * ELEM_SIZE;
     this.heightGrid = this.rows * ELEM_SIZE;
     this.gridX = this.x + this.width / 2 - this.widthGrid / 2;
