@@ -1,5 +1,6 @@
-var BUTTONWIDTH = 193;
-var BUTTONHEIGHT = 71;
+var BUTTONWIDTH = 408;
+var BUTTONHEIGHT = 80;
+var buttonGame;
 
 ScorePanel = function(game, x, y, width, height) {
 
@@ -40,7 +41,7 @@ ScorePanel = function(game, x, y, width, height) {
 ScorePanel.prototype = {
     preload: function() {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
-        game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+        game.load.spritesheet('createElement', 'assets/buttons/button_create_element.png', BUTTONWIDTH, BUTTONHEIGHT);
         game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
     },
     create: function() {
@@ -51,7 +52,7 @@ ScorePanel.prototype = {
 
         var buttonWidth = scorePanel.width - 2 * margin;
         var buttonHeight = buttonWidth * BUTTONHEIGHT / BUTTONWIDTH;
-        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createButton', actionOnClick, this, 2, 1, 0);
+        buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createElement', actionOnClick, this, 2, 1, 0);
         buttonGame.height = buttonHeight;
         buttonGame.width = buttonWidth;
 
@@ -59,22 +60,22 @@ ScorePanel.prototype = {
         this.scoreLabel = game.add.sprite(this.x + margin, this.y + margin, 'scoreLabel');
         var tmp = this.scoreLabel.width;
         this.scoreLabel.width = this.width - 2 * margin;
-        this.scoreLabel.height = this.scoreLabel.height /tmp * this.scoreLabel.width;
+        this.scoreLabel.height = this.scoreLabel.height / tmp * this.scoreLabel.width;
 
 
         //Score
-        this.score_txt = game.add.text(this.x + this.width *0.4, this.y + 2 * margin, ''+this.score_general, style1);
+        this.score_txt = game.add.text(this.x + this.width * 0.4, this.y + 2 * margin, '' + this.score_general, style1);
         var tmp = this.score_txt.height;
-        this.score_txt.height = this.scoreLabel.height - 2*margin;
-        this.score_txt.width  = this.score_txt.width /tmp * this.score_txt.height;
+        this.score_txt.height = this.scoreLabel.height - 2 * margin;
+        this.score_txt.width = this.score_txt.width / tmp * this.score_txt.height;
 
-        
+
         //Elems_img
         var img_size = this.width * 0.20;
 
-        var X1 = this.x + this.width*0.15;
-        var X2 = this.x + this.width*0.55;
-        var inter_img = this.width*0.2;
+        var X1 = this.x + this.width * 0.15;
+        var X2 = this.x + this.width * 0.55;
+        var inter_img = this.width * 0.2;
         var startY = this.y + this.scoreLabel.height + margin;// + inter_img;
 
         this.img_group = game.add.group();
@@ -93,14 +94,14 @@ ScorePanel.prototype = {
         this.zn_img.inputEnabled = true;
         this.zn_img.events.onInputDown.add(this.sendElementToAlchemy);
 
-        this.na_img = this.img_group.create(X1, startY+inter_img, NA);
+        this.na_img = this.img_group.create(X1, startY + inter_img, NA);
         this.na_img.width = img_size;
         this.na_img.height = img_size;
         this.na_img.name = NA;
         this.na_img.inputEnabled = true;
         this.na_img.events.onInputDown.add(this.sendElementToAlchemy);
 
-        this.cl_img = this.img_group.create(X2, startY+inter_img, CL);
+        this.cl_img = this.img_group.create(X2, startY + inter_img, CL);
         this.cl_img.width = img_size;
         this.cl_img.height = img_size;
         this.cl_img.name = CL;
@@ -123,45 +124,46 @@ ScorePanel.prototype = {
 
 
         //Elems_count
-        this.cu_txt = game.add.text(X1+img_size , startY + img_size/2, '' + this.cu_count, style1);
+        this.cu_txt = game.add.text(X1 + img_size, startY + img_size / 2, '' + this.cu_count, style1);
         var tmp = this.cu_txt.height;
-        this.cu_txt.height = img_size/2;
-        this.cu_txt.width = this.cu_txt.width /tmp * this.cu_txt.height;
+        this.cu_txt.height = img_size / 2;
+        this.cu_txt.width = this.cu_txt.width / tmp * this.cu_txt.height;
 
-        this.zn_txt = game.add.text(X2+img_size , startY + img_size/2, '' + this.zn_count, style1);
+        this.zn_txt = game.add.text(X2 + img_size, startY + img_size / 2, '' + this.zn_count, style1);
         var tmp = this.zn_txt.height;
-        this.zn_txt.height = img_size/2;
-        this.zn_txt.width = this.zn_txt.width /tmp * this.zn_txt.height;
+        this.zn_txt.height = img_size / 2;
+        this.zn_txt.width = this.zn_txt.width / tmp * this.zn_txt.height;
 
-        this.na_txt = game.add.text(X1+img_size , startY + inter_img + img_size/2, '' + this.na_count, style1);
+        this.na_txt = game.add.text(X1 + img_size, startY + inter_img + img_size / 2, '' + this.na_count, style1);
         var tmp = this.na_txt.height;
-        this.na_txt.height = img_size/2;
-        this.na_txt.width = this.na_txt.width /tmp * this.na_txt.height;
+        this.na_txt.height = img_size / 2;
+        this.na_txt.width = this.na_txt.width / tmp * this.na_txt.height;
 
-        this.cl_txt = game.add.text(X2+img_size , startY + inter_img + img_size/2, '' + this.cl_count, style1);
+        this.cl_txt = game.add.text(X2 + img_size, startY + inter_img + img_size / 2, '' + this.cl_count, style1);
         var tmp = this.cl_txt.height;
-        this.cl_txt.height = img_size/2;
-        this.cl_txt.width = this.cl_txt.width /tmp * this.cl_txt.height;
+        this.cl_txt.height = img_size / 2;
+        this.cl_txt.width = this.cl_txt.width / tmp * this.cl_txt.height;
 
-        this.a_txt = game.add.text(X1+img_size , startY + 2 * inter_img + img_size/2, '' + this.a_count, style1);
+        this.a_txt = game.add.text(X1 + img_size, startY + 2 * inter_img + img_size / 2, '' + this.a_count, style1);
         var tmp = this.a_txt.height;
-        this.a_txt.height = img_size/2;
-        this.a_txt.width = this.a_txt.width /tmp * this.a_txt.height;
+        this.a_txt.height = img_size / 2;
+        this.a_txt.width = this.a_txt.width / tmp * this.a_txt.height;
 
-        this.b_txt = game.add.text(X2+img_size , startY + 2 * inter_img + img_size/2, '' + this.b_count, style1);
+        this.b_txt = game.add.text(X2 + img_size, startY + 2 * inter_img + img_size / 2, '' + this.b_count, style1);
         var tmp = this.b_txt.height;
-        this.b_txt.height = img_size/2;
-        this.b_txt.width = this.b_txt.width /tmp * this.b_txt.height;
+        this.b_txt.height = img_size / 2;
+        this.b_txt.width = this.b_txt.width / tmp * this.b_txt.height;
 
     },
     update: function() {
         this.score_txt.text = this.score_general;
-        this.cu_txt.text    = this.cu_count;
-        this.zn_txt.text    = this.zn_count;
-        this.na_txt.text    = this.na_count;
-        this.cl_txt.text    = this.cl_count;
-        this.a_txt.text     = this.a_count;
-        this.b_txt.text     = this.b_count;
+        this.cu_txt.text = this.cu_count;
+        this.zn_txt.text = this.zn_count;
+        this.na_txt.text = this.na_count;
+        this.cl_txt.text = this.cl_count;
+        this.a_txt.text = this.a_count;
+        this.b_txt.text = this.b_count;
+        this.setButtonFrame();
     },
     addMatch2: function(elem_name, count) {
         if (elem_name === 'CU') {
@@ -190,13 +192,18 @@ ScorePanel.prototype = {
             this.addMatch2(elem_name, 1);
         }
     },
-
-
-sendElementToAlchemy: function(element){
-    alchemyPanel.receiveElement(element.name);
+    sendElementToAlchemy: function(element) {
+        alchemyPanel.receiveElement(element.name);
     },
-decreaseElement: function(elem_name){
-    //TODO
-    return true;
+    decreaseElement: function(elem_name) {
+        //TODO
+        return true;
+    },
+    setButtonFrame: function() {
+        if (inAlchemyPanel) {
+            buttonGame.setFrames(0,0,0,0);
+        } else {
+            buttonGame.setFrames(2,1,1,1);
+        }
     }
 };
