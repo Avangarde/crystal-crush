@@ -71,7 +71,6 @@ ScorePanel.prototype = {
         
         //Elems_img
         var img_size = this.width * 0.20;
-
         var X1 = this.x + this.width*0.15;
         var X2 = this.x + this.width*0.55;
         var inter_img = this.width*0.2;
