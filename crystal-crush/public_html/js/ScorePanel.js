@@ -229,7 +229,7 @@ ScorePanel.prototype = {
 
 
 sendElementToAlchemy: function(element){
-    alchemyPanel.receiveElement(element);
+    alchemyPanel.receiveElement(element.key);
     },
 decreaseElement: function(elem_name){
     return true;

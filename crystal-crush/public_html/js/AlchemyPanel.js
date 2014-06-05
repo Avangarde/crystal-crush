@@ -75,6 +75,7 @@ AlchemyPanel.prototype = {
         console.log("("+curX+','+curY+")");
         if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
             if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
+                console.log(alchemyPanel.elementToCombine);
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
                         curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToCombine);
 
