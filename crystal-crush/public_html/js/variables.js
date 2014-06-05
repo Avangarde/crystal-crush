@@ -30,12 +30,8 @@ var A = "A";
 var B = "B";
 var SELECT = "SELECT";
 var elemNames = [CU, ZN, NA, CL, A, B];
-var powerNames = ["PowerA","PowerB","PowerC"];
-var panelElements = [];
 
 var allowInput;
-var animationScreen=false;
-var inAlchemyPanel=false;
 var elements;
 var selectedElement;
 var selectedElementStartPos;
@@ -44,6 +40,7 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 var stillGame;
+var numMoves=5;
 
 var tipoFuente = "20px Candela";
 var style1 = { font: "20px Arial", fill: "#ffffff", align: "center" };
