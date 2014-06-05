@@ -18,13 +18,13 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.heightButton = ELEM_SIZE;
     this.buttonX = this.gridX + this.widthGrid / 2;
     this.buttonY = this.gridY + this.heightGrid + this.heightButton;
-    this.elementToCombine;
+    this.elementToAdd;
 };
 
 AlchemyPanel.prototype = {
     preload: function() {
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
-        this.game.load.image('grid', 'assets/sprites/Grille2.png');
+        this.game.load.image('grid', 'assets/sprites/Grille_2.png');
         this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', 193, 71);
     },
     create: function() {
@@ -41,13 +41,13 @@ AlchemyPanel.prototype = {
         createButton.height = this.heightButton;
         createButton.anchor.setTo(0.5, 0.5);
         this.alcElements = this.game.add.group();
-        this.elementToCombine;
+        this.elementToAdd;
     },
     update: function() {
 
     },
-    receiveElement: function(element_name) {
-        this.elementToCombine = element_name;
+    receiveElement: function(element) {
+        this.elementToAdd = element;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
@@ -72,10 +72,10 @@ AlchemyPanel.prototype = {
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
-        if (alchemyPanel.elementToCombine !== null && alchemyPanel.getElement(curX, curY) === null) {
-            if (scorePanel.decreaseElement(alchemyPanel.elementToCombine)) {
+        if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
+            if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.key)) {
                 var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
-                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToCombine);
+                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
 
                 elem.width = ELEM_SIZE;
                 elem.height = ELEM_SIZE;
@@ -88,36 +88,9 @@ AlchemyPanel.prototype = {
     createCrystal: function() {
         //console.log("create");
         //TODO Compare structure new element
-        var grille = [];
-        for(var i = 0; i < alchemyPanel.columns; i++){
-           var toAdd = "";
-           for(var j = 0; j < alchemyPanel.rows; j++){
-               var elem = alchemyPanel.getElement(i,j);
-               if(elem ===  null){
-                   toAdd += 'X';
-               }
-               else{
-                   toAdd += elem.key;                   
-               }
-           }
-           grille.push(toAdd); 
-        }   
-        var guest = "no match";
-        for(var i=0; i < crystals.length; i+=4){            
-            var match = true;
-            for(var j=0; j < 3; j++){             
-                if(grille[j].trim() !== crystals[i+j+1].trim()){                                     
-                    match = false;
-                }
-            }            
-            if(match){
-                guest = crystals[i];
-                break;
-            }            
-        }
-        console.log(guest);
         alchemyPanel.killElemRange(0, 0, 3, 3);
-        alchemyPanel.removeKilledElems();        
+        alchemyPanel.removeKilledElems();
+        scorePanel.createElement("NaCl");
     },
     killElemRange: function(fromX, fromY, toX, toY) {
         fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);

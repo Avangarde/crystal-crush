@@ -28,7 +28,6 @@ GamePanel.prototype = {
         this.background.width = this.width;
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
-        
         fillBoard();
         allowInput = true;
     },
@@ -338,7 +337,6 @@ function refillBoard() {
 function boardRefilled() {
     tempShiftedElem = null;    
     stillGame = false;
-    allowInput = false;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
             var elem = getElement(i, j);

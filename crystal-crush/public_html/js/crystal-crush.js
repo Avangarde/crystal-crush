@@ -10,7 +10,7 @@ var alchemyPanel = null;
 var BUTTONWIDTH = 193;
 var BUTTONHEIGHT = 71;
 
-var crystals = [];
+var crystals;
 
 function preload() {
     
@@ -35,8 +35,9 @@ function create() {
     background.height = canvasHeight;
     
     gamePanel.create();
-    scorePanel.create();
     alchemyPanel.create();
+    scorePanel.create();
+    
     
     var t = game.cache.getText('crystals');
     crystals = t.split('\n');
