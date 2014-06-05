@@ -30,6 +30,8 @@ var A = "A";
 var B = "B";
 var SELECT = "SELECT";
 var elemNames = [CU, ZN, NA, CL, A, B];
+var powerNames = ["PowerA","PowerB","PowerC"];
+var panelElements = [];
 
 var allowInput;
 var animationScreen=false;

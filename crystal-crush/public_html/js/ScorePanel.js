@@ -16,7 +16,8 @@ ScorePanel = function(game, x, y, width, height) {
     this.score_txt;
     this.txt_group = [];
     this.img_group;
-
+    
+    
 };
 
 ScorePanel.prototype = {
@@ -24,8 +25,12 @@ ScorePanel.prototype = {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
         game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
+        game.load.image('PowerA', 'assets/sprites/BluePower.jpg');
+        game.load.image('PowerB', 'assets/sprites/VioletPower.jpg');
+        game.load.image('PowerC', 'assets/sprites/GreenPower.jpg');
     },
     create: function() {
+        panelElements = elemNames.concat(powerNames);
         // Background
         this.background = game.add.sprite(this.x, this.y, 'scorePanelBackground');
         this.background.width = this.width;
@@ -61,24 +66,29 @@ ScorePanel.prototype = {
 
         this.img_group = game.add.group();
         
-        for (var i = 0; i < elemNames.length; i++) {
+        for (var i = 0; i < panelElements.length; i++) {
             if (i % 2 === 0) {
-                var elem = this.img_group.create(X1, startY + inter_img*(i/2), elemNames[i]);
+                var elem = this.img_group.create(X1, startY + inter_img*(i/2), panelElements[i]);
             } else {
-                var elem = this.img_group.create(X2, startY + inter_img*((i-1)/2), elemNames[i]);
+                var elem = this.img_group.create(X2, startY + inter_img*((i-1)/2), panelElements[i]);
             }
             elem.width = img_size;
             elem.height = img_size;
-            elem.name = elemNames[i];
+            elem.name = panelElements[i];
             elem.id = i;
             elem.inputEnabled = true;
-            elem.events.onInputDown.add(this.sendElementToAlchemy);
+            if(i < elemNames.length){
+                elem.events.onInputDown.add(this.sendElementToAlchemy);
+            }
+            else{
+                elem.events.onInputDown.add(this.sendPowerToGame);
+            }
             elem.inputEnabled = true;
             elem.input.enableDrag(false, true);
         }
 
         //Elems_count
-        for (var i = 0; i < elemNames.length; i++) {
+        for (var i = 0; i < panelElements.length; i++) {
             this.countElems[i] = 0;
             if (i % 2 === 0) {
                 var txt = this.game.add.text(X1+img_size , startY + img_size/2 + inter_img*(i/2), '' + this.countElems[i], style1);
@@ -91,17 +101,15 @@ ScorePanel.prototype = {
             this.txt_group[i] = txt;
             this.countElems[i+1] = 0;
         }
-
     },
     update: function() {
         this.score_txt.text = this.score_general;
-        for (var i = 0; i < elemNames.length; i++) {
-            this.txt_group[i].text = this.countElems[i];
-            console.log(this.countElems[i]);
+        for (var i = 0; i < panelElements.length; i++) {
+            this.txt_group[i].text = this.countElems[i];            
         }
     },
     addMatch2: function(elem_name, count) {
-        var idx = elemNames.indexOf(elem_name);
+        var idx = panelElements.indexOf(elem_name);
         this.countElems[idx] += count;
     },
     addMatch: function(countHoriz, countVert, elem_name) {
@@ -121,6 +129,9 @@ ScorePanel.prototype = {
 sendElementToAlchemy: function(element){
     alchemyPanel.receiveElement(element);
     },
+sendPowerToGame: function(element){
+    gamePanel.receivePower(element);
+},
 decreaseElement: function(elem_name){
     //TODO
     return true;
