@@ -16,7 +16,10 @@ ScorePanel = function(game, x, y, width, height) {
     this.score_txt;
     this.txt_group = [];
     this.img_group;
-
+    
+    this.animationScreen = false;
+    this.inAlchemyPanel = false;
+    this.camera;
 };
 
 ScorePanel.prototype = {
@@ -24,8 +27,12 @@ ScorePanel.prototype = {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         game.load.spritesheet('createButton', 'assets/buttons/button_sprite_sheet.png', 193, 71);
         game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
+        game.load.image('camera', 'assets/camera.png');
     },
     create: function() {
+        //Camera
+        this.camera = game.add.sprite(canvasWidth/2, canvasHeight/2, 'camera');
+        game.camera.follow(this.camera);
         // Background
         this.background = game.add.sprite(this.x, this.y, 'scorePanelBackground');
         this.background.width = this.width;
@@ -33,7 +40,7 @@ ScorePanel.prototype = {
 
         var buttonWidth = scorePanel.width - 2 * margin;
         var buttonHeight = buttonWidth * BUTTONHEIGHT / BUTTONWIDTH;
-        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createButton', actionOnClick, this, 2, 1, 0);
+        var buttonGame = game.add.button(2 * margin, scorePanel.height - margin - buttonHeight, 'createButton', this.actionOnClick, this, 2, 1, 0);
         buttonGame.height = buttonHeight;
         buttonGame.width = buttonWidth;
 
@@ -97,7 +104,6 @@ ScorePanel.prototype = {
         this.score_txt.text = this.score_general;
         for (var i = 0; i < elemNames.length; i++) {
             this.txt_group[i].text = this.countElems[i];
-            console.log(this.countElems[i]);
         }
     },
     addMatch2: function(elem_name, count) {
@@ -118,14 +124,25 @@ ScorePanel.prototype = {
     },
 
 
-sendElementToAlchemy: function(element){
-    alchemyPanel.receiveElement(element);
+    sendElementToAlchemy: function(element) {
+        alchemyPanel.receiveElement(element);
     },
-decreaseElement: function(elem_name){
-    //TODO
-    return true;
+    decreaseElement: function(elem_name) {
+        //TODO
+        return true;
     },
     getElement: function(id) {
         return scorePanel.img_group[id];
+    },
+    actionOnClick:function() {
+        this.animationScreen = true;
+        alchemyPanel.elementToAdd = null;
+        if (!this.inAlchemyPanel) {
+            alchemyPanel.tweenElemPos(this.camera, -canvasWidth/2 + scorePanel.width + 2 * margin, canvasHeight/2);
+            this.inAlchemyPanel = true;
+        } else {
+            alchemyPanel.tweenElemPos(this.camera, canvasWidth/2, canvasHeight/2);
+            this.inAlchemyPanel = false;
+        }            
     }
 };

@@ -31,10 +31,7 @@ GamePanel.prototype = {
         fillBoard();
         allowInput = true;
     },
-    update: function() {
-        if (animationScreen) {
-            animationCamera();
-        }
+    update: function() {       
         if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
