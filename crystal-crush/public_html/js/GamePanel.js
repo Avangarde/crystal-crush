@@ -433,4 +433,3 @@ function boardRefilled() {
     allowInput = true;
 }
 
-
