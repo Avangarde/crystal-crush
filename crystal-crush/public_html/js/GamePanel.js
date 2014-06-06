@@ -1,3 +1,7 @@
+var LOST_MENU_WIDTH = 1500;
+var LOST_MENU_HEIGHT = 751;
+var lostMenu;
+
 GamePanel = function(game, x, y, width, height) {
     this.game = game;
     this.x = x;
@@ -22,6 +26,7 @@ GamePanel.prototype = {
         this.game.load.image(B, 'assets/sprites/B.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
+        lostMenu = this.game.load.image('lost', 'assets/lost.png');
     },
     create: function() {
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
@@ -184,6 +189,7 @@ function swapElemPosition(elem1, elem2) {
     var tempPosY = elem1.posY;
     setElementPosition(elem1, elem2.posX, elem2.posY);
     setElementPosition(elem2, tempPosX, tempPosY);
+    --numMoves;
 }
 
 function checkAndKillElemMatches(elem) {
@@ -234,7 +240,7 @@ function swapNoMatch(elem) {
     if (tempShiftedElem !== null) {
         tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
         swapElemPosition(elem, tempShiftedElem);
-    }    
+    }
 }
 
 // count how many elements of the same color lie in a given direction
@@ -345,5 +351,34 @@ function boardRefilled() {
         game.time.events.add(300, dropAndRefill);
     }
     allowInput = true;
+    lost();
 }
 
+/**
+ * Returns true if there's no more possible moves, else otherwise
+ * @returns {Boolean}
+ */
+function noMoves() {
+    //TODO Verify no more moves
+    return false;
+}
+
+/**
+ * Returns true if there's no more powers, else otherwise
+ * @returns {Boolean}
+ */
+function noPowers() {
+    //TODO Verify no Powers
+    return false;
+}
+
+function lost(){
+    if (numMoves === 0 || (noPowers() && noMoves())) {
+        console.log("Has perdido");
+        lostMenu = game.add.sprite(canvasWidth/2,canvasHeight/2, 'lost');
+        lostMenu.anchor.setTo(0.5,0.5);
+        lostMenu.width = canvasWidth;
+        lostMenu.height = canvasWidth * LOST_MENU_HEIGHT / LOST_MENU_WIDTH;
+        game.paused = true;
+    }
+}
