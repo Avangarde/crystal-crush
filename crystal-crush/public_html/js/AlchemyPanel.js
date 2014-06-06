@@ -50,12 +50,12 @@ AlchemyPanel.prototype = {
         if (game.input.activePointer.justReleased()) {
             if (this.elementToAdd !== null && typeof this.elementToAdd !== 'undefined') {
                 if (this.elementToAdd.x !== this.elementToAdd.startX || this.elementToAdd.y !== this.elementToAdd.startY) {
-                    if (this.elementToAdd.x >= this.gridX && this.elementToAdd.x <= this.gridX + this.gridWidth
-                            && this.elementToAdd.y >= this.gridY && this.elementToAdd.y <= this.gridY + this.gridHeight ) {
+                    if (this.elementToAdd.x + (this.elementToAdd.width/2) >= this.gridX && this.elementToAdd.x + (this.elementToAdd.width/2) <= this.gridX + this.gridWidth
+                            && this.elementToAdd.y + this.elementToAdd.height/2 >= this.gridY  && this.elementToAdd.y + this.elementToAdd.height/2 <= this.gridY + this.gridHeight) {
                         this.addElementToGrid();
                     }
                     this.tweenElemPos(this.elementToAdd, this.elementToAdd.startX, this.elementToAdd.startY,
-                            Phaser.Math.distance(this.elementToAdd.startX, this.elementToAdd.startY, this.elementToAdd.x, this.elementToAdd.y)/canvasWidth);
+                            Phaser.Math.distance(this.elementToAdd.startX, this.elementToAdd.startY, this.elementToAdd.x, this.elementToAdd.y) / canvasWidth);
                 }
             }
         }
@@ -88,19 +88,20 @@ AlchemyPanel.prototype = {
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
-        if (curX < this.columns && curY < this.rows) {
-        if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
-            if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.key)) {
-                var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
-                        curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
+        if (curX < alchemyPanel.columns && curY < alchemyPanel.rows) {
+            if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
+                
+                if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.id)) {
+                    var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
+                            curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
 
-                elem.width = ELEM_SIZE;
-                elem.height = ELEM_SIZE;
-                alchemyPanel.setElementPosition(elem, curX, curY);
-        } else {
-                    alchemyPanel.elementToAdd = null;
-        }
-            } 
+                    elem.width = ELEM_SIZE;
+                    elem.height = ELEM_SIZE;
+                    alchemyPanel.setElementPosition(elem, curX, curY);
+                } else {
+                    //alchemyPanel.elementToAdd = null;
+                }
+            }
         }
     },
     createCrystal: function() {
@@ -134,7 +135,7 @@ AlchemyPanel.prototype = {
     tweenElemPos: function(elem, newPosX, newPosY, durationMultiplier) {
         if (durationMultiplier === null) {
             durationMultiplier = 1;
-    }
+        }
         return game.add.tween(elem).to(
                 {x: newPosX, y: newPosY}, 100 * durationMultiplier, Phaser.Easing.Linear.None, true);
     }
