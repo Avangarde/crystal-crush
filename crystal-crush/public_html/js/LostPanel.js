@@ -1,6 +1,6 @@
 var LOST_MENU_WIDTH = 1500;
 var LOST_MENU_HEIGHT = 751;
-var LOST_BUTTON_WIDTH = 593;
+var LOST_BUTTON_WIDTH = 593/2;
 var LOST_BUTTON_HEIGHT = 81;
 var lostMenu;
 var buttonPlayAgain;
@@ -12,7 +12,7 @@ LostPanel = function(game) {
 LostPanel.prototype = {
     preload: function() {
         lostMenu = this.game.load.image('lost', 'assets/lost.png');
-        game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH / 2, LOST_BUTTON_HEIGHT);
+        game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
     },
     create: function() {
 
@@ -37,13 +37,12 @@ function drawBackground() {
 }
 
 function drawButton() {
-    //TODO make responsive
-//    var buttonWidth = lostMenu.width - 2 * margin;
-//    var buttonHeight = buttonWidth * LOST_BUTTON_HEIGHT / LOST_BUTTON_WIDTH;
+    var buttonWidth = canvasWidth * 0.15;
+    var buttonHeight = buttonWidth * LOST_BUTTON_HEIGHT / LOST_BUTTON_WIDTH;
     buttonPlayAgain = game.add.button(canvasWidth / 2, canvasHeight / 2, 'playAgain', actionOnClick(), this, 1, 0, 0);
     buttonPlayAgain.anchor.setTo(0.5, 0.5);
-//    buttonPlayAgain.height = buttonHeight;
-//    buttonPlayAgain.width = buttonWidth;
+    buttonPlayAgain.height = buttonHeight;
+    buttonPlayAgain.width = buttonWidth;
 }
 
 function actionOnClick() {
@@ -51,13 +50,13 @@ function actionOnClick() {
 }
 
 function unpause(event) {
-        // Calculate the corners of the menu
-        var x1 = buttonPlayAgain.x - buttonPlayAgain.width / 2;
-        var x2 = buttonPlayAgain.x + buttonPlayAgain.width / 2;
-        var y1 = buttonPlayAgain.y - buttonPlayAgain.height / 2;
-        var y2 = buttonPlayAgain.y + buttonPlayAgain.height / 2;
+    // Calculate the corners of the menu
+    var x1 = buttonPlayAgain.x - buttonPlayAgain.width / 2;
+    var x2 = buttonPlayAgain.x + buttonPlayAgain.width / 2;
+    var y1 = buttonPlayAgain.y - buttonPlayAgain.height / 2;
+    var y2 = buttonPlayAgain.y + buttonPlayAgain.height / 2;
 
-        if (event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2) {
-            window.location.reload();
-        }
+    if (event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2) {
+        window.location.reload();
+    }
 }
