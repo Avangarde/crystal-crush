@@ -133,7 +133,7 @@ AlchemyPanel.prototype = {
             }
         }
         if (guest !== "no match") {
-            scorePanel.addMatch2(guest, 1);
+            scorePanel.addMatch2(guest.trim(), 1);
         }
         alchemyPanel.killElemRange(0, 0, 3, 3);
         alchemyPanel.removeKilledElems();

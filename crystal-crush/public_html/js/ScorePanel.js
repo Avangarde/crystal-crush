@@ -90,8 +90,7 @@ ScorePanel.prototype = {
             else{
                 elem.events.onInputDown.add(this.sendPowerToGame);
             }
-            elem.inputEnabled = true;
-            elem.input.enableDrag(false, true);
+            elem.inputEnabled = true;            
         }
 
         //Elems_count
@@ -137,26 +136,49 @@ ScorePanel.prototype = {
         alchemyPanel.receiveElement(element);
     },
     sendPowerToGame: function(element) {
-        gamePanel.receivePower(element);
+        if (scorePanel.countElems[element.id] > 0) {
+            gamePanel.receivePower(element);
+        }
     },
     decreaseElement: function(elem_id) {
         if (this.countElems[elem_id] > 0) {
             this.countElems[elem_id]--;
+            if (this.countElems[elem_id] === 0) {
+                this.getElement(elem_id).input.disableDrag();
+            }
                 return true;
-        } else {
+        } else {                
                 return false;
             }
     },
     getElement: function(id) {
-        return scorePanel.img_group[id];
+        return scorePanel.img_group.iterate("id", id, Phaser.Group.RETURN_CHILD);
     },
     actionOnClick: function() {
         alchemyPanel.elementToAdd = null;
-        if (!this.inAlchemyPanel) {
-            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
+        if (!this.inAlchemyPanel) {            
+            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);            
+            for (var i = 0; i < panelElements.length; i++) {
+                if (i < elemNames.length) {
+                    if (scorePanel.countElems[i] > 0) {
+                        scorePanel.getElement(i).input.enableDrag(false, true);
+                    }
+                } else {
+                    scorePanel.getElement(i).input.disableDrag();
+                }
+            }
             this.inAlchemyPanel = true;
-        } else {
+        } else {            
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
+            for (var i = 0; i < panelElements.length; i++) {
+                if (i < elemNames.length) {
+                    scorePanel.getElement(i).input.disableDrag();
+                } else {
+                    if (scorePanel.countElems[i] > 0) {
+                        scorePanel.getElement(i).input.enableDrag(false, true);
+                    }
+                }
+            }
             this.inAlchemyPanel = false;
         }
     }, setButtonFrame: function() {
