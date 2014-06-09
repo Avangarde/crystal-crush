@@ -26,53 +26,8 @@ function preload() {
     lostPanel.preload();
 }
 
-function create() {
-    game.world.setBounds(-canvasWidth + scorePanel, 0, 2 * canvasWidth - scorePanel, canvasHeight);
-    var background = game.add.sprite(-canvasWidth + scorePanel.width, 0, 'background');
-    background.width = canvasWidth * 2 - scorePanel.width;
-    background.height = canvasHeight;
 
-    gamePanel.create();
-    alchemyPanel.create();
-    scorePanel.create();
-    scorePanel.highScore = localStorage.getItem("highScore") === null ? 
-    0 : localStorage.getItem("highScore");
-    lostPanel.create();
 
-    var t = game.cache.getText('crystals');
-    crystals = t.split('\n');
 
-}
 
-function update() {
-    gamePanel.update();
-    scorePanel.update();
-    alchemyPanel.update();
-    lostPanel.update();
-}
 
-function render() {
-//    game.debug.cameraInfo(game.camera, 32, 32);
-}
-
-function actionOnClick() {
-    animationScreen = true;
-}
-
-function animationCamera() {
-    if (!inAlchemyPanel) {
-        if (game.camera.x >= -canvasWidth + scorePanel.width + 2 * margin)
-            game.camera.x -= margin;
-        else {
-            animationScreen = false;
-            inAlchemyPanel = true;
-        }
-    } else {
-        if (game.camera.x < 0)
-            game.camera.x += margin;
-        else {
-            animationScreen = false;
-            inAlchemyPanel = false;
-        }
-    }
-}

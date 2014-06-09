@@ -83,7 +83,6 @@ ScorePanel.prototype = {
                 elem.events.onInputDown.add(this.sendPowerToGame);
             }
             elem.inputEnabled = true;
-            elem.input.enableDrag(false, true);
         }
 
         //Elems_count
@@ -103,11 +102,11 @@ ScorePanel.prototype = {
 
     },
     update: function() {
-        scorePanel.score_general > scorePanel.highScore? 
-        scorePanel.score_general:scorePanel.highScore;
         this.score_txt.text = "Score : " + this.score_general;
         this.highScore_txt.text = "High Score : " + this.highScore;
         this.moves_txt.text = "Moves Left : " + numMoves;
+        //TODO Refresh High Score
+        //TODO Count # elements
         for (var i = 0; i < panelElements.length; i++) {
             this.txt_group[i].text = this.countElems[i];
         }
@@ -133,27 +132,51 @@ ScorePanel.prototype = {
         alchemyPanel.receiveElement(element);
     },
     sendPowerToGame: function(element) {
-        gamePanel.receivePower(element);
+        if (scorePanel.countElems[element.id] > 0) {
+            gamePanel.receivePower(element);
+        }
     },
     decreaseElement: function(elem_id) {
         if (this.countElems[elem_id] > 0) {
             this.countElems[elem_id]--;
+            if (this.countElems[elem_id] === 0) {
+                this.getElement(elem_id).input.disableDrag();
+            }
             return true;
         } else {
             return false;
         }
     },
     getElement: function(id) {
-        return scorePanel.img_group[id];
+        return scorePanel.img_group.iterate("id", id, Phaser.Group.RETURN_CHILD);
     },
     actionOnClick: function() {
         alchemyPanel.elementToAdd = null;
         if (!this.inAlchemyPanel) {
             alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
-            this.inAlchemyPanel = true;
+            for (var i = 0; i < panelElements.length; i++) {
+                if (i < elemNames.length) {
+                    if (scorePanel.countElems[i] > 0) {
+                        scorePanel.getElement(i).input.enableDrag(false, true);
+                    }
+                } else {
+                    scorePanel.getElement(i).input.disableDrag();
+                }
+            }
+            this.inAlchemyPanel = true;            
         } else {
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
+            for (var i = 0; i < panelElements.length; i++) {
+                if (i < elemNames.length) {
+                    scorePanel.getElement(i).input.disableDrag();
+                } else {
+                    if (scorePanel.countElems[i] > 0) {
+                        scorePanel.getElement(i).input.enableDrag(false, true);
+                    }
+                }
+            }
             this.inAlchemyPanel = false;
+            gamePanel.selectedPower = null;
         }
     }, setButtonFrame: function() {
         if (this.inAlchemyPanel) {
@@ -161,5 +184,8 @@ ScorePanel.prototype = {
         } else {
             buttonGame.setFrames(2, 1, 1, 1);
         }
+    },
+    setHighScore: function(score) {
+        this.highScore = score;
     }
 };
