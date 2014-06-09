@@ -234,7 +234,7 @@ function selectElement(element) {
                     tempShiftedElem = element;
                     allowInput = false;
                     //Swap animation
-                    swapElements(selectedElement, tempShiftedElem);
+                    swapElements(selectedElement, tempShiftedElem);                    
                     //Check game logic
                     game.time.events.add(300, checkGame);
                 }
@@ -278,6 +278,7 @@ function canMove(fromPosX, fromPosY, toPosX, toPosY) {
 }
 
 function swapElements(elem1, elem2) {
+    selection.kill();
     tweenElemPos(elem1, elem2.posX, elem2.posY, 3);
     tweenElemPos(elem2, elem1.posX, elem1.posY, 3);
     swapElemPosition(elem1, elem2);
@@ -286,8 +287,7 @@ function swapElements(elem1, elem2) {
 function checkGame() {
     checkAndKillElemMatches(tempShiftedElem);
     checkAndKillElemMatches(selectedElement);
-    selectedElement = null;
-    selection.kill();
+    selectedElement = null;    
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
 }
