@@ -1,5 +1,5 @@
 var canvasWidth = window.innerWidth;
-var canvasHeight = window.innerHeight;
+var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
 
 var xScorePanel = margin;
@@ -44,6 +44,5 @@ var selection;
 var stillGame;
 var numMoves=5;
 
-var tipoFuente = "20px Candela";
-var style1 = { font: "20px Arial", fill: "#ffffff", align: "center" };
-var style2 = { font: "20px Arial", fill: "#00ffff", align: "center" };
+var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
+var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };

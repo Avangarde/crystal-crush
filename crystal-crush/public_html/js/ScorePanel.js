@@ -15,6 +15,8 @@ ScorePanel = function(game, x, y, width, height) {
     this.countElems = [];
 
     this.score_txt;
+    this.highScore_txt;
+    this.moves_txt;
     this.txt_group = [];
     this.img_group;
 
@@ -27,11 +29,10 @@ ScorePanel.prototype = {
     preload: function() {
         game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         game.load.spritesheet('createElement', 'assets/buttons/button_create_element.png', BUTTONWIDTH, BUTTONHEIGHT);
-        game.load.image('scoreLabel', 'assets/labels/scoreLabel.png');
         game.load.image('camera', 'assets/camera.png');
-        game.load.image('PowerA', 'assets/sprites/BluePower.jpg');
-        game.load.image('PowerB', 'assets/sprites/VioletPower.jpg');
-        game.load.image('PowerC', 'assets/sprites/GreenPower.jpg');
+        game.load.image('PowerA', 'assets/sprites/BluePower.png');
+        game.load.image('PowerB', 'assets/sprites/VioletPower.png');
+        game.load.image('PowerC', 'assets/sprites/GreenPower.png');
     },
     create: function() {
         panelElements = elemNames.concat(powerNames);
@@ -49,19 +50,10 @@ ScorePanel.prototype = {
         buttonGame.height = buttonHeight;
         buttonGame.width = buttonWidth;
 
-        // ScoreLabel
-        this.scoreLabel = game.add.sprite(this.x + margin, this.y + margin, 'scoreLabel');
-        var tmp = this.scoreLabel.width;
-        this.scoreLabel.width = this.width - 2 * margin;
-        this.scoreLabel.height = this.scoreLabel.height / tmp * this.scoreLabel.width;
-
-
         //Score
-        this.score_txt = game.add.text(this.x + this.width * 0.4, this.y + 2 * margin, '' + this.score_general, style1);
-        var tmp = this.score_txt.height;
-        this.score_txt.height = this.scoreLabel.height - 2 * margin;
-        this.score_txt.width = this.score_txt.width / tmp * this.score_txt.height;
-
+        this.score_txt = game.add.text(this.x + this.width * 0.15, this.y + margin, '' + this.score_general, style1);
+        this.highScore_txt = game.add.text(this.x + this.width * 0.15, this.score_txt.height + margin, '' + this.highScore, style1);
+        this.moves_txt = game.add.text(this.x + this.width * 0.15, 2 * this.highScore_txt.height + margin, '' + numMoves, style1);
 
         //Elems_img
         var img_size = this.width * 0.20;
@@ -69,28 +61,29 @@ ScorePanel.prototype = {
         var X1 = this.x + this.width * 0.15;
         var X2 = this.x + this.width * 0.55;
         var inter_img = this.width * 0.2;
-        var startY = this.y + this.scoreLabel.height + margin;// + inter_img;
+        var startY = this.highScore_txt.y + 2 * this.highScore_txt.height + margin;// + inter_img;
 
         this.img_group = game.add.group();
 
         for (var i = 0; i < panelElements.length; i++) {
             if (i % 2 === 0) {
-                var elem = this.img_group.create(X1, startY + inter_img*(i/2), panelElements[i]);
+                var elem = this.img_group.create(X1, startY + inter_img * (i / 2), panelElements[i]);
             } else {
-                var elem = this.img_group.create(X2, startY + inter_img*((i-1)/2), panelElements[i]);
+                var elem = this.img_group.create(X2, startY + inter_img * ((i - 1) / 2), panelElements[i]);
             }
             elem.width = img_size;
             elem.height = img_size;
             elem.name = panelElements[i];
             elem.id = i;
             elem.inputEnabled = true;
-            if(i < elemNames.length){
+            if (i < elemNames.length) {
                 elem.events.onInputDown.add(this.sendElementToAlchemy);
             }
-            else{
+            else {
                 elem.events.onInputDown.add(this.sendPowerToGame);
             }
-            elem.inputEnabled = true;            
+            elem.inputEnabled = true;
+            elem.input.enableDrag(false, true);
         }
 
         //Elems_count
@@ -110,7 +103,11 @@ ScorePanel.prototype = {
 
     },
     update: function() {
-        this.score_txt.text = this.score_general;
+        this.score_txt.text = "Score : " + this.score_general;
+        this.highScore_txt.text = "High Score : " + this.highScore;
+        this.moves_txt.text = "Moves Left : " + numMoves;
+        //TODO Refresh High Score
+        //TODO Count # elements
         for (var i = 0; i < panelElements.length; i++) {
             this.txt_group[i].text = this.countElems[i];
         }
@@ -136,49 +133,26 @@ ScorePanel.prototype = {
         alchemyPanel.receiveElement(element);
     },
     sendPowerToGame: function(element) {
-        if (scorePanel.countElems[element.id] > 0) {
-            gamePanel.receivePower(element);
-        }
+        gamePanel.receivePower(element);
     },
     decreaseElement: function(elem_id) {
         if (this.countElems[elem_id] > 0) {
             this.countElems[elem_id]--;
-            if (this.countElems[elem_id] === 0) {
-                this.getElement(elem_id).input.disableDrag();
-            }
-                return true;
-        } else {                
-                return false;
-            }
+            return true;
+        } else {
+            return false;
+        }
     },
     getElement: function(id) {
-        return scorePanel.img_group.iterate("id", id, Phaser.Group.RETURN_CHILD);
+        return scorePanel.img_group[id];
     },
     actionOnClick: function() {
         alchemyPanel.elementToAdd = null;
-        if (!this.inAlchemyPanel) {            
-            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);            
-            for (var i = 0; i < panelElements.length; i++) {
-                if (i < elemNames.length) {
-                    if (scorePanel.countElems[i] > 0) {
-                        scorePanel.getElement(i).input.enableDrag(false, true);
-                    }
-                } else {
-                    scorePanel.getElement(i).input.disableDrag();
-                }
-            }
+        if (!this.inAlchemyPanel) {
+            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
             this.inAlchemyPanel = true;
-        } else {            
+        } else {
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
-            for (var i = 0; i < panelElements.length; i++) {
-                if (i < elemNames.length) {
-                    scorePanel.getElement(i).input.disableDrag();
-                } else {
-                    if (scorePanel.countElems[i] > 0) {
-                        scorePanel.getElement(i).input.enableDrag(false, true);
-                    }
-                }
-            }
             this.inAlchemyPanel = false;
         }
     }, setButtonFrame: function() {
@@ -188,7 +162,7 @@ ScorePanel.prototype = {
             buttonGame.setFrames(2, 1, 1, 1);
         }
     },
-    setHighScore:function(score){
-        this.highScore=score;
+    setHighScore: function(score) {
+        this.highScore = score;
     }
 };

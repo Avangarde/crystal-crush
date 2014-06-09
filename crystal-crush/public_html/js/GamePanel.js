@@ -1,3 +1,6 @@
+var LOST_MENU_WIDTH = 1500;
+var LOST_MENU_HEIGHT = 751;
+
 GamePanel = function(game, x, y, width, height) {
     this.game = game;
     this.x = x;
@@ -83,13 +86,13 @@ GamePanel.prototype = {
             for(var j = 0; j < BOARD_COLS; j++){
                 var elem = getElement(i,j);
                 elem.events.onInputDown.remove(selectElement);
-                if(element.name === "PowerA"){
+                if (element.name === "PowerA") {
                     elem.events.onInputDown.add(PowerA);
                 }
-                else if(element.name === "PowerB"){
+                else if (element.name === "PowerB") {
                     elem.events.onInputDown.add(PowerB);
                 }
-                else if(element.name === "PowerC"){
+                else if (element.name === "PowerC") {
                     elem.events.onInputDown.add(PowerC);
                 }
             }
@@ -110,19 +113,19 @@ GamePanel.prototype = {
 };
 
 //Power A
-function PowerA(element){
+function PowerA(element) {
     allowInput = false;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
-            var elem = getElement(i,j);
+            var elem = getElement(i, j);
             elem.events.onInputDown.remove(PowerA);
             elem.events.onInputDown.add(selectElement);
         }
     }
     var rowElem = element.posY;
-    for(var i = 0; i < BOARD_COLS; i++){
-        var elem = getElement(i , rowElem);
-        elem.kill();        
+    for (var i = 0; i < BOARD_COLS; i++) {
+        var elem = getElement(i, rowElem);
+        elem.kill();
     }
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
@@ -131,19 +134,19 @@ function PowerA(element){
 }
 
 //Power B
-function PowerB(element){
+function PowerB(element) {
     allowInput = false;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
-            var elem = getElement(i,j);
+            var elem = getElement(i, j);
             elem.events.onInputDown.remove(PowerB);
             elem.events.onInputDown.add(selectElement);
         }
     }
     var colElem = element.posX;
-    for(var i = 0; i < BOARD_ROWS; i++){
-        var elem = getElement(colElem , i);
-        elem.kill();        
+    for (var i = 0; i < BOARD_ROWS; i++) {
+        var elem = getElement(colElem, i);
+        elem.kill();
     }
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
@@ -152,24 +155,24 @@ function PowerB(element){
 }
 
 //Power C
-function PowerC(element){
+function PowerC(element) {
     allowInput = false;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
-            var elem = getElement(i,j);
+            var elem = getElement(i, j);
             elem.events.onInputDown.remove(PowerC);
             elem.events.onInputDown.add(selectElement);
         }
     }
-    var rowElem = element.posY;    
-    for(var i = 0; i < BOARD_COLS; i++){
-        var elem = getElement(i , rowElem);
-        elem.kill();        
+    var rowElem = element.posY;
+    for (var i = 0; i < BOARD_COLS; i++) {
+        var elem = getElement(i, rowElem);
+        elem.kill();
     }
     var colElem = element.posX;
-    for(var i = 0; i < BOARD_ROWS; i++){
-        var elem = getElement(colElem , i);
-        elem.kill();        
+    for (var i = 0; i < BOARD_ROWS; i++) {
+        var elem = getElement(colElem, i);
+        elem.kill();
     }
     removeKilledElems();
     game.time.events.add(300, dropAndRefill);
@@ -213,7 +216,7 @@ function fillBoard() {
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
-            
+
             element.events.onInputDown.add(selectElement);
             setElementPosition(element, i, j);
         }
@@ -305,6 +308,7 @@ function swapElemPosition(elem1, elem2) {
     var tempPosY = elem1.posY;
     setElementPosition(elem1, elem2.posX, elem2.posY);
     setElementPosition(elem2, tempPosX, tempPosY);
+    --numMoves;
 }
 
 function checkAndKillElemMatches(elem) {
@@ -320,23 +324,23 @@ function checkAndKillElemMatches(elem) {
         var countVert = countUp + countDown + 1;
 
         if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);            
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz,countVert,elem.key);
-        }else if (countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);            
+            scorePanel.addMatch(countHoriz, countVert, elem.key);
+        } else if (countHoriz >= MATCH_MIN) {
+            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz,countVert,elem.key);
-        }else if (countVert >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);                        
+            scorePanel.addMatch(countHoriz, countVert, elem.key);
+        } else if (countVert >= MATCH_MIN) {
+            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz,countVert,elem.key);
+            scorePanel.addMatch(countHoriz, countVert, elem.key);
         }
-        else{
+        else {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched && tempShiftedElem !== null) {
                     game.time.events.add(300, swapNoMatch, this, elem);
@@ -355,7 +359,7 @@ function swapNoMatch(elem) {
     if (tempShiftedElem !== null) {
         tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
         swapElemPosition(elem, tempShiftedElem);
-    }    
+    }
 }
 
 // count how many elements of the same color lie in a given direction
@@ -453,7 +457,7 @@ function refillBoard() {
 
 // when the board has finished refilling, re-enable player input
 function boardRefilled() {
-    tempShiftedElem = null;    
+    tempShiftedElem = null;
     stillGame = false;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
@@ -466,5 +470,23 @@ function boardRefilled() {
         game.time.events.add(300, dropAndRefill);
     }
     allowInput = true;
+    lostPanel.lost();
 }
 
+/**
+ * Returns true if there's no more possible moves, else otherwise
+ * @returns {Boolean}
+ */
+function noMoves() {
+    //TODO Verify no more moves
+    return false;
+}
+
+/**
+ * Returns true if there's no more powers, else otherwise
+ * @returns {Boolean}
+ */
+function noPowers() {
+    //TODO Verify no Powers
+    return false;
+}
