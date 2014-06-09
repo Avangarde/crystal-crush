@@ -15,7 +15,6 @@ LostPanel.prototype = {
         game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
     },
     create: function() {
-
     },
     update: function() {
     },

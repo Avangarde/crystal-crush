@@ -293,7 +293,6 @@ function swapElemPosition(elem1, elem2) {
 function checkAndKillElemMatches(elem) {
 
     if (elem !== null) {
-        //        console.log("Elem = " + elem.key);
         var countUp = countSameElemElements(elem, 0, -1);
         var countDown = countSameElemElements(elem, 0, 1);
         var countLeft = countSameElemElements(elem, -1, 0);
