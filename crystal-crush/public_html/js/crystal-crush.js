@@ -14,7 +14,6 @@ function preload() {
 
     game.load.image('background', 'assets/background.png');
     game.load.text('crystals', 'files/crystals.txt');
-    game.load.text('highScore', 'files/highScore');
 
     gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
     scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel, 0);
@@ -36,7 +35,8 @@ function create() {
     gamePanel.create();
     alchemyPanel.create();
     scorePanel.create();
-    scorePanel.setHighScore(parseInt(game.cache.getText('highScore')));
+    scorePanel.highScore = localStorage.getItem("highScore") === null ? 
+    0 : localStorage.getItem("highScore");
     lostPanel.create();
 
     var t = game.cache.getText('crystals');

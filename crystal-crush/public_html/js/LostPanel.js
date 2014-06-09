@@ -1,6 +1,6 @@
 var LOST_MENU_WIDTH = 1500;
 var LOST_MENU_HEIGHT = 751;
-var LOST_BUTTON_WIDTH = 593/2;
+var LOST_BUTTON_WIDTH = 593 / 2;
 var LOST_BUTTON_HEIGHT = 81;
 var lostMenu;
 var buttonPlayAgain;
@@ -23,6 +23,7 @@ LostPanel.prototype = {
         if (numMoves === 0 || (noPowers() && noMoves())) {
             drawBackground();
             drawButton();
+            localStorage.setItem("highScore",scorePanel.highScore);
             game.paused = true;
             game.input.onDown.add(unpause, self);
         }
