@@ -36,13 +36,13 @@ GamePanel.prototype = {
         allowInput = true;
     },
     update: function() {
-        
+
         if (game.input.activePointer.justReleased() && allowInput) {
             if (this.selectedPower !== null && typeof this.selectedPower !== 'undefined') {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
-                    if (this.selectedPower.x + (this.selectedPower.width/2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width/2) <= this.internalX + this.internalWidth
-                            && this.selectedPower.y + this.selectedPower.height/2 >= this.internalY  && this.selectedPower.y + this.selectedPower.height/2 <= this.internalY + this.internalHeight) {
-                        var elem =  getElement(getRelativeElementPos(this.selectedPower.x, true), getRelativeElementPos(this.selectedPower.y, false));
+                    if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
+                            && this.selectedPower.y + this.selectedPower.height / 2 >= this.internalY && this.selectedPower.y + this.selectedPower.height / 2 <= this.internalY + this.internalHeight) {
+                        var elem = getElement(getRelativeElementPos(this.selectedPower.x, true), getRelativeElementPos(this.selectedPower.y, false));
                         this.runPower(elem);
                     }
                     alchemyPanel.tweenElemPos(this.selectedPower, this.selectedPower.startX, this.selectedPower.startY,
@@ -50,7 +50,7 @@ GamePanel.prototype = {
                 }
             }
         }
-        
+
         if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
@@ -73,7 +73,7 @@ GamePanel.prototype = {
         }
     },
     //we receive the power element from the score panel
-    receivePower: function(element){
+    receivePower: function(element) {
         if (selection !== null && typeof selection !== 'undefined') {
             selection.kill();
             //selection = null;
@@ -81,10 +81,10 @@ GamePanel.prototype = {
         this.selectedPower = element;
         this.selectedPower.startX = element.x;
         this.selectedPower.startY = element.y;
-        
-        for(var i = 0; i < BOARD_ROWS; i++){
-            for(var j = 0; j < BOARD_COLS; j++){
-                var elem = getElement(i,j);
+
+        for (var i = 0; i < BOARD_ROWS; i++) {
+            for (var j = 0; j < BOARD_COLS; j++) {
+                var elem = getElement(i, j);
                 elem.events.onInputDown.remove(selectElement);
                 if (element.name === "PowerA") {
                     elem.events.onInputDown.add(PowerA);
@@ -97,7 +97,8 @@ GamePanel.prototype = {
                 }
             }
         }
-    
+        selectedElement = null;
+
     },
     runPower: function(element) {
         if (this.selectedPower.name === "PowerA") {
@@ -109,6 +110,7 @@ GamePanel.prototype = {
         else if (this.selectedPower.name === "PowerC") {
             PowerC(element);
         }
+
     }
 };
 
@@ -469,7 +471,9 @@ function boardRefilled() {
     if (stillGame) {
         game.time.events.add(300, dropAndRefill);
     }
-    allowInput = true;
+    else {
+        allowInput = true;
+    }
     lostPanel.lost();
 }
 

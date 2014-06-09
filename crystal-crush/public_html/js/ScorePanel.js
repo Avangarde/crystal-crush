@@ -163,7 +163,7 @@ ScorePanel.prototype = {
                     scorePanel.getElement(i).input.disableDrag();
                 }
             }
-            this.inAlchemyPanel = true;
+            this.inAlchemyPanel = true;            
         } else {
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
             for (var i = 0; i < panelElements.length; i++) {
