@@ -105,11 +105,38 @@ AlchemyPanel.prototype = {
         }
     },
     createCrystal: function() {
-        //console.log("create");
-        //TODO Compare structure new element
+        var grille = [];
+        for(var i = 0; i < alchemyPanel.columns; i++){
+           var toAdd = "";
+           for(var j = 0; j < alchemyPanel.rows; j++){
+               var elem = alchemyPanel.getElement(i,j);
+               if(elem === null){
+                   toAdd += 'X';
+               }
+               else{
+                   toAdd += elem.key;
+               }
+           }
+           grille.push(toAdd);
+        }
+        var guest = "no match";
+        for(var i=0; i < crystals.length; i+=4){
+            var match = true;
+            for(var j=0; j < 3; j++){
+                if(grille[j].trim() !== crystals[i+j+1].trim()){
+                    match = false;
+                }
+            }
+            if(match){
+                guest = crystals[i];
+                break;
+            }
+        }
+        if (guest !== "no match") {
+            scorePanel.addMatch2(guest.trim(), 1);
+        }
         alchemyPanel.killElemRange(0, 0, 3, 3);
         alchemyPanel.removeKilledElems();
-        scorePanel.createElement("NaCl");
     },
     killElemRange: function(fromX, fromY, toX, toY) {
         fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
