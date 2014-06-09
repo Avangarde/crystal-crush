@@ -2,22 +2,46 @@
 <html>
 
     <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+
         <title>Crystal Crush</title>
 
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         
         <script type="text/javascript" src="js/phaser.min.js"></script>        
         <script type="text/javascript" src="js/variables.js"></script>
+        <!-- <script type="text/javascript" src="js/crystal-crush.js"></script> -->
+        <script type="text/javascript" src="js/LostPanel.js"></script>
         <script type="text/javascript" src="js/GamePanel.js"></script>
         <script type="text/javascript" src="js/ScorePanel.js"></script>
         <script type="text/javascript" src="js/AlchemyPanel.js"></script>
-        <script type="text/javascript" src="js/LostPanel.js"></script>
-        <script type="text/javascript" src="js/crystal-crush.js"></script>
+        <script type="text/javascript" src="js/Home.js"></script>
+        <script type="text/javascript" src="js/Preloader.js"></script>
+        <script type="text/javascript" src="js/Boot.js"></script>
+        <script type="text/javascript" src="js/Lvl1.js"></script>
+        <!-- <script type="text/javascript" src="js/crystal-crush.js"></script> -->
     </head>
 
     <body>
 
         <div id="game_div"> </div>
+        <script type="text/javascript">
+
+        (function () {
+            game = new Phaser.Game(canvasWidth, canvasHeight);
+            game.state.add('preloader', CrystalCrush.Preloader);
+            game.state.add('boot', CrystalCrush.Boot);
+            game.state.add('home', CrystalCrush.Home);
+            game.state.add('lvl1', CrystalCrush.Lvl1);
+            //game.state.add('lvl2', CrystalCrush.Lvl2);
+            //game.state.add('lvl3', CrystalCrush.Lvl3);
+            //game.state.add('highScore', CrystalCrush.HighScore);
+
+            game.state.start('boot');
+    })();
+</script>
+
 
     </body>
 

@@ -1,3 +1,4 @@
+var game;
 var canvasWidth = window.innerWidth;
 var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
@@ -42,8 +43,10 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 var stillGame;
-var numMoves=50;
-
+var numMoves=21;
 
 var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
 var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
+var SELECT = "SELECT";
+
+var CrystalCrush = {};
