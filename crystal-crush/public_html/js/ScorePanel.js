@@ -176,6 +176,7 @@ ScorePanel.prototype = {
                 }
             }
             this.inAlchemyPanel = false;
+            gamePanel.selectedPower = null;
         }
     }, setButtonFrame: function() {
         if (this.inAlchemyPanel) {

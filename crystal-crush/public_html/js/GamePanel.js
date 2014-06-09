@@ -11,9 +11,8 @@ GamePanel = function(game, x, y, width, height) {
     this.internalX = this.x + margin;
     this.internalY = this.y + margin;
     this.internalWidth = this.width - 2 * margin;
-    this.internalHeight = this.height - 2 * margin;
+    this.internalHeight = this.height - 2 * margin;  
     this.selectedPower;
-    this.powerSelection;
 };
 
 GamePanel.prototype = {
@@ -32,6 +31,7 @@ GamePanel.prototype = {
         this.background.width = this.width;
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
+        this.selectedPower = null;
         fillBoard();
         allowInput = true;
     },
@@ -47,6 +47,7 @@ GamePanel.prototype = {
                     }
                     alchemyPanel.tweenElemPos(this.selectedPower, this.selectedPower.startX, this.selectedPower.startY,
                             Phaser.Math.distance(this.selectedPower.startX, this.selectedPower.startY, this.selectedPower.x, this.selectedPower.y) / canvasWidth);
+                    this.selectedPower = null;        
                 }
             }
         }
@@ -81,23 +82,23 @@ GamePanel.prototype = {
         this.selectedPower = element;
         this.selectedPower.startX = element.x;
         this.selectedPower.startY = element.y;
+        
+//        for (var i = 0; i < BOARD_ROWS; i++) {
+//            for (var j = 0; j < BOARD_COLS; j++) {
+//                var elem = getElement(i, j);
+//                elem.events.onInputDown.remove(selectElement);
+//                if (element.name === "PowerA") {
+//                    elem.events.onInputDown.add(PowerA);
+//                }
+//                else if (element.name === "PowerB") {
+//                    elem.events.onInputDown.add(PowerB);
+//                }
+//                else if (element.name === "PowerC") {
+//                    elem.events.onInputDown.add(PowerC);
+//                }
+//            }
+//        }
 
-        for (var i = 0; i < BOARD_ROWS; i++) {
-            for (var j = 0; j < BOARD_COLS; j++) {
-                var elem = getElement(i, j);
-                elem.events.onInputDown.remove(selectElement);
-                if (element.name === "PowerA") {
-                    elem.events.onInputDown.add(PowerA);
-                }
-                else if (element.name === "PowerB") {
-                    elem.events.onInputDown.add(PowerB);
-                }
-                else if (element.name === "PowerC") {
-                    elem.events.onInputDown.add(PowerC);
-                }
-            }
-        }
-        selectedElement = null;
 
     },
     runPower: function(element) {
@@ -110,20 +111,13 @@ GamePanel.prototype = {
         else if (this.selectedPower.name === "PowerC") {
             PowerC(element);
         }
-
+        
     }
 };
 
 //Power A
 function PowerA(element) {
     allowInput = false;
-    for (var i = 0; i < BOARD_COLS; i++) {
-        for (var j = 0; j < BOARD_ROWS; j++) {
-            var elem = getElement(i, j);
-            elem.events.onInputDown.remove(PowerA);
-            elem.events.onInputDown.add(selectElement);
-        }
-    }
     var rowElem = element.posY;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = getElement(i, rowElem);
@@ -138,13 +132,6 @@ function PowerA(element) {
 //Power B
 function PowerB(element) {
     allowInput = false;
-    for (var i = 0; i < BOARD_COLS; i++) {
-        for (var j = 0; j < BOARD_ROWS; j++) {
-            var elem = getElement(i, j);
-            elem.events.onInputDown.remove(PowerB);
-            elem.events.onInputDown.add(selectElement);
-        }
-    }
     var colElem = element.posX;
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = getElement(colElem, i);
@@ -159,13 +146,6 @@ function PowerB(element) {
 //Power C
 function PowerC(element) {
     allowInput = false;
-    for (var i = 0; i < BOARD_COLS; i++) {
-        for (var j = 0; j < BOARD_ROWS; j++) {
-            var elem = getElement(i, j);
-            elem.events.onInputDown.remove(PowerC);
-            elem.events.onInputDown.add(selectElement);
-        }
-    }
     var rowElem = element.posY;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = getElement(i, rowElem);
@@ -230,15 +210,40 @@ function fillBoard() {
 // select an element and remember its starting position
 function selectElement(element) {
     if (allowInput) {
-        if (selectedElement !== null && typeof selectedElement !== 'undefined') {
-            if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, element.posX, element.posY)) {
-                if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
-                    tempShiftedElem = element;
-                    allowInput = false;
-                    //Swap animation
-                    swapElements(selectedElement, tempShiftedElem);
-                    //Check game logic
-                    game.time.events.add(300, checkGame);
+        if (gamePanel.selectedPower !== null) {
+            if (gamePanel.selectedPower.name === "PowerA") {
+                PowerA(element);
+            }
+            else if (gamePanel.selectedPower.name === "PowerB") {
+                PowerB(element);
+            }
+            else if (gamePanel.selectedPower.name === "PowerC") {
+                PowerC(element);
+            }
+            
+            gamePanel.selectedPower = null;
+        }
+        else {
+            if (selectedElement !== null && typeof selectedElement !== 'undefined') {
+                if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, element.posX, element.posY)) {
+                    if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
+                        tempShiftedElem = element;
+                        allowInput = false;
+                        //Swap animation
+                        swapElements(selectedElement, tempShiftedElem);
+                        //Check game logic
+                        game.time.events.add(300, checkGame);
+                    }
+                } else {
+                    if (selection !== null && typeof selection !== 'undefined') {
+                        selection.kill();
+                    }
+                    selectedElement = element;
+                    selectedElementStartPos.x = element.posX;
+                    selectedElementStartPos.y = element.posY;
+                    selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
+                    selection.width = selectedElement.width;
+                    selection.height = selectedElement.height;
                 }
             } else {
                 if (selection !== null && typeof selection !== 'undefined') {
@@ -251,16 +256,6 @@ function selectElement(element) {
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
-        } else {
-            if (selection !== null && typeof selection !== 'undefined') {
-                selection.kill();
-            }
-            selectedElement = element;
-            selectedElementStartPos.x = element.posX;
-            selectedElementStartPos.y = element.posY;
-            selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
-            selection.width = selectedElement.width;
-            selection.height = selectedElement.height;
         }
     }
 }

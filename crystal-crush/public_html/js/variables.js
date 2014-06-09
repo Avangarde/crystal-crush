@@ -44,5 +44,6 @@ var selection;
 var stillGame;
 var numMoves=50;
 
+
 var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
 var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
