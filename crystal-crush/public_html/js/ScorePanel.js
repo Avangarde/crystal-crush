@@ -137,9 +137,8 @@ ScorePanel.prototype = {
         } else {
             points = ((MATCH_MIN * 3 + 1) * seq);            
         }
-        this.score_general = this.score_general + points;        
+        this.score_general += points;        
         this.addMatch2(elem_name, 1);
-        console.log("Vert: " + countVert + " Hor: " + countHoriz + " Seq : " + seq + " Points: " + points);
     },
     sendElementToAlchemy: function(element) {
         alchemyPanel.receiveElement(element);

@@ -108,6 +108,7 @@ function PowerA(element) {
         elem.kill();
     }
     removeKilledElems();
+    scorePanel.score_general += BOARD_COLS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf("PowerA");
     scorePanel.decreaseElement(idx);
@@ -122,6 +123,7 @@ function PowerB(element) {
         elem.kill();
     }
     removeKilledElems();
+    scorePanel.score_general += BOARD_ROWS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf("PowerB");
     scorePanel.decreaseElement(idx);
@@ -141,6 +143,7 @@ function PowerC(element) {
         elem.kill();
     }
     removeKilledElems();
+    scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf("PowerC");
     scorePanel.decreaseElement(idx);
