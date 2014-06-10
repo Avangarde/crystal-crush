@@ -2,11 +2,14 @@ var LOST_MENU_WIDTH = 1500;
 var LOST_MENU_HEIGHT = 751;
 var LOST_BUTTON_WIDTH = 593 / 2;
 var LOST_BUTTON_HEIGHT = 81;
-var lostMenu;
-var buttonPlayAgain;
+
 
 LostPanel = function(game) {
     this.game = game;
+    this.buttonPlayAgain;
+    this.lostMenu;
+    this.score_txt;
+    this.highScore_txt;
 };
 
 LostPanel.prototype = {
@@ -22,7 +25,9 @@ LostPanel.prototype = {
         if (numMoves === 0 || (noPowers() && noMoves())) {
             drawBackground();
             drawButton();
-            localStorage.setItem("highScore",scorePanel.highScore);
+            drawScore();
+            drawHighScore();
+            localStorage.setItem("highScore", scorePanel.highScore);
             game.paused = true;
             game.input.onDown.add(unpause, self);
         }
@@ -43,6 +48,18 @@ function drawButton() {
     buttonPlayAgain.anchor.setTo(0.5, 0.5);
     buttonPlayAgain.height = buttonHeight;
     buttonPlayAgain.width = buttonWidth;
+}
+
+function drawScore() {
+    this.score_txt = game.add.text(canvasWidth / 2, buttonPlayAgain.y + buttonPlayAgain.height + margin, 'Your Score : ' + scorePanel.score_general, style1);
+    this.score_txt.anchor.setTo(0.5, 0.5);
+
+}
+function drawHighScore() {
+    if (scorePanel.score_general === scorePanel.highScore) {
+        this.highScore_txt = game.add.text(canvasWidth / 2, this.score_txt.y + this.score_txt.height + margin, 'New High Score !', style1);
+        this.highScore_txt.anchor.setTo(0.5, 0.5);
+    }
 }
 
 function actionOnClick() {
