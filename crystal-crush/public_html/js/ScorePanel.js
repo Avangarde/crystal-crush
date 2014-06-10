@@ -104,7 +104,8 @@ ScorePanel.prototype = {
     update: function() {
         this.highScore = scorePanel.score_general > scorePanel.highScore ?
                 scorePanel.score_general : scorePanel.highScore;
-        this.score_txt.text = "Score : " + this.score_general;
+        this.score_txt.text = "Score : " + 
+                (gamePanel.beginningGame ? 0 : this.score_general);
         this.highScore_txt.text = "High Score : " + this.highScore;
         this.moves_txt.text = "Moves Left : " + numMoves;
         for (var i = 0; i < panelElements.length; i++) {
@@ -114,7 +115,7 @@ ScorePanel.prototype = {
     },
     addMatch2: function(elem_name, count) {
         var idx = panelElements.indexOf(elem_name);
-        this.countElems[idx] += count;
+        this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);
     },
     addMatch: function(countHoriz, countVert, elem_name) {
         if (countHoriz < MATCH_MIN) {
