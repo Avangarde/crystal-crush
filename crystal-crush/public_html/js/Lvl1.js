@@ -39,7 +39,7 @@ function animationCamera() {
 CrystalCrush.Lvl1.prototype = {
 
 preload: function () {
-    game.load.image('background', 'assets/background.png');
+    game.load.image('background', 'assets/kitchenLevel.png');
     game.load.text('crystals', 'files/crystals.txt');
     game.load.text('highScore', 'files/highScore');
 
