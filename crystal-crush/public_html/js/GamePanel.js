@@ -13,6 +13,7 @@ GamePanel = function(game, x, y, width, height) {
     this.internalWidth = this.width - 2 * margin;
     this.internalHeight = this.height - 2 * margin;
     this.selectedPower;
+    this.sequence = 0;
 };
 
 GamePanel.prototype = {
@@ -306,17 +307,20 @@ function checkAndKillElemMatches(elem) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            gamePanel.sequence++;
+            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         } else if (countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            gamePanel.sequence++;
+            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         } else if (countVert >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             matched = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            gamePanel.sequence++;
+            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         }
         else {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
@@ -449,6 +453,7 @@ function boardRefilled() {
     }
     else {
         allowInput = true;
+        gamePanel.sequence = 0;
     }
     lostPanel.lost();
 }
