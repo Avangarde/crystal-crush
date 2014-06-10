@@ -53,7 +53,7 @@ ScorePanel.prototype = {
         //Score
         this.score_txt = game.add.text(this.x + this.width * 0.15, this.y + margin, '' + this.score_general, style1);
         this.highScore_txt = game.add.text(this.x + this.width * 0.15, this.score_txt.height + margin, '' + this.highScore, style1);
-        this.moves_txt = game.add.text(this.x + this.width * 0.15, 2 * this.highScore_txt.height + margin, '' + numMoves, style1);
+        this.moves_txt = game.add.text(this.x + this.width * 0.15, 2 * this.highScore_txt.height + margin, '' + this.game.numMoves, style1);
 
         //Elems_img
         var img_size = this.width * 0.20;
@@ -107,7 +107,7 @@ ScorePanel.prototype = {
         this.score_txt.text = "Score : " +
                 (gamePanel.beginningGame ? 0 : this.score_general);
         this.highScore_txt.text = "High Score : " + this.highScore;
-        this.moves_txt.text = "Moves Left : " + numMoves;
+        this.moves_txt.text = "Moves Left : " + this.game.numMoves;
         for (var i = 0; i < panelElements.length; i++) {
             this.txt_group[i].text = this.countElems[i];
         }

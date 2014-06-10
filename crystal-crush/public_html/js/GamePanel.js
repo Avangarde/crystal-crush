@@ -457,27 +457,9 @@ function boardRefilled() {
             scorePanel.score_general = 0;
             gamePanel.beginningGame = false;
         } else if (gamePanel.rightMove) {
-            --numMoves;
+            --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
     }
     lostPanel.lost();
-}
-
-/**
- * Returns true if there's no more possible moves, else otherwise
- * @returns {Boolean}
- */
-function noMoves() {
-    //TODO Verify no more moves
-    return false;
-}
-
-/**
- * Returns true if there's no more powers, else otherwise
- * @returns {Boolean}
- */
-function noPowers() {
-    //TODO Verify no Powers
-    return false;
 }
