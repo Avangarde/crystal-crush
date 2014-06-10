@@ -47,15 +47,25 @@ AlchemyPanel.prototype = {
         this.elementToAdd;
     },
     update: function() {
-        if (game.input.activePointer.justReleased()) {
+        if (game.input.activePointer.justReleased() && allowInput) {
             if (this.elementToAdd !== null && typeof this.elementToAdd !== 'undefined') {
                 if (this.elementToAdd.x !== this.elementToAdd.startX || this.elementToAdd.y !== this.elementToAdd.startY) {
                     if (this.elementToAdd.x + (this.elementToAdd.width/2) >= this.gridX && this.elementToAdd.x + (this.elementToAdd.width/2) <= this.gridX + this.gridWidth
                             && this.elementToAdd.y + this.elementToAdd.height/2 >= this.gridY  && this.elementToAdd.y + this.elementToAdd.height/2 <= this.gridY + this.gridHeight) {
-                        this.addElementToGrid();
+                        this.addElementToGrid();                        
+                    } else {
+                        if (this.elementToAdd.isIntern) {
+                            scorePanel.addMatch2(this.elementToAdd.name, 1);
+                            this.elementToAdd.kill();
+                            this.setElementPosition(this.elementToAdd, -1, -1);                            
+                        }
                     }
-                    this.tweenElemPos(this.elementToAdd, this.elementToAdd.startX, this.elementToAdd.startY,
-                            Phaser.Math.distance(this.elementToAdd.startX, this.elementToAdd.startY, this.elementToAdd.x, this.elementToAdd.y) / canvasWidth);
+                    if (!this.elementToAdd.isIntern) {
+                        this.tweenElemPos(this.elementToAdd, this.elementToAdd.startX, this.elementToAdd.startY,
+                                Phaser.Math.distance(this.elementToAdd.startX, this.elementToAdd.startY, this.elementToAdd.x, this.elementToAdd.y) / canvasWidth);
+                    } else {
+                        this.elementToAdd = null;
+                    }
                 }
             }
         }
@@ -64,6 +74,7 @@ AlchemyPanel.prototype = {
         this.elementToAdd = element;
         this.elementToAdd.startX = element.x;
         this.elementToAdd.startY = element.y;
+        this.elementToAdd.isIntern = false;
     },
     calcElementId: function(posX, posY) {
         return posX + posY * BOARD_COLS;
@@ -91,18 +102,38 @@ AlchemyPanel.prototype = {
         if (curX < alchemyPanel.columns && curY < alchemyPanel.rows) {
             if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
                 
-                if (scorePanel.decreaseElement(alchemyPanel.elementToAdd.id)) {
+                if (alchemyPanel.elementToAdd.isIntern || scorePanel.decreaseElement(alchemyPanel.elementToAdd.index)) {
                     var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
                             curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
 
                     elem.width = ELEM_SIZE;
                     elem.height = ELEM_SIZE;
+                    elem.name = elem.key;
+                    elem.index = alchemyPanel.elementToAdd.index;
+                    elem.inputEnabled = true;
+                    elem.input.enableDrag(false, true);
+                    elem.events.onInputDown.add(alchemyPanel.selectInternalElement);
                     alchemyPanel.setElementPosition(elem, curX, curY);
+                    if (alchemyPanel.elementToAdd.isIntern) {
+                        alchemyPanel.elementToAdd.kill();
+                        alchemyPanel.setElementPosition(alchemyPanel.elementToAdd, -1, -1);
+                    }
                 } else {
                     //alchemyPanel.elementToAdd = null;
                 }
+            } else { 
+                if (alchemyPanel.elementToAdd.isIntern) {
+                    alchemyPanel.tweenElemPos(alchemyPanel.elementToAdd, alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY,
+                                Phaser.Math.distance(alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY, alchemyPanel.elementToAdd.x, alchemyPanel.elementToAdd.y) / alchemyPanel.gridWidth);
+                }
             }
         }
+    },
+    selectInternalElement: function(element) {
+        alchemyPanel.elementToAdd = element;
+        alchemyPanel.elementToAdd.startX = element.x;
+        alchemyPanel.elementToAdd.startY = element.y;        
+        alchemyPanel.elementToAdd.isIntern = true;
     },
     createCrystal: function() {
         var grille = [];
