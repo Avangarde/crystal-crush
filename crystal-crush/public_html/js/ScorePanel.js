@@ -74,7 +74,7 @@ ScorePanel.prototype = {
             elem.width = img_size;
             elem.height = img_size;
             elem.name = panelElements[i];
-            elem.id = i;
+            elem.index = i;
             elem.inputEnabled = true;
             if (i < elemNames.length) {
                 elem.events.onInputDown.add(this.sendElementToAlchemy);
@@ -82,7 +82,6 @@ ScorePanel.prototype = {
             else {
                 elem.events.onInputDown.add(this.sendPowerToGame);
             }
-            elem.inputEnabled = true;
         }
 
         //Elems_count
@@ -144,7 +143,7 @@ ScorePanel.prototype = {
         alchemyPanel.receiveElement(element);
     },
     sendPowerToGame: function(element) {
-        if (scorePanel.countElems[element.id] > 0) {
+        if (scorePanel.countElems[element.index] > 0) {
             gamePanel.receivePower(element);
         }
     },
@@ -159,8 +158,8 @@ ScorePanel.prototype = {
             return false;
         }
     },
-    getElement: function(id) {
-        return scorePanel.img_group.iterate("id", id, Phaser.Group.RETURN_CHILD);
+    getElement: function(index) {
+        return scorePanel.img_group.iterate("index", index, Phaser.Group.RETURN_CHILD);
     },
     actionOnClick: function() {
         alchemyPanel.elementToAdd = null;
