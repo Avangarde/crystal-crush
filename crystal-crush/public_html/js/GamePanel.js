@@ -33,6 +33,7 @@ GamePanel.prototype = {
         selectedElementStartPos = {x: 0, y: 0};
         this.selectedPower = null;
         fillBoard();
+        scorePanel.score_general=0;
         allowInput = true;
     },
     update: function() {
