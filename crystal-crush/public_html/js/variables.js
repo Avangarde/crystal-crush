@@ -27,10 +27,11 @@ var CU = "CU";
 var ZN = "ZN";
 var NA = "NA";
 var CL = "CL";
-var A = "A";
-var B = "B";
+var C = "C";
+var H = "H";
+var O = "O";
 var SELECT = "SELECT";
-var elemNames = [CU, ZN, NA, CL, A, B];
+var elemNames = [CU, NA, CL, C, H, O];
 var powerNames = ["PowerA","PowerB","PowerC"];
 var panelElements = [];
 

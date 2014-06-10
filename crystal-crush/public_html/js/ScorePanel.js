@@ -26,14 +26,6 @@ ScorePanel = function(game, x, y, width, height) {
 };
 
 ScorePanel.prototype = {
-preload: function() {
-             game.load.image('scorePanelBackground', 'assets/scorePanel.png');
-             game.load.spritesheet('createElement', 'assets/buttons/button_create_element.png', BUTTONWIDTH, BUTTONHEIGHT);
-             game.load.image('camera', 'assets/camera.png');
-             game.load.image('PowerA', 'assets/sprites/BluePower.png');
-             game.load.image('PowerB', 'assets/sprites/VioletPower.png');
-             game.load.image('PowerC', 'assets/sprites/GreenPower.png');
-         },
 create: function() {
 
             panelElements = elemNames.concat(powerNames);

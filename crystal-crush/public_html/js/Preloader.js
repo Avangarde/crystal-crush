@@ -36,8 +36,9 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(ZN, 'assets/sprites/Zn.png');
         this.game.load.image(NA, 'assets/sprites/Na.png');
         this.game.load.image(CL, 'assets/sprites/Cl.png');
-        this.game.load.image(A, 'assets/sprites/A.png');
-        this.game.load.image(B, 'assets/sprites/B.png');
+        this.game.load.image(C, 'assets/sprites/C.png');
+        this.game.load.image(H, 'assets/sprites/H.png');
+        this.game.load.image(O, 'assets/sprites/O.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');        
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
         
@@ -56,7 +57,8 @@ CrystalCrush.Preloader.prototype = {
 
         //LostPanel
         this.game.load.image('lost', 'assets/lost.png');
-        this.game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
+        this.game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
+        this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
     },
     create: function() {
