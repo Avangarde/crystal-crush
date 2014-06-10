@@ -51,6 +51,7 @@ preload: function () {
     gamePanel.preload();
     scorePanel.preload();
     alchemyPanel.preload();
+    lostPanel.preload();
          },
 create : function () {
     game.world.setBounds(-canvasWidth + scorePanel, 0, 2 * canvasWidth - scorePanel, canvasHeight);
@@ -61,7 +62,8 @@ create : function () {
     gamePanel.create();
     alchemyPanel.create();
     scorePanel.create();
-    scorePanel.setHighScore(parseInt(game.cache.getText('highScore')));
+    scorePanel.highScore = localStorage.getItem("highScore") === null ? 
+    0 : localStorage.getItem("highScore");
 
     var t = game.cache.getText('crystals');
     crystals = t.split('\n');

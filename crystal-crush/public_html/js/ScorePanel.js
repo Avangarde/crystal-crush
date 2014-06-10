@@ -102,11 +102,11 @@ ScorePanel.prototype = {
 
     },
     update: function() {
+        this.highScore = scorePanel.score_general > scorePanel.highScore ?
+                scorePanel.score_general : scorePanel.highScore;
         this.score_txt.text = "Score : " + this.score_general;
         this.highScore_txt.text = "High Score : " + this.highScore;
         this.moves_txt.text = "Moves Left : " + numMoves;
-        //TODO Refresh High Score
-        //TODO Count # elements
         for (var i = 0; i < panelElements.length; i++) {
             this.txt_group[i].text = this.countElems[i];
         }
@@ -163,7 +163,7 @@ ScorePanel.prototype = {
                     scorePanel.getElement(i).input.disableDrag();
                 }
             }
-            this.inAlchemyPanel = true;            
+            this.inAlchemyPanel = true;
         } else {
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
             for (var i = 0; i < panelElements.length; i++) {
@@ -176,6 +176,7 @@ ScorePanel.prototype = {
                 }
             }
             this.inAlchemyPanel = false;
+            gamePanel.selectedPower = null;
         }
     }, setButtonFrame: function() {
         if (this.inAlchemyPanel) {
@@ -183,8 +184,5 @@ ScorePanel.prototype = {
         } else {
             buttonGame.setFrames(2, 1, 1, 1);
         }
-    },
-    setHighScore: function(score) {
-        this.highScore = score;
     }
 };

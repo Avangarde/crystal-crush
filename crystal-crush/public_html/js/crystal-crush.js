@@ -14,7 +14,6 @@ function preload() {
 
     game.load.image('background', 'assets/background.png');
     game.load.text('crystals', 'files/crystals.txt');
-    game.load.text('highScore', 'files/highScore');
 
     gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
     scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel, 0);
