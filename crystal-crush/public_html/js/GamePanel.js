@@ -13,6 +13,8 @@ GamePanel = function(game, x, y, width, height) {
     this.internalWidth = this.width - 2 * margin;
     this.internalHeight = this.height - 2 * margin;
     this.selectedPower;
+    this.beginningGame = true;
+    this.rightMove = false;
     this.sequence = 0;
 };
 
@@ -459,6 +461,13 @@ function boardRefilled() {
     else {
         allowInput = true;
         gamePanel.sequence = 0;
+        if (gamePanel.beginningGame) {
+            scorePanel.score_general = 0;
+            gamePanel.beginningGame = false;
+        } else if (gamePanel.rightMove) {
+            --(this.game.numMoves);
+            gamePanel.rightMove = false;
+        }
     }
     lostPanel.lost();
 }

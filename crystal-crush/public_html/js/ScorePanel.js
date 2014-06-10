@@ -56,7 +56,7 @@ create: function() {
             this.highScore_txt = game.add.text(this.x + this.width * 0.15, 
                     this.y + this.score_txt.height + margin, '' + this.highScore, style1);
             this.moves_txt = game.add.text(this.x + this.width * 0.15,
-                    this.highScore_txt.y +  this.highScore_txt.height + margin, '' + numMoves, style1);
+                    this.highScore_txt.y +  this.highScore_txt.height + margin, '' + this.game.numMoves, style1);
 
             elemsPanelX = scorePanel.x + margin;
             elemsPanelY = this.moves_txt.y + this.moves_txt.height + margin;
@@ -185,7 +185,7 @@ update: function() {
                scorePanel.score_general : scorePanel.highScore;
                this.score_txt.text = "Score : " + this.score_general;
                this.highScore_txt.text = "High Score : " + this.highScore;
-               this.moves_txt.text = "Moves Left : " + numMoves;
+               this.moves_txt.text = "Moves Left : " + this.game.numMoves;
                for (var i = 0; i < panelElements.length; i++) {
                this.txt_group[i].text = this.countElems[i];
                }
