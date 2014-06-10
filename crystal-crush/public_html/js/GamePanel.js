@@ -14,6 +14,7 @@ GamePanel = function(game, x, y, width, height) {
     this.internalHeight = this.height - 2 * margin;
     this.selectedPower;
     this.beginningGame = true;
+    this.rightMove = false;
 };
 
 GamePanel.prototype = {
@@ -288,7 +289,6 @@ function swapElemPosition(elem1, elem2) {
     var tempPosY = elem1.posY;
     setElementPosition(elem1, elem2.posX, elem2.posY);
     setElementPosition(elem2, tempPosX, tempPosY);
-    --numMoves;
 }
 
 function checkAndKillElemMatches(elem) {
@@ -306,16 +306,19 @@ function checkAndKillElemMatches(elem) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
+            gamePanel.rightMove = true;
             stillGame = true;
             scorePanel.addMatch(countHoriz, countVert, elem.key);
         } else if (countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
+            gamePanel.rightMove = true;
             stillGame = true;
             scorePanel.addMatch(countHoriz, countVert, elem.key);
         } else if (countVert >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             matched = true;
+            gamePanel.rightMove = true;
             stillGame = true;
             scorePanel.addMatch(countHoriz, countVert, elem.key);
         }
@@ -323,6 +326,7 @@ function checkAndKillElemMatches(elem) {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
                 if (!matched && tempShiftedElem !== null) {
                     game.time.events.add(300, swapNoMatch, this, elem);
+                    gamePanel.rightMove = false;
                 }
             }
             matched = false;
@@ -369,7 +373,6 @@ function killElemRange(fromX, fromY, toX, toY) {
         for (var j = fromY; j <= toY; j++) {
             var elem = getElement(i, j);
             elem.kill();
-            //score_general ++;
         }
     }
 }
@@ -452,7 +455,10 @@ function boardRefilled() {
         allowInput = true;
         if (gamePanel.beginningGame) {
             scorePanel.score_general = 0;
-            gamePanel.beginningGame=false;
+            gamePanel.beginningGame = false;
+        } else if (gamePanel.rightMove) {
+            --numMoves;
+            gamePanel.rightMove = false;
         }
     }
     lostPanel.lost();

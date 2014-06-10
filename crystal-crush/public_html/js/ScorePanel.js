@@ -104,7 +104,7 @@ ScorePanel.prototype = {
     update: function() {
         this.highScore = scorePanel.score_general > scorePanel.highScore ?
                 scorePanel.score_general : scorePanel.highScore;
-        this.score_txt.text = "Score : " + 
+        this.score_txt.text = "Score : " +
                 (gamePanel.beginningGame ? 0 : this.score_general);
         this.highScore_txt.text = "High Score : " + this.highScore;
         this.moves_txt.text = "Moves Left : " + numMoves;
