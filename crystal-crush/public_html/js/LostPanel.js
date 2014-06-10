@@ -13,10 +13,6 @@ LostPanel = function(game) {
 };
 
 LostPanel.prototype = {
-    preload: function() {
-        lostMenu = this.game.load.image('lost', 'assets/lost.png');
-        game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
-    },
     create: function() {
     },
     update: function() {
@@ -63,7 +59,8 @@ function drawHighScore() {
 }
 
 function actionOnClick() {
-    window.location.reload();
+    //window.location.reload();
+    this.game.state.start('lvl1', CrystalCrush.Lvl1);
 }
 
 function unpause(event) {

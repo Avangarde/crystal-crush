@@ -3,22 +3,9 @@ CrystalCrush.Home = function(){//game){
 }
 
 CrystalCrush.Home.prototype = {
-
-preload: function () {
-             game.load.image('title','assets/Home/Title.png');
-             game.load.image('lvl1','assets/Home/lvl1.png');
-             game.load.image('lvl2','assets/Home/lvl2.png');
-             game.load.image('lvl3','assets/Home/lvl3.png');
-
-	     game.load.image('background', 'assets/Home/backgroundTitleScreen.png');
-
-             game.load.image('highscore_img','assets/Home/highscore.png');
-	     game.load.image('about','assets/Home/about.png');
-
-         },
 create : function () {
 
-	     var background = game.add.sprite(0,0, 'background');
+	     var background = game.add.sprite(0,0, 'backgroundHome');
 	     background.width = canvasWidth;
              background.height = canvasHeight;
 
