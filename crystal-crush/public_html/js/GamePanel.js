@@ -14,6 +14,8 @@ GamePanel = function(game, x, y, width, height) {
     this.internalHeight = this.height - 2 * margin;
     this.selectedPower;
     this.sequence = 0;
+    this.fx;
+
 };
 
 GamePanel.prototype = {
@@ -26,8 +28,14 @@ GamePanel.prototype = {
         this.game.load.image(B, 'assets/sprites/B.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
+
+        this.game.load.audio('sound_fx', 'assets/audio/lost.ogg');
     },
     create: function() {
+        this.fx = game.add.audio('sound_fx');
+
+        this.fx.addMarker('dogui', 1, 1.0);
+
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
@@ -368,6 +376,7 @@ function countSameElemElements(elem, moveX, moveY) {
 
 // kill all elements from a starting position to an end position
 function killElemRange(fromX, fromY, toX, toY) {
+    gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
     toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
