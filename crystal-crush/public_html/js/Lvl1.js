@@ -1,5 +1,6 @@
 CrystalCrush.Lvl1 = function(game){
     this.game = game;
+    this.game.moves=21;
 };
 
 var gamePanel = null;
