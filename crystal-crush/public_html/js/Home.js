@@ -1,8 +1,3 @@
-
-//////////////
-//////////HOME
-//////////////
-
 CrystalCrush.Home = function(){//game){
     //this.game = game;
 }
@@ -14,7 +9,7 @@ preload: function () {
              game.load.image('lvl1','assets/Home/lvl1.png');
              game.load.image('lvl2','assets/Home/lvl2.png');
              game.load.image('lvl3','assets/Home/lvl3.png');
-             game.load.image('highscore','assets/Home/highscore.png');
+             game.load.image('highscore_img','assets/Home/highscore.png');
 
          },
 create : function () {
@@ -34,7 +29,7 @@ create : function () {
              b3.width = canvasWidth;
              b3.height = canvasHeight*0.2;
 
-             var b4 = game.add.button(0,canvasHeight*0.8, 'highscore', this.actionToHighScore, this,0,0,0);
+             var b4 = game.add.button(0,canvasHeight*0.8, 'highscore_img', this.actionToHighScore, this,0,0,0);
              b4.width = canvasWidth;
              b4.height = canvasHeight*0.2;
          },
@@ -49,7 +44,7 @@ actionToLvl3 : function(){
     //this.game.state.start('lvl3', CrystalCrush.Lvl3);
 },
 actionToHighScore : function(){
-    //this.game.state.start('highscore', CrystalCrush.HighScore);
+    this.game.state.start('highscore');  //, CrystalCrush.HighScore);
 }
 }
 
