@@ -27,10 +27,11 @@ var CU = "CU";
 var ZN = "ZN";
 var NA = "NA";
 var CL = "CL";
-var A = "A";
-var B = "B";
+var C = "C";
+var H = "H";
+var O = "O";
 var SELECT = "SELECT";
-var elemNames = [CU, ZN, NA, CL, A, B];
+var elemNames = [CU, NA, CL, C, H, O];
 var powerNames = ["PowerA","PowerB","PowerC"];
 var panelElements = [];
 
@@ -43,7 +44,6 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 var stillGame;
-var numMoves=21;
 
 var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
 var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
