@@ -23,8 +23,8 @@ GamePanel.prototype = {
         this.game.load.image(ZN, 'assets/sprites/Zn.png');
         this.game.load.image(NA, 'assets/sprites/Na.png');
         this.game.load.image(CL, 'assets/sprites/Cl.png');
-        this.game.load.image(A, 'assets/sprites/A.png');
-        this.game.load.image(B, 'assets/sprites/B.png');
+        this.game.load.image(A, 'assets/sprites/C.png');
+        this.game.load.image(B, 'assets/sprites/H.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
     },
