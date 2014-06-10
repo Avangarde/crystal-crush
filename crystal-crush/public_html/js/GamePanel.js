@@ -13,8 +13,7 @@ GamePanel = function(game, x, y, width, height) {
     this.internalWidth = this.width - 2 * margin;
     this.internalHeight = this.height - 2 * margin;
     this.selectedPower;
-    this.beginningGame = true;
-    this.rightMove = false;
+    this.sequence = 0;
 };
 
 GamePanel.prototype = {
@@ -108,6 +107,7 @@ function PowerA(element) {
         elem.kill();
     }
     removeKilledElems();
+    scorePanel.score_general += BOARD_COLS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf("PowerA");
     scorePanel.decreaseElement(idx);
@@ -122,6 +122,7 @@ function PowerB(element) {
         elem.kill();
     }
     removeKilledElems();
+    scorePanel.score_general += BOARD_ROWS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf("PowerB");
     scorePanel.decreaseElement(idx);
@@ -141,6 +142,7 @@ function PowerC(element) {
         elem.kill();
     }
     removeKilledElems();
+    scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf("PowerC");
     scorePanel.decreaseElement(idx);
@@ -308,19 +310,22 @@ function checkAndKillElemMatches(elem) {
             matched = true;
             gamePanel.rightMove = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            gamePanel.sequence++;
+            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         } else if (countHoriz >= MATCH_MIN) {
             killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
             matched = true;
             gamePanel.rightMove = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            gamePanel.sequence++;
+            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         } else if (countVert >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
             matched = true;
             gamePanel.rightMove = true;
             stillGame = true;
-            scorePanel.addMatch(countHoriz, countVert, elem.key);
+            gamePanel.sequence++;
+            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         }
         else {
             if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
@@ -453,13 +458,7 @@ function boardRefilled() {
     }
     else {
         allowInput = true;
-        if (gamePanel.beginningGame) {
-            scorePanel.score_general = 0;
-            gamePanel.beginningGame = false;
-        } else if (gamePanel.rightMove) {
-            --(this.game.numMoves);
-            gamePanel.rightMove = false;
-        }
+        gamePanel.sequence = 0;
     }
     lostPanel.lost();
 }
