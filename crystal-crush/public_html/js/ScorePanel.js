@@ -195,18 +195,30 @@ addMatch2: function(elem_name, count) {
                   var idx = panelElements.indexOf(elem_name);
                   this.countElems[idx] += count;
            },
-addMatch: function(countHoriz, countVert, elem_name) {
-                 if (countHoriz < MATCH_MIN) {
-                 this.score_general = this.score_general + countVert;
-                 this.addMatch2(elem_name, 1);
-                 } else if (countVert < MATCH_MIN) {
-                 this.score_general = this.score_general + countHoriz;
-                 this.addMatch2(elem_name, 1);
-                 } else {
-                 this.score_general = this.score_general + (countHoriz + countVert) * 3;
-                 this.addMatch2(elem_name, 1);
-                 }
-          },
+    addMatch: function(countHoriz, countVert, elem_name, seq) {
+        var points = 0;
+        if (countHoriz < MATCH_MIN) {
+            if (countVert === MATCH_MIN) {
+                points = (MATCH_MIN * seq);
+            } else if (countVert === MATCH_MIN + 1) {
+                points = (MATCH_MIN * 2 * seq);
+            } else if (countVert > MATCH_MIN + 1) {
+                points = ((MATCH_MIN * 3 + 1) * seq);
+            }            
+        } else if (countVert < MATCH_MIN) {
+            if (countHoriz === MATCH_MIN) {
+                points = (MATCH_MIN * seq);
+            } else if (countHoriz === MATCH_MIN + 1) {
+                points = (MATCH_MIN * 2 * seq);
+            } else if (countHoriz > MATCH_MIN + 1) {
+                points = ((MATCH_MIN * 3 + 1) * seq);
+            } 
+        } else {
+            points = ((MATCH_MIN * 3 + 1) * seq);            
+        }
+        this.score_general += points;        
+        this.addMatch2(elem_name, 1);
+    },
 sendElementToAlchemy: function(element) {
                           alchemyPanel.receiveElement(element);
                       },
