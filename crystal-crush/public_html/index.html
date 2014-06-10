@@ -20,6 +20,7 @@
         <script type="text/javascript" src="js/Preloader.js"></script>
         <script type="text/javascript" src="js/Boot.js"></script>
         <script type="text/javascript" src="js/Lvl1.js"></script>
+        <script type="text/javascript" src="js/HighScore.js"></script>
         <!-- <script type="text/javascript" src="js/crystal-crush.js"></script> -->
     </head>
 
@@ -36,7 +37,7 @@
             game.state.add('lvl1', CrystalCrush.Lvl1);
             //game.state.add('lvl2', CrystalCrush.Lvl2);
             //game.state.add('lvl3', CrystalCrush.Lvl3);
-            //game.state.add('highScore', CrystalCrush.HighScore);
+            game.state.add('highscore', CrystalCrush.HighScore);
 
             game.state.start('boot');
     })();
