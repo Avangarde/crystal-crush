@@ -25,11 +25,6 @@ AlchemyPanel = function(game, x, y, width, height) {
 };
 
 AlchemyPanel.prototype = {
-    preload: function() {
-        this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
-        this.game.load.image('grid', 'assets/sprites/Grille_2.png');
-        this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', CREATE_BUTTON_WIDTH, CREATE_BUTTON_HEIGHT);
-    },
     create: function() {
         this.background = game.add.sprite(this.x, this.y, 'alchemyPanel');
         this.background.width = this.width;
@@ -164,6 +159,7 @@ AlchemyPanel.prototype = {
             }
         }
         if (guest !== "no match") {
+            scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
         }
         alchemyPanel.killElemRange(0, 0, 3, 3);

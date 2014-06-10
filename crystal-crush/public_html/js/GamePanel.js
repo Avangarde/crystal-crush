@@ -19,16 +19,6 @@ GamePanel = function(game, x, y, width, height) {
 };
 
 GamePanel.prototype = {
-    preload: function() {
-        this.game.load.image(CU, 'assets/sprites/Cu.png');
-        this.game.load.image(ZN, 'assets/sprites/Zn.png');
-        this.game.load.image(NA, 'assets/sprites/Na.png');
-        this.game.load.image(CL, 'assets/sprites/Cl.png');
-        this.game.load.image(A, 'assets/sprites/C.png');
-        this.game.load.image(B, 'assets/sprites/H.png');
-        this.game.load.image(SELECT, 'assets/sprites/selection.png');
-        this.game.load.image('gamePanel', 'assets/gamePanel.png');
-    },
     create: function() {
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
