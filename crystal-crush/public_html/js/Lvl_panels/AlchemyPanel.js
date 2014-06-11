@@ -135,9 +135,9 @@ AlchemyPanel.prototype = {
         for(var i = 0; i < alchemyPanel.columns; i++){
            var toAdd = "";
            for(var j = 0; j < alchemyPanel.rows; j++){
-               var elem = alchemyPanel.getElement(i,j);
+               var elem = alchemyPanel.getElement(j,i);
                if(elem === null){
-                   toAdd += 'X';
+                   toAdd += 'X-';
                }
                else{
                    toAdd += elem.key;

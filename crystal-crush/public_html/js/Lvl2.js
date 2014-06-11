@@ -1,6 +1,6 @@
-CrystalCrush.Lvl1 = function(game) {
+CrystalCrush.Lvl2 = function(game) {
     this.game = game;
-    this.game.numMoves;    
+    this.game.numMoves;
     this.game.targetScore;
     this.game.activeLevel;
     this.game.nextLevel;
@@ -14,15 +14,17 @@ var winPanel = null;
 
 var crystals;
 
-CrystalCrush.Lvl1.prototype = {
+CrystalCrush.Lvl2.prototype = {
     preload: function() {
-        this.game.numMoves = 30;
-        this.game.targetScore = 15;
-        this.game.activeLevel = "lvl1";
-        this.game.nextLevel = "lvl2";
         
-        elemNames = [NA, CL, C, H, O, CU];
-        powerNames = [SALT, ICE, SUGAR];
+        this.game.numMoves = 30;
+        this.game.targetScore = 2000;
+        this.game.activeLevel = "lvl2";
+        this.game.nextLevel = "lvl1";
+        
+        elemNames = [AL, O, CR, SI, TI, ZN];
+        powerNames = [CORUNDUM, SAPPHIRE, RUBY, QUARTZ];
+        
         allowInput = true;
         elements = null;
         selectedElement = null;
@@ -42,7 +44,7 @@ CrystalCrush.Lvl1.prototype = {
     },
     create: function() {
         game.world.setBounds(-canvasWidth + scorePanel, 0, 2 * canvasWidth - scorePanel, canvasHeight);
-        this.background = game.add.sprite(-canvasWidth + scorePanel.width, 0, 'backgroundLvl1');
+        this.background = game.add.sprite(-canvasWidth + scorePanel.width, 0, 'backgroundLvl2');
         this.background.width = canvasWidth * 2 - scorePanel.width;
         this.background.height = canvasHeight;
 

@@ -15,11 +15,6 @@ LostPanel = function(game) {
 };
 
 LostPanel.prototype = {
-    preload: function() {
-        this.game.load.image('lost', 'assets/lost.png');
-        game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
-        game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
-    },
     create: function() {
     },
     update: function() {
@@ -80,16 +75,13 @@ function unpause(event) {
     var bShareBorders = getButtonBorders(buttonShareFb);
 
     var message = scorePanel.score_general === scorePanel.highScore ?
-            "I got" + scorePanel.score_general + ", a new high score in #CandyCrush, try to beat me !" :
+            "I got " + scorePanel.score_general + ", a new high score in #CrystalCrush, try to beat me !" :
             "I got " + scorePanel.score_general
-            + " points in #CandyCrush, try to beat me!"
+            + " points in #CandyCrush, try to beat me!";
 
     if (event.x > bPlayBorders[0] && event.x < bPlayBorders[1] && event.y > bPlayBorders[2] && event.y < bPlayBorders[3]) {
-        //TODO Uncomment when global variables = 0
-        //        game.paused = false;
-        //        game.state.start('lvl1', CrystalCrush.Lvl1);
-        //TODO Delete when global variables = 0
-        window.location.reload();
+        game.paused = false;
+        this.game.state.start(this.game.activeLevel);
 
     } else if (event.x > bShareBorders[0] && event.x < bShareBorders[1] && event.y > bShareBorders[2] && event.y < bShareBorders[3]) {
         FB.ui({
@@ -101,7 +93,7 @@ function unpause(event) {
                     ),
             link: 'http://avangarde.github.io/crystal-crush/crystal-crush.html',
             picture: 'http://www.hartrao.ac.za/nccs/Esrf.gif'
-        })
+        });
     }
 }
 /**
