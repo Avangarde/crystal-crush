@@ -1,4 +1,5 @@
-var canvasWidth = window.innerWidth;// * 10/16 < window.innerHeight ? window.innerWidth : window.innerHeight * 16/10;
+var game;
+var canvasWidth = window.innerWidth;
 var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
 
@@ -26,14 +27,26 @@ var CU = "CU";
 var ZN = "ZN";
 var NA = "NA";
 var CL = "CL";
-var A = "A";
-var B = "B";
+var C = "C-";
+var H = "H-";
+var O = "O-";
+var AL = "AL";
+var CR = "CR";
+var SI = "SI";
+var TI = "TI";
 var SELECT = "SELECT";
-var elemNames = [CU, ZN, NA, CL, A, B];
+var SALT = "Salt";
+var ICE = "Ice";
+var SUGAR = "Sugar";
+var CORUNDUM = "Corundum";
+var RUBY = "Ruby";
+var SAPPHIRE = "Sapphire";
+var QUARTZ = "Quartz";
+var elemNames = [];
+var powerNames = [];
+var panelElements = [];
 
 var allowInput;
-var animationScreen=false;
-var inAlchemyPanel=false;
 var elements;
 var selectedElement;
 var selectedElementStartPos;
@@ -43,6 +56,7 @@ var matched = false;
 var selection;
 var stillGame;
 
-var tipoFuente = "20px Candela";
-var style1 = { font: "20px Arial", fill: "#ffffff", align: "center" };
-var style2 = { font: "20px Arial", fill: "#00ffff", align: "center" };
+var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
+var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
+
+var CrystalCrush = {};
