@@ -162,13 +162,13 @@ ScorePanel.prototype = {
 
         //Elems_count
         for (var i = 0; i < panelElements.length; i++) {
-            this.countElems[i] = 0;
+            this.countElems[i] = 10;
             var txt = this.game.add.text(elemsX[i] + img_size, elemsY[i] + img_size / 4, '' + this.countElems[i], style1);
             var tmp = txt.height;
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
             this.txt_group[i] = txt;
-            this.countElems[i + 1] = 0;
+            this.countElems[i + 1] = 10;
         }
 
     },

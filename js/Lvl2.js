@@ -1,7 +1,9 @@
 CrystalCrush.Lvl2 = function(game) {
     this.game = game;
-    this.game.numMoves = 30;    
-    this.game.targetScore = 1000;
+    this.game.numMoves;
+    this.game.targetScore;
+    this.game.activeLevel;
+    this.game.nextLevel;
 };
 
 var gamePanel = null;
@@ -15,8 +17,23 @@ var crystals;
 CrystalCrush.Lvl2.prototype = {
     preload: function() {
         
+        this.game.numMoves = 30;
+        this.game.targetScore = 2000;
+        this.game.activeLevel = "lvl2";
+        this.game.nextLevel = "lvl1";
+        
         elemNames = [AL, O, CR, SI, TI, ZN];
         powerNames = [CORUNDUM, SAPPHIRE, RUBY, QUARTZ];
+        
+        allowInput = true;
+        elements = null;
+        selectedElement = null;
+        selectedElementStartPos = null;
+        selectedElemTween = null;
+        tempShiftedElem = null;
+        matched = false;
+        selection = null;
+        stillGame = false;
 
         gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
         scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel, 0);
