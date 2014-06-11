@@ -27,8 +27,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('highscore_img', 'assets/Home/highscore.png');
         this.game.load.image('about', 'assets/Home/about.png');
         
-        this.game.load.image('backgroundLvl1', 'assets/kitchenLevel.png');
-        this.game.load.image('backgroundLvl2', 'assets/beachLevel.png');
+        this.game.load.image('background', 'assets/background.png');
         this.game.load.text('crystals', 'files/crystals.txt');
         this.game.load.text('highScore', 'files/highScore');
         
@@ -40,10 +39,6 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(C, 'assets/sprites/C.png');
         this.game.load.image(H, 'assets/sprites/H.png');
         this.game.load.image(O, 'assets/sprites/O.png');
-        this.game.load.image(AL, 'assets/sprites/Al.png');
-        this.game.load.image(CR, 'assets/sprites/Cr.png');
-        this.game.load.image(SI, 'assets/sprites/Si.png');
-        this.game.load.image(TI, 'assets/sprites/Ti.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');        
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
         
@@ -51,14 +46,9 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('scorePanelBackground', 'assets/scorePanel.png');
         this.game.load.spritesheet('createElement', 'assets/buttons/button_create_element.png', BUTTONWIDTH, BUTTONHEIGHT);
         this.game.load.image('camera', 'assets/camera.png');
-        this.game.load.image(SALT, 'assets/sprites/salt_crystal.png');
-        this.game.load.image(ICE, 'assets/sprites/ice.png');
-        this.game.load.image(SUGAR, 'assets/sprites/sugar_crystal.png');
-        this.game.load.image(CORUNDUM, 'assets/sprites/VioletPower.png');
-        this.game.load.image(SAPPHIRE, 'assets/sprites/sapphire.png');
-        this.game.load.image(RUBY, 'assets/sprites/ruby.png');
-        this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');        
-        
+        this.game.load.image('PowerA', 'assets/sprites/BluePower.png');
+        this.game.load.image('PowerB', 'assets/sprites/VioletPower.png');
+        this.game.load.image('PowerC', 'assets/sprites/GreenPower.png');
         
         //AlchemyPanel
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
@@ -69,10 +59,6 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('lost', 'assets/lost.png');
         this.game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
         this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
-        
-        //WinPanel
-        this.game.load.image('win', 'assets/win.png');
-        this.game.load.spritesheet('nextLevel', 'assets/buttons/next_level.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         
     },
     create: function() {

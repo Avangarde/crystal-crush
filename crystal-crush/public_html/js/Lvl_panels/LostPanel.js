@@ -15,6 +15,11 @@ LostPanel = function(game) {
 };
 
 LostPanel.prototype = {
+    preload: function() {
+        this.game.load.image('lost', 'assets/lost.png');
+        game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
+        game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
+    },
     create: function() {
     },
     update: function() {

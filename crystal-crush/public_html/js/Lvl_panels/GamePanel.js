@@ -86,13 +86,13 @@ GamePanel.prototype = {
         this.selectedPower.startY = element.y;
     },
     runPower: function(element) {
-        if (this.selectedPower.name === SALT) {
+        if (this.selectedPower.name === "PowerA") {
             PowerA(element);
         }
-        else if (this.selectedPower.name === ICE) {
+        else if (this.selectedPower.name === "PowerB") {
             PowerB(element);
         }
-        else if (this.selectedPower.name === SUGAR) {
+        else if (this.selectedPower.name === "PowerC") {
             PowerC(element);
         }
 
@@ -110,7 +110,7 @@ function PowerA(element) {
     removeKilledElems();
     scorePanel.score_general += BOARD_COLS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
-    var idx = panelElements.indexOf(SALT);
+    var idx = panelElements.indexOf("PowerA");
     scorePanel.decreaseElement(idx);
 }
 
@@ -125,7 +125,7 @@ function PowerB(element) {
     removeKilledElems();
     scorePanel.score_general += BOARD_ROWS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
-    var idx = panelElements.indexOf(ICE);
+    var idx = panelElements.indexOf("PowerB");
     scorePanel.decreaseElement(idx);
 }
 
@@ -145,7 +145,7 @@ function PowerC(element) {
     removeKilledElems();
     scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
-    var idx = panelElements.indexOf(SUGAR);
+    var idx = panelElements.indexOf("PowerC");
     scorePanel.decreaseElement(idx);
 }
 
@@ -198,13 +198,13 @@ function fillBoard() {
 function selectElement(element) {
     if (allowInput) {
         if (gamePanel.selectedPower !== null) {
-            if (gamePanel.selectedPower.name === SALT) {
+            if (gamePanel.selectedPower.name === "PowerA") {
                 PowerA(element);
             }
-            else if (gamePanel.selectedPower.name === ICE) {
+            else if (gamePanel.selectedPower.name === "PowerB") {
                 PowerB(element);
             }
-            else if (gamePanel.selectedPower.name === SUGAR) {
+            else if (gamePanel.selectedPower.name === "PowerC") {
                 PowerC(element);
             }
 
@@ -468,7 +468,6 @@ function boardRefilled() {
             --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
-        winPanel.win();
-        lostPanel.lost();
-    }    
+    }
+    lostPanel.lost();
 }
