@@ -64,7 +64,7 @@ WinPanel.prototype = {
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
-            "I got" + scorePanel.score_general + ", a new high score in #CandyCrush, try to beat me !" :
+            "I got " + scorePanel.score_general + ", a new high score in #CrystalCrush, try to beat me !" :
             "I got " + scorePanel.score_general
             + " points in #CandyCrush, try to beat me!";
     FB.ui({
