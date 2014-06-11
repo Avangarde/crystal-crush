@@ -162,9 +162,6 @@ AlchemyPanel.prototype = {
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
         }
-        console.log(guest);
-        console.log(crystals);
-        console.log(grille);
         alchemyPanel.killElemRange(0, 0, 3, 3);
         alchemyPanel.removeKilledElems();
     },

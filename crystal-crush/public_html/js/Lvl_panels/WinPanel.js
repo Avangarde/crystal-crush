@@ -60,7 +60,7 @@ WinPanel.prototype = {
         }
     },        
     playAgain: function() {
-        window.location.reload();
+        this.game.state.start(this.game.activeLevel);
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
@@ -79,6 +79,6 @@ WinPanel.prototype = {
         });
     },
     nextLevel: function() {
-        this.game.state.start('lvl2', CrystalCrush.Lvl2);
+        this.game.state.start(this.game.nextLevel);
     }
 };

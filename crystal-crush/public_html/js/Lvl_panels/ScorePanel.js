@@ -168,7 +168,7 @@ ScorePanel.prototype = {
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
             this.txt_group[i] = txt;
-            this.countElems[i + 1] = 0;
+            this.countElems[i + 1] = 10;
         }
 
     },

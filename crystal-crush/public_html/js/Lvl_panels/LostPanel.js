@@ -80,11 +80,8 @@ function unpause(event) {
             + " points in #CandyCrush, try to beat me!"
 
     if (event.x > bPlayBorders[0] && event.x < bPlayBorders[1] && event.y > bPlayBorders[2] && event.y < bPlayBorders[3]) {
-        //TODO Uncomment when global variables = 0
-        //        game.paused = false;
-        //        game.state.start('lvl1', CrystalCrush.Lvl1);
-        //TODO Delete when global variables = 0
-        window.location.reload();
+        game.paused = false;
+        this.game.state.start(this.game.activeLevel);
 
     } else if (event.x > bShareBorders[0] && event.x < bShareBorders[1] && event.y > bShareBorders[2] && event.y < bShareBorders[3]) {
         FB.ui({
