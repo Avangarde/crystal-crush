@@ -16,10 +16,19 @@ GamePanel = function(game, x, y, width, height) {
     this.beginningGame = true;
     this.rightMove = false;
     this.sequence = 0;
+    this.fx;
+
 };
 
 GamePanel.prototype = {
+    preload: function() {
+        this.game.load.audio('sound_fx', 'assets/audio/lost.ogg');
+    },
     create: function() {
+        this.fx = game.add.audio('sound_fx');
+
+        this.fx.addMarker('dogui', 1, 1.0);
+
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
@@ -77,13 +86,13 @@ GamePanel.prototype = {
         this.selectedPower.startY = element.y;
     },
     runPower: function(element) {
-        if (this.selectedPower.name === "PowerA") {
+        if (this.selectedPower.name === SALT) {
             PowerA(element);
         }
-        else if (this.selectedPower.name === "PowerB") {
+        else if (this.selectedPower.name === ICE) {
             PowerB(element);
         }
-        else if (this.selectedPower.name === "PowerC") {
+        else if (this.selectedPower.name === SUGAR) {
             PowerC(element);
         }
 
@@ -101,7 +110,7 @@ function PowerA(element) {
     removeKilledElems();
     scorePanel.score_general += BOARD_COLS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
-    var idx = panelElements.indexOf("PowerA");
+    var idx = panelElements.indexOf(SALT);
     scorePanel.decreaseElement(idx);
 }
 
@@ -116,7 +125,7 @@ function PowerB(element) {
     removeKilledElems();
     scorePanel.score_general += BOARD_ROWS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
-    var idx = panelElements.indexOf("PowerB");
+    var idx = panelElements.indexOf(ICE);
     scorePanel.decreaseElement(idx);
 }
 
@@ -136,7 +145,7 @@ function PowerC(element) {
     removeKilledElems();
     scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
-    var idx = panelElements.indexOf("PowerC");
+    var idx = panelElements.indexOf(SUGAR);
     scorePanel.decreaseElement(idx);
 }
 
@@ -189,13 +198,13 @@ function fillBoard() {
 function selectElement(element) {
     if (allowInput) {
         if (gamePanel.selectedPower !== null) {
-            if (gamePanel.selectedPower.name === "PowerA") {
+            if (gamePanel.selectedPower.name === SALT) {
                 PowerA(element);
             }
-            else if (gamePanel.selectedPower.name === "PowerB") {
+            else if (gamePanel.selectedPower.name === ICE) {
                 PowerB(element);
             }
-            else if (gamePanel.selectedPower.name === "PowerC") {
+            else if (gamePanel.selectedPower.name === SUGAR) {
                 PowerC(element);
             }
 
@@ -362,6 +371,7 @@ function countSameElemElements(elem, moveX, moveY) {
 
 // kill all elements from a starting position to an end position
 function killElemRange(fromX, fromY, toX, toY) {
+    gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
     toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
@@ -458,6 +468,7 @@ function boardRefilled() {
             --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
-    }
-    lostPanel.lost();
+        winPanel.win();
+        lostPanel.lost();
+    }    
 }
