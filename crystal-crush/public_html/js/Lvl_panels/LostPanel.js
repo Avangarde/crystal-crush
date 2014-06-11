@@ -75,9 +75,9 @@ function unpause(event) {
     var bShareBorders = getButtonBorders(buttonShareFb);
 
     var message = scorePanel.score_general === scorePanel.highScore ?
-            "I got" + scorePanel.score_general + ", a new high score in #CandyCrush, try to beat me !" :
+            "I got " + scorePanel.score_general + ", a new high score in #CrystalCrush, try to beat me !" :
             "I got " + scorePanel.score_general
-            + " points in #CandyCrush, try to beat me!"
+            + " points in #CandyCrush, try to beat me!";
 
     if (event.x > bPlayBorders[0] && event.x < bPlayBorders[1] && event.y > bPlayBorders[2] && event.y < bPlayBorders[3]) {
         game.paused = false;
@@ -93,7 +93,7 @@ function unpause(event) {
                     ),
             link: 'http://avangarde.github.io/crystal-crush/crystal-crush.html',
             picture: 'http://www.hartrao.ac.za/nccs/Esrf.gif'
-        })
+        });
     }
 }
 /**
