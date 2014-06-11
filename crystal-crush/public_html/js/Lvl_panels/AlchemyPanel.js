@@ -135,9 +135,9 @@ AlchemyPanel.prototype = {
         for(var i = 0; i < alchemyPanel.columns; i++){
            var toAdd = "";
            for(var j = 0; j < alchemyPanel.rows; j++){
-               var elem = alchemyPanel.getElement(i,j);
+               var elem = alchemyPanel.getElement(j,i);
                if(elem === null){
-                   toAdd += 'X';
+                   toAdd += 'X-';
                }
                else{
                    toAdd += elem.key;
@@ -162,6 +162,9 @@ AlchemyPanel.prototype = {
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
         }
+        console.log(guest);
+        console.log(crystals);
+        console.log(grille);
         alchemyPanel.killElemRange(0, 0, 3, 3);
         alchemyPanel.removeKilledElems();
     },
