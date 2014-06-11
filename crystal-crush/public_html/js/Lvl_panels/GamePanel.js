@@ -22,12 +22,12 @@ GamePanel = function(game, x, y, width, height) {
 
 GamePanel.prototype = {
     preload: function() {
-        this.game.load.audio('sound_fx', 'assets/audio/lost.ogg');
+        this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
     },
     create: function() {
-        this.fx = game.add.audio('sound_fx');
+        this.fx = this.game.add.audio('coinFx');
 
-        this.fx.addMarker('dogui', 1, 1.0);
+        this.fx.addMarker('dogui', 0.0, 1.0);
 
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
