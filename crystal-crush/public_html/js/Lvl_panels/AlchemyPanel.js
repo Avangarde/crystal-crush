@@ -10,6 +10,7 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.height = height;
     this.background;
     this.grid;
+    this.gridMistake;
     this.alcElements;
     this.columns = 3;
     this.rows = 3;
@@ -29,7 +30,10 @@ AlchemyPanel.prototype = {
         this.background = game.add.sprite(this.x, this.y, 'alchemyPanel');
         this.background.width = this.width;
         this.background.height = this.height;
-        this.grid = game.add.sprite(this.gridX, this.gridY, 'grid');
+	this.gridMistake = game.add.sprite(this.gridX, this.gridY, 'gridMistake');
+	this.gridMistake.width = this.gridWidth;
+        this.gridMistake.height = this.gridHeight;
+	this.grid = game.add.sprite(this.gridX, this.gridY, 'grid');
         this.grid.width = this.gridWidth;
         this.grid.height = this.gridHeight;
         this.grid.inputEnabled = true;
@@ -161,7 +165,12 @@ AlchemyPanel.prototype = {
         if (guest !== "no match") {
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
-        }
+        }else{
+
+	    this.fadeGrid();
+	
+	}
+	
         alchemyPanel.killElemRange(0, 0, 3, 3);
         alchemyPanel.removeKilledElems();
     },
@@ -192,6 +201,18 @@ AlchemyPanel.prototype = {
         }
         return game.add.tween(elem).to(
                 {x: newPosX, y: newPosY}, 100 * durationMultiplier, Phaser.Easing.Linear.None, true);
-    }
+    },
+    fadeGrid: function(){
+	game.add.tween(this.grid).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+	game.time.events.add(Phaser.Timer.SECOND * 1, this.unFadeGrid, this);
+	
+	},
+
+	unFadeGrid: function(){
+	game.add.tween(this.grid).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+	
+	}
+	
+
 };
 

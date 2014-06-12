@@ -64,6 +64,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
         this.game.load.image('grid', 'assets/sprites/Grille_2.png');
         this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', CREATE_BUTTON_WIDTH, CREATE_BUTTON_HEIGHT);
+	this.game.load.image('gridMistake','assets/sprites/Grille_Mistake.png');
 
         //LostPanel
         this.game.load.image('lost', 'assets/lost.png');
