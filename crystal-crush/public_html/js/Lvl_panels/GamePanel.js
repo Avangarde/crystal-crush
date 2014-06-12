@@ -389,16 +389,17 @@ function checkAndKillElemMatches(elem) {
             gamePanel.sequence++;
             scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         }
-    }
-    else {
-        if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
-            if (!matched && tempShiftedElem !== null) {
-                game.time.events.add(300, swapNoMatch, this, elem);
-                gamePanel.rightMove = false;
+        else {
+            if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
+                if (!matched && tempShiftedElem !== null) {
+                    game.time.events.add(300, swapNoMatch, this, elem);
+                    gamePanel.rightMove = false;
+                }
             }
+            matched = false;
         }
-        matched = false;
     }
+
 }
 
 
@@ -607,7 +608,7 @@ function boardRefilled() {
             gamePanel.beginningGame = true;
             for (var i = 0; i < BOARD_COLS; i++) {
                 for (var j = 0; j < BOARD_ROWS; j++) {
-                    var elem  = getElement(i,j);
+                    var elem = getElement(i, j);
                     elem.kill();
                 }
             }
