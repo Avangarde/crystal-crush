@@ -81,68 +81,87 @@ ScorePanel.prototype = {
         this.img_group = game.add.group();
 
         var img_size;
+        var separatorX ;
+        var separatorY ;
+        var separatorW ;
+        var separatorH ;
+
+        var nb_pow = powerNames.length;
+
         if (elemsPanelW < elemsPanelH) {
-            if (0.18 * elemsPanelH < 0.35 * elemsPanelW) {
-                img_size = 0.2 * elemsPanelH;
+            if (elemsPanelH / 5.5 <  elemsPanelW / 2.66) {
+                img_size = elemsPanelH / 5.5;
             } else {
-                img_size = 0.35 * elemsPanelW;
+                img_size = elemsPanelW / 2.66;
             }
 
             for (var i = 0; i < 5; i++) {
-                elemsX[2 * i] = elemsPanelX;
+                elemsX[2 * i] = elemsPanelX + (elemsPanelW / 2 - img_size * 1.33) / 2;
             }
             for (var i = 0; i < 5; i++) {
-                elemsX[2 * i + 1] = elemsPanelX + elemsPanelW * 0.5;
+                elemsX[2 * i + 1] = elemsPanelX + elemsPanelW / 2 + (elemsPanelW / 2 - img_size * 1.33) / 2;
             }
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 3; i++) {
                 elemsY[2 * i] = elemsPanelY + i * img_size;
                 elemsY[2 * i + 1] = elemsY[2 * i];
             }
 
-        } else {
-            if (elemsPanelH / 3.0 < elemsPanelW / 4.0) {
-                img_size = (elemsPanelH / 3.0);
-            } else {
-                img_size = (elemsPanelW / 4.0);
+            var separatorX = elemsPanelX;
+            var separatorY = elemsPanelY + 3 * img_size;
+            var separatorW = elemsPanelW;
+            var separatorH = img_size * 0.5;
+
+            for (var i = 3; i < 5; i++) {
+                elemsY[2 * i] = elemsPanelY + (i+0.5) * img_size;
+                elemsY[2 * i + 1] = elemsY[2 * i];
             }
-            elemsX[0] = elemsPanelX;
+            if(nb_pow == 3){
+                elemsX[8] = elemsPanelX + (elemsPanelW - img_size * 1.33) / 2;
+            }
+
+        } else {
+            if (elemsPanelH / 3.5 < elemsPanelW / ( nb_pow * 1.33) ) {
+                img_size = (elemsPanelH / 3.5);
+            } else {
+                img_size = (elemsPanelW / (nb_pow * 1.33));
+            }
+            elemsX[0] = elemsPanelX + (elemsPanelW/3 - img_size * 4 / 3 ) / 2;
             elemsY[0] = elemsPanelY;
 
-            elemsX[1] = elemsPanelX;
-            elemsY[1] = elemsPanelY + img_size;
+            elemsX[1] = elemsX[0];
+            elemsY[1] = elemsPanelY + img_size ;
 
-            elemsX[2] = elemsPanelX + elemsPanelW / 3;
+            elemsX[2] = elemsPanelX + elemsPanelW/3 + (elemsPanelW/3 - img_size * 4 / 3 ) / 2;
             elemsY[2] = elemsPanelY;
 
             elemsX[3] = elemsX[2];
-            elemsY[3] = elemsPanelY + img_size;
+            elemsY[3] = elemsY[1];
 
-            elemsX[4] = elemsPanelX + elemsPanelW * 2 / 3;
+            elemsX[4] = elemsPanelX + elemsPanelW * 2 / 3 + (elemsPanelW/3 - img_size * 4 / 3 ) / 2;
             elemsY[4] = elemsPanelY;
 
             elemsX[5] = elemsX[4];
-            elemsY[5] = elemsPanelY + img_size;
+            elemsY[5] = elemsY[1];
 
-            elemsX[6] = elemsPanelX;
-            elemsY[6] = elemsPanelY + 2 * img_size + margin;
+            elemsX[6] = elemsPanelX + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsY[6] = elemsY[1] + img_size * 1.5;
 
-            elemsX[7] = elemsX[6] + elemsPanelW / 4;
-            elemsY[7] = elemsPanelY + 2 * img_size;
+            elemsX[7] = elemsPanelX + elemsPanelW / nb_pow + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsY[7] = elemsY[6];
 
-            elemsX[8] = elemsX[7] + elemsPanelW / 4;
-            elemsY[8] = elemsPanelY + 2 * img_size;
+            elemsX[8] = elemsPanelX + elemsPanelW * 2 / nb_pow + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsY[8] = elemsY[6];
 
-            elemsX[9] = elemsX[8] + elemsPanelW / 4;
-            elemsY[9] = elemsPanelY + 2 * img_size;
+            elemsX[9] = elemsPanelX + elemsPanelW * 3 / nb_pow + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsY[9] = elemsY[6];
 
+            var separatorX = elemsPanelX;
+            var separatorY = elemsPanelY + 2 * img_size;
+            var separatorW = elemsPanelW;
+            var separatorH = img_size * 0.5;
 
         }
-
-        // var X1 = this.x + this.width * 0.15;
-        // var X2 = this.x + this.width * 0.55;
-        // var inter_img = this.width * 0.2;
-        // var startY = this.highScore_txt.y + 2 * this.highScore_txt.height + margin;// + inter_img;
 
 
         for (var i = 0; i < panelElements.length; i++) {
@@ -162,14 +181,21 @@ ScorePanel.prototype = {
 
         //Elems_count
         for (var i = 0; i < panelElements.length; i++) {
-            this.countElems[i] = 0;
+            this.countElems[i] = 30;
             var txt = this.game.add.text(elemsX[i] + img_size, elemsY[i] + img_size / 4, '' + this.countElems[i], style1);
             var tmp = txt.height;
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
+            /*
+            if(txt.width > img_size * 0.33){
+                txt.width = img_size * 0.33;
+            }
+            */
             this.txt_group[i] = txt;
             this.countElems[i + 1] = 10;
         }
+
+        // Separator
 
     },
     update: function() {

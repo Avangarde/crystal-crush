@@ -16,18 +16,18 @@ GamePanel = function(game, x, y, width, height) {
     this.beginningGame = true;
     this.rightMove = false;
     this.sequence = 0;
-    this.fx;
+    //this.fx;
 
 };
 
 GamePanel.prototype = {
     preload: function() {
-        this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
+        //this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
     },
     create: function() {
-        this.fx = this.game.add.audio('coinFx');
+        //this.fx = this.game.add.audio('coinFx');
 
-        this.fx.addMarker('dogui', 0.0, 1.0);
+        //this.fx.addMarker('dogui', 0.0, 1.0);
 
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
@@ -372,7 +372,7 @@ function countSameElemElements(elem, moveX, moveY) {
 
 // kill all elements from a starting position to an end position
 function killElemRange(fromX, fromY, toX, toY) {
-    gamePanel.fx.play('dogui');
+    //gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
     toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
