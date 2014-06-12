@@ -59,6 +59,10 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(RUBY, 'assets/sprites/ruby.png');
         this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');        
         
+        //WelcomePanel
+        this.game.load.image('welcomePanelBackground', 'assets/welcomePanel.png');
+        this.game.load.image('xButton', 'assets/buttons/xButton.png');
+        this.game.load.image('playButton', 'assets/Home/lvl1.png');
         
         //AlchemyPanel
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
