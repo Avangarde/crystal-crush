@@ -1,6 +1,6 @@
 var LOST_MENU_WIDTH = 1500;
 var LOST_MENU_HEIGHT = 751;
-
+var TIME_HELP = 10000;
 GamePanel = function(game, x, y, width, height) {
     this.game = game;
     this.x = x;
@@ -17,7 +17,12 @@ GamePanel = function(game, x, y, width, height) {
     this.rightMove = false;
     this.sequence = 0;
     this.fx;
-
+    this.timer;
+    this.arrayHint = [];
+    this.kill = true;
+    this.findHint = false;
+    this.swappedElement;
+    this.playsLeft = false;
 };
 
 GamePanel.prototype = {
@@ -26,19 +31,20 @@ GamePanel.prototype = {
     },
     create: function() {
         this.fx = game.add.audio('sound_fx');
-
+        this.timer = this.game.time.create(this.game);
+        this.timer.loop(TIME_HELP, helpTest, this.game);
         this.fx.addMarker('dogui', 1, 1.0);
-
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
         this.selectedPower = null;
+        this.swappedElement = null;
         fillBoard();
         allowInput = true;
+
     },
     update: function() {
-
         if (game.input.activePointer.justReleased() && allowInput) {
             if (this.selectedPower !== null && typeof this.selectedPower !== 'undefined') {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
@@ -63,9 +69,7 @@ GamePanel.prototype = {
                 if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
                     if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
                         tempShiftedElem = getElement(cursorGemPosX, cursorGemPosY);
-
                         allowInput = false;
-
                         //Swap animation
                         swapElements(selectedElement, tempShiftedElem);
                         //Check game logic
@@ -98,6 +102,7 @@ GamePanel.prototype = {
 
     }
 };
+
 
 //Power A
 function PowerA(element) {
@@ -164,6 +169,55 @@ function getRelativeElementPos(coordinate, axisX) {
     }
 }
 
+function helpTest() {
+    gamePanel.findHint = false;
+    //for each element in matrix we try with the adjacent elements
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            var currentElem = getElement(i, j);
+            var elemSwap;
+            //we try with the above element
+            if (j - 1 > 0) {
+                elemSwap = getElement(i, j - 1);
+                swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, true);
+                swapElemPosition(elemSwap, currentElem);
+                if (gamePanel.findHint)
+                    break;
+            }
+            //we try with the below element
+            if (j + 1 < BOARD_ROWS) {
+                elemSwap = getElement(i, j + 1);
+                swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, true);
+                swapElemPosition(elemSwap, currentElem);
+                if (gamePanel.findHint)
+                    break;
+            }
+            //we try with the left element
+            if (i - 1 > 0) {
+                elemSwap = getElement(i - 1, j);
+                swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, true);
+                swapElemPosition(elemSwap, currentElem);
+
+            }
+            //we try with the rigth element
+            if (i + 1 < BOARD_COLS) {
+                elemSwap = getElement(i + 1, j);
+                swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, true);
+                swapElemPosition(elemSwap, currentElem);
+                if (gamePanel.findHint)
+                    break;
+            }
+        }
+    }
+}
 function setElementPosition(elem, posX, posY) {
     elem.posX = posX;
     elem.posY = posY;
@@ -186,7 +240,6 @@ function fillBoard() {
             element.width = boardRowsAndColumns;
             element.height = boardRowsAndColumns;
             element.inputEnabled = true;
-
             element.events.onInputDown.add(selectElement);
             setElementPosition(element, i, j);
         }
@@ -208,7 +261,6 @@ function selectElement(element) {
             else if (this.selectedPower.name === SUGAR || this.selectedPower.name === SAPPHIRE || this.selectedPower.name === QUARTZ) {
                 PowerC(element);
             }
-
             gamePanel.selectedPower = null;
         }
         else {
@@ -240,7 +292,7 @@ function selectElement(element) {
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
-                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
@@ -296,7 +348,6 @@ function swapElemPosition(elem1, elem2) {
 }
 
 function checkAndKillElemMatches(elem) {
-
     if (elem !== null) {
         var countUp = countSameElemElements(elem, 0, -1);
         var countDown = countSameElemElements(elem, 0, 1);
@@ -323,21 +374,63 @@ function checkAndKillElemMatches(elem) {
             scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         } else if (countVert >= MATCH_MIN) {
             killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
-            matched = true;
             gamePanel.rightMove = true;
+            matched = true;
             stillGame = true;
             gamePanel.sequence++;
             scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
         }
-        else {
-            if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
-                if (!matched && tempShiftedElem !== null) {
-                    game.time.events.add(300, swapNoMatch, this, elem);
-                    gamePanel.rightMove = false;
-                }
+    }
+    else {
+        if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
+            if (!matched && tempShiftedElem !== null) {
+                game.time.events.add(300, swapNoMatch, this, elem);
+                gamePanel.rightMove = false;
             }
-            matched = false;
         }
+        matched = false;
+    }
+}
+
+
+//just check element's matches (does not kill them)(hint=true, ligth up the elements)
+function checkElemMatches(elem, hint) {
+    if (elem !== null) {
+        var countUp = countSameElemElements(elem, 0, -1);
+        var countDown = countSameElemElements(elem, 0, 1);
+        var countLeft = countSameElemElements(elem, -1, 0);
+        var countRight = countSameElemElements(elem, 1, 0);
+        var countHoriz = countLeft + countRight + 1;
+        var countVert = countUp + countDown + 1;
+        if (countHoriz >= MATCH_MIN) {
+            if (hint) {
+                if (!gamePanel.findHint) {
+                    hintSelect = game.add.sprite(gamePanel.swappedElement.posX * ELEM_SIZE + gamePanel.internalX, gamePanel.swappedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                    hintSelect.width = elem.width;
+                    hintSelect.height = elem.height;
+                    gamePanel.arrayHint.push(hintSelect);
+                    hintElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY, elem.posX, elem.posY);
+                }
+                gamePanel.findHint = true;
+            }
+            else {
+                gamePanel.playsLeft = true;
+            }
+        } else if (countVert >= MATCH_MIN) {
+            if (hint) {
+                if (!gamePanel.findHint) {
+                    hintSelect = game.add.sprite(gamePanel.swappedElement.posX * ELEM_SIZE + gamePanel.internalX, gamePanel.swappedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                    hintSelect.width = elem.width;
+                    hintSelect.height = elem.height;
+                    gamePanel.arrayHint.push(hintSelect);
+                    hintElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown, elem.posX, elem.posY);
+                }                
+                gamePanel.findHint = true;
+            }
+            else {                
+                gamePanel.playsLeft = true;
+            }
+        }        
     }
 }
 
@@ -372,6 +465,9 @@ function countSameElemElements(elem, moveX, moveY) {
 
 // kill all elements from a starting position to an end position
 function killElemRange(fromX, fromY, toX, toY) {
+    gamePanel.timer.stop();
+    gamePanel.timer.loop(TIME_HELP, helpTest, this.game);
+    gamePanel.timer.start();
     gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
@@ -384,7 +480,32 @@ function killElemRange(fromX, fromY, toX, toY) {
         }
     }
 }
+function unselectHint() {
+    for (var i = 0; i < gamePanel.arrayHint.length; i++) {
+        gamePanel.arrayHint[i].kill();
+    }
+}
+// hint all elements from a starting position to an end position
+function hintElemRange(fromX, fromY, toX, toY, elemX, elemY) {
+    fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
+    fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
+    toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
+    toY = Phaser.Math.clamp(toY, 0, BOARD_ROWS - 1);
+    for (var i = fromX; i <= toX; i++) {
+        for (var j = fromY; j <= toY; j++) {
 
+            var elem = getElement(i, j);
+            if ((elem.posX !== elemX || elem.posY !== elemY)) {
+                hintSelect = game.add.sprite(elem.posX * ELEM_SIZE + gamePanel.internalX, elem.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                hintSelect.width = elem.width;
+                hintSelect.height = elem.height;
+                gamePanel.arrayHint.push(hintSelect);
+            }
+        }
+    }
+    game.time.events.add(1000, unselectHint);
+
+}
 // move elements that have been killed off the board
 function removeKilledElems() {
     elements.forEach(function(element) {
@@ -452,7 +573,7 @@ function boardRefilled() {
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
             var elem = getElement(i, j);
-            checkAndKillElemMatches(elem);
+            checkAndKillElemMatches(elem, true);
         }
     }
     removeKilledElems();
@@ -460,6 +581,7 @@ function boardRefilled() {
         game.time.events.add(300, dropAndRefill);
     }
     else {
+        gamePanel.timer.start();
         allowInput = true;
         gamePanel.sequence = 0;
         if (gamePanel.beginningGame) {
@@ -471,5 +593,5 @@ function boardRefilled() {
         }
         winPanel.win();
         lostPanel.lost();
-    }    
+    }
 }

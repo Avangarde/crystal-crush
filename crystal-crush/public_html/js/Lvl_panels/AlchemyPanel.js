@@ -139,7 +139,7 @@ AlchemyPanel.prototype = {
                if(elem === null){
                    toAdd += 'X-';
                }
-               else{
+               else{                   
                    toAdd += elem.key;
                }
            }

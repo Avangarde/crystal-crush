@@ -17,7 +17,7 @@ var crystals;
 CrystalCrush.Lvl1.prototype = {
     preload: function() {
         this.game.numMoves = 30;
-        this.game.targetScore = 15;
+        this.game.targetScore = 1500;
         this.game.activeLevel = "lvl1";
         this.game.nextLevel = "lvl2";
         
@@ -31,6 +31,7 @@ CrystalCrush.Lvl1.prototype = {
         tempShiftedElem = null;
         matched = false;
         selection = null;
+        hintSelect = null;
         stillGame = false;
 
         gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
