@@ -23,6 +23,7 @@ create: function() {
             this.background.width = this.width;
             this.background.height = this.height;
             game.paused = true;
+            // ACA TENES QUE PONER PAUSA ANDY!!!
             game.input.onDown.add(this.unpause, self);
 
             this.xButton = game.add.sprite(this.x+this.width - 55, this.y+5, 'xButton');
@@ -41,8 +42,6 @@ unpause: function (event) {
                  return;
              }
 
-
-        
              if (welcomePanel.eventInBorder(event, welcomePanel.xButton)){
              }
              if(welcomePanel.eventInBorder(event, welcomePanel.playButton)) {
@@ -63,6 +62,8 @@ destroyWelcome: function(){
                     welcomePanel.xButton.kill();
                     welcomePanel.playButton.kill();
                     welcomePanel.background.kill();
+            // ACA TENES QUE PONER PLAY ANDY!!!
+            // PONE PLAAAAAAAAAAAAAAAAAAAAAAAAAAY
                 },
 eventInBorder: function(event, button){
     if(event.x >= button.x && event.x <= button.x + button.width){
