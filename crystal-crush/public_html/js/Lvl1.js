@@ -11,6 +11,7 @@ var scorePanel = null;
 var alchemyPanel = null;
 var lostPanel = null;
 var winPanel = null;
+var welcomePanel = null;
 
 var crystals;
 
@@ -38,6 +39,7 @@ CrystalCrush.Lvl1.prototype = {
         alchemyPanel = new AlchemyPanel(game, xAlchemyPanel, yAlchemyPanel, widthAlchemyPanel, heightAlchemyPanel);
         lostPanel = new LostPanel(game);
         winPanel = new WinPanel(game);
+        welcomePanel = new WelcomePanel(game);
 
     },
     create: function() {
@@ -54,6 +56,7 @@ CrystalCrush.Lvl1.prototype = {
 
         var t = game.cache.getText('crystals');
         crystals = t.split('\n');
+        welcomePanel.create();
 
     },
     update: function() {
