@@ -16,6 +16,7 @@
         <script type="text/javascript" src="js/Lvl_panels/GamePanel.js"></script>
         <script type="text/javascript" src="js/Lvl_panels/ScorePanel.js"></script>
         <script type="text/javascript" src="js/Lvl_panels/AlchemyPanel.js"></script>
+        <script type="text/javascript" src="js/Lvl_panels/WelcomePanel.js"></script>
         <script type="text/javascript" src="js/Home.js"></script>
         <script type="text/javascript" src="js/Preloader.js"></script>
         <script type="text/javascript" src="js/Boot.js"></script>
@@ -36,11 +37,13 @@
                 game.state.add('preloader', CrystalCrush.Preloader);
                 game.state.add('boot', CrystalCrush.Boot);
                 game.state.add('home', CrystalCrush.Home);
-        game.state.add('lvl2', CrystalCrush.Lvl2);        
-        game.state.add('lvl1', CrystalCrush.Lvl1);
+                game.state.add('lvl2', CrystalCrush.Lvl2);        
+                game.state.add('lvl1', CrystalCrush.Lvl1);
                 
                 //game.state.add('lvl3', CrystalCrush.Lvl3);
                 game.state.add('highscore', CrystalCrush.HighScore);
+                game.state.add('win', CrystalCrush.Win);
+                game.state.add('lost', CrystalCrush.Lost);
 
                 game.state.start('boot');
             })();

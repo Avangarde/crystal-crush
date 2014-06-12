@@ -27,7 +27,7 @@ GamePanel = function(game, x, y, width, height) {
 
 GamePanel.prototype = {
     preload: function() {
-        this.game.load.audio('sound_fx', 'assets/audio/lost.ogg');
+        //this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
     },
     create: function() {
         this.fx = game.add.audio('sound_fx');
@@ -100,6 +100,13 @@ GamePanel.prototype = {
             PowerC(element);
         }
 
+    },
+    checkWinLose: function() {
+        if (scorePanel.score_general >= this.game.targetScore) {
+            this.game.state.start("win");
+        } else if (this.game.numMoves === 0) {
+            this.game.state.start("lost");
+        }
     }
 };
 
@@ -591,7 +598,6 @@ function boardRefilled() {
             --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
-        winPanel.win();
-        lostPanel.lost();
-    }
+        gamePanel.checkWinLose();                
+    }    
 }
