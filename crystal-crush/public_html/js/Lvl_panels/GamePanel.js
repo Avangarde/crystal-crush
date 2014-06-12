@@ -23,6 +23,7 @@ GamePanel = function(game, x, y, width, height) {
     this.findHint = false;
     this.swappedElement;
     this.playsLeft = false;
+    this.currentScore = 0;
 };
 
 GamePanel.prototype = {
@@ -32,7 +33,7 @@ GamePanel.prototype = {
     create: function() {
         this.fx = game.add.audio('sound_fx');
         this.timer = this.game.time.create(this.game);
-        this.timer.loop(TIME_HELP, helpTest, this.game);
+        this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         this.fx.addMarker('dogui', 1, 1.0);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
@@ -176,7 +177,7 @@ function getRelativeElementPos(coordinate, axisX) {
     }
 }
 
-function helpTest() {
+function helpTest(hint) {
     gamePanel.findHint = false;
     //for each element in matrix we try with the adjacent elements
     for (var i = 0; i < BOARD_COLS; i++) {
@@ -188,7 +189,7 @@ function helpTest() {
                 elemSwap = getElement(i, j - 1);
                 swapElemPosition(currentElem, elemSwap);
                 gamePanel.swappedElement = currentElem;
-                checkElemMatches(elemSwap, true);
+                checkElemMatches(elemSwap, hint);
                 swapElemPosition(elemSwap, currentElem);
                 if (gamePanel.findHint)
                     break;
@@ -198,7 +199,7 @@ function helpTest() {
                 elemSwap = getElement(i, j + 1);
                 swapElemPosition(currentElem, elemSwap);
                 gamePanel.swappedElement = currentElem;
-                checkElemMatches(elemSwap, true);
+                checkElemMatches(elemSwap, hint);
                 swapElemPosition(elemSwap, currentElem);
                 if (gamePanel.findHint)
                     break;
@@ -208,7 +209,7 @@ function helpTest() {
                 elemSwap = getElement(i - 1, j);
                 swapElemPosition(currentElem, elemSwap);
                 gamePanel.swappedElement = currentElem;
-                checkElemMatches(elemSwap, true);
+                checkElemMatches(elemSwap, hint);
                 swapElemPosition(elemSwap, currentElem);
 
             }
@@ -217,7 +218,7 @@ function helpTest() {
                 elemSwap = getElement(i + 1, j);
                 swapElemPosition(currentElem, elemSwap);
                 gamePanel.swappedElement = currentElem;
-                checkElemMatches(elemSwap, true);
+                checkElemMatches(elemSwap, hint);
                 swapElemPosition(elemSwap, currentElem);
                 if (gamePanel.findHint)
                     break;
@@ -240,6 +241,7 @@ function fillBoard() {
     var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
+
             var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
             var element = elements.create(i * ELEM_SIZE + gamePanel.internalX,
                     j * ELEM_SIZE + gamePanel.internalY, elemNames[rndIndex]);
@@ -431,13 +433,13 @@ function checkElemMatches(elem, hint) {
                     hintSelect.height = elem.height;
                     gamePanel.arrayHint.push(hintSelect);
                     hintElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown, elem.posX, elem.posY);
-                }                
+                }
                 gamePanel.findHint = true;
             }
-            else {                
+            else {
                 gamePanel.playsLeft = true;
             }
-        }        
+        }
     }
 }
 
@@ -473,7 +475,7 @@ function countSameElemElements(elem, moveX, moveY) {
 // kill all elements from a starting position to an end position
 function killElemRange(fromX, fromY, toX, toY) {
     gamePanel.timer.stop();
-    gamePanel.timer.loop(TIME_HELP, helpTest, this.game);
+    gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
     gamePanel.timer.start();
     gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
@@ -592,12 +594,26 @@ function boardRefilled() {
         allowInput = true;
         gamePanel.sequence = 0;
         if (gamePanel.beginningGame) {
-            scorePanel.score_general = 0;
+            scorePanel.score_general = gamePanel.currentScore;
             gamePanel.beginningGame = false;
         } else if (gamePanel.rightMove) {
             --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
-        gamePanel.checkWinLose();                
-    }    
+        gamePanel.playsLeft = false;
+        helpTest(false);
+        if (!gamePanel.playsLeft) {
+            gamePanel.currentScore = scorePanel.score_general;
+            gamePanel.beginningGame = true;
+            for (var i = 0; i < BOARD_COLS; i++) {
+                for (var j = 0; j < BOARD_ROWS; j++) {
+                    var elem  = getElement(i,j);
+                    elem.kill();
+                }
+            }
+            removeKilledElems();
+            fillBoard();
+        }
+        gamePanel.checkWinLose();
+    }
 }
