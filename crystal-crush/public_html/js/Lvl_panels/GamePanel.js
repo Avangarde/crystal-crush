@@ -96,6 +96,13 @@ GamePanel.prototype = {
             PowerC(element);
         }
 
+    },
+    checkWinLose: function() {
+        if (scorePanel.score_general >= this.game.targetScore) {
+            this.game.state.start("win");
+        } else if (this.game.numMoves === 0) {
+            this.game.state.start("lost");
+        }
     }
 };
 
@@ -469,7 +476,6 @@ function boardRefilled() {
             --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
-        winPanel.win();
-        lostPanel.lost();
+        gamePanel.checkWinLose();                
     }    
 }
