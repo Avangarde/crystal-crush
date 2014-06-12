@@ -161,9 +161,9 @@ AlchemyPanel.prototype = {
         if (guest !== "no match") {
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
-        }
-        alchemyPanel.killElemRange(0, 0, 3, 3);
-        alchemyPanel.removeKilledElems();
+            alchemyPanel.killElemRange(0, 0, 3, 3);
+            alchemyPanel.removeKilledElems();
+        }        
     },
     killElemRange: function(fromX, fromY, toX, toY) {
         fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
