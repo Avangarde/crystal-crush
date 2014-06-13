@@ -13,10 +13,21 @@ var heigthGamePanel = canvasHeight - (2 * margin);
 var xGamePanel = (canvasWidth + widthScorePanel + margin - widthGamePanel)/2;
 var yGamePanel = margin;
 
-var widthAlchemyPanel = canvasHeight - (2 * margin);
+//var widthAlchemyPanel = canvasHeight - (2 * margin);
+var widthAlchemyPanel = canvasWidth * 0.3;
 var heightAlchemyPanel = canvasHeight - (2 * margin);
 var xAlchemyPanel = (2 * margin + widthAlchemyPanel) * -1;
 var yAlchemyPanel = margin;
+
+var widthPopup = canvasWidth * 5 / 6;
+var heightPopup = canvasHeight * 5 / 6;
+var xPopup = canvasWidth / 12;
+var yPopup = canvasHeight / 12;
+
+var widthRecipes = null;
+var heightRecipes = null;
+var xRecipes = null;
+var yRecipes = null;
 
 var BOARD_COLS = 6;
 var BOARD_ROWS = 6;
@@ -27,15 +38,15 @@ var CU = "CU";
 var ZN = "ZN";
 var NA = "NA";
 var CL = "CL";
-var C = "C-";
-var H = "H-";
-var O = "O-";
+var C = "C";
+var H = "H";
+var O = "O";
 var AL = "AL";
 var CR = "CR";
 var SI = "SI";
 var TI = "TI";
 var SELECT = "SELECT";
-var SELECTHINT = "SELECTHINT"
+var SELECTHINT = "SELECTHINT";
 var SALT = "Salt";
 var ICE = "Ice";
 var SUGAR = "Sugar";
