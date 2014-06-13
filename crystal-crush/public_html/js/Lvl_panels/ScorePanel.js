@@ -81,15 +81,15 @@ ScorePanel.prototype = {
         this.img_group = game.add.group();
 
         var img_size;
-        var separatorX ;
-        var separatorY ;
-        var separatorW ;
-        var separatorH ;
+        var separatorX;
+        var separatorY;
+        var separatorW;
+        var separatorH;
 
         var nb_pow = powerNames.length;
 
         if (elemsPanelW < elemsPanelH) {
-            if (elemsPanelH / 5.5 <  elemsPanelW / 2.66) {
+            if (elemsPanelH / 5.5 < elemsPanelW / 2.66) {
                 img_size = elemsPanelH / 5.5;
             } else {
                 img_size = elemsPanelW / 2.66;
@@ -113,47 +113,47 @@ ScorePanel.prototype = {
             var separatorH = img_size * 0.5;
 
             for (var i = 3; i < 5; i++) {
-                elemsY[2 * i] = elemsPanelY + (i+0.5) * img_size;
+                elemsY[2 * i] = elemsPanelY + (i + 0.5) * img_size;
                 elemsY[2 * i + 1] = elemsY[2 * i];
             }
-            if(nb_pow == 3){
+            if (nb_pow === 3) {
                 elemsX[8] = elemsPanelX + (elemsPanelW - img_size * 1.33) / 2;
             }
 
         } else {
-            if (elemsPanelH / 3.5 < elemsPanelW / ( nb_pow * 1.33) ) {
+            if (elemsPanelH / 3.5 < elemsPanelW / (nb_pow * 1.33)) {
                 img_size = (elemsPanelH / 3.5);
             } else {
                 img_size = (elemsPanelW / (nb_pow * 1.33));
             }
-            elemsX[0] = elemsPanelX + (elemsPanelW/3 - img_size * 4 / 3 ) / 2;
+            elemsX[0] = elemsPanelX + (elemsPanelW / 3 - img_size * 4 / 3) / 2;
             elemsY[0] = elemsPanelY;
 
             elemsX[1] = elemsX[0];
-            elemsY[1] = elemsPanelY + img_size ;
+            elemsY[1] = elemsPanelY + img_size;
 
-            elemsX[2] = elemsPanelX + elemsPanelW/3 + (elemsPanelW/3 - img_size * 4 / 3 ) / 2;
+            elemsX[2] = elemsPanelX + elemsPanelW / 3 + (elemsPanelW / 3 - img_size * 4 / 3) / 2;
             elemsY[2] = elemsPanelY;
 
             elemsX[3] = elemsX[2];
             elemsY[3] = elemsY[1];
 
-            elemsX[4] = elemsPanelX + elemsPanelW * 2 / 3 + (elemsPanelW/3 - img_size * 4 / 3 ) / 2;
+            elemsX[4] = elemsPanelX + elemsPanelW * 2 / 3 + (elemsPanelW / 3 - img_size * 4 / 3) / 2;
             elemsY[4] = elemsPanelY;
 
             elemsX[5] = elemsX[4];
             elemsY[5] = elemsY[1];
 
-            elemsX[6] = elemsPanelX + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsX[6] = elemsPanelX + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
             elemsY[6] = elemsY[1] + img_size * 1.5;
 
-            elemsX[7] = elemsPanelX + elemsPanelW / nb_pow + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsX[7] = elemsPanelX + elemsPanelW / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
             elemsY[7] = elemsY[6];
 
-            elemsX[8] = elemsPanelX + elemsPanelW * 2 / nb_pow + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsX[8] = elemsPanelX + elemsPanelW * 2 / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
             elemsY[8] = elemsY[6];
 
-            elemsX[9] = elemsPanelX + elemsPanelW * 3 / nb_pow + (elemsPanelW/nb_pow - img_size * 4 / 3 ) / 2;
+            elemsX[9] = elemsPanelX + elemsPanelW * 3 / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
             elemsY[9] = elemsY[6];
 
             var separatorX = elemsPanelX;
@@ -187,10 +187,10 @@ ScorePanel.prototype = {
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
             /*
-            if(txt.width > img_size * 0.33){
-                txt.width = img_size * 0.33;
-            }
-            */
+             if(txt.width > img_size * 0.33){
+             txt.width = img_size * 0.33;
+             }
+             */
             this.txt_group[i] = txt;
             this.countElems[i + 1] = 10;
         }
@@ -201,6 +201,10 @@ ScorePanel.prototype = {
     update: function() {
         this.highScore = scorePanel.score_general > scorePanel.highScore ?
                 scorePanel.score_general : scorePanel.highScore;
+        this.score_txt.text = "Score : " +
+                (gamePanel.beginningGame ? gamePanel.currentScore : this.score_general);
+        this.highScore_txt.text = "High Score : " + this.highScore;
+        this.moves_txt.text = "Moves Left : " + this.game.numMoves;
         this.score_txt.text = CrystalCrush.language.scoreText + " : " +
                 (gamePanel.beginningGame ? 0 : this.score_general);
         this.highScore_txt.text = CrystalCrush.language.highScoreText + " : " + this.highScore;
