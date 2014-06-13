@@ -31,17 +31,17 @@ GamePanel.prototype = {
         //this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
     },
     create: function() {
-        this.fx = game.add.audio('sound_fx');
+        //this.fx = game.add.audio('sound_fx');
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
-        this.fx.addMarker('dogui', 1, 1.0);
+        //this.fx.addMarker('dogui', 1, 1.0);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
         this.selectedPower = null;
         this.swappedElement = null;
-        fillBoard();
+        this.fillBoard();
         allowInput = true;
 
     },
@@ -300,6 +300,56 @@ function PowerC(element) {
     scorePanel.decreaseElement(idx);
 }
 
+function helpTest(hint) {
+    gamePanel.findHint = false;
+    //for each element in matrix we try with the adjacent elements
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            var currentElem = gamePanel.getElement(i, j);
+            var elemSwap;
+            //we try with the above element
+            if (j - 1 > 0) {
+                elemSwap = gamePanel.getElement(i, j - 1);
+                gamePanel.swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, hint);
+                gamePanel.swapElemPosition(elemSwap, currentElem);
+                if (gamePanel.findHint)
+                    break;
+            }
+            //we try with the below element
+            if (j + 1 < BOARD_ROWS) {
+                elemSwap = gamePanel.getElement(i, j + 1);
+                gamePanel.swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, hint);
+                gamePanel.swapElemPosition(elemSwap, currentElem);
+                if (gamePanel.findHint)
+                    break;
+            }
+            //we try with the left element
+            if (i - 1 > 0) {
+                elemSwap = gamePanel.getElement(i - 1, j);
+                gamePanel.swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, hint);
+                gamePanel.swapElemPosition(elemSwap, currentElem);
+
+            }
+            //we try with the rigth element
+            if (i + 1 < BOARD_COLS) {
+                elemSwap = gamePanel.getElement(i + 1, j);
+                gamePanel.swapElemPosition(currentElem, elemSwap);
+                gamePanel.swappedElement = currentElem;
+                checkElemMatches(elemSwap, hint);
+                gamePanel.swapElemPosition(elemSwap, currentElem);
+                if (gamePanel.findHint)
+                    break;
+            }
+        }
+    }
+}
+
 // select an element and remember its starting position
 function selectElement(element) {
     if (allowInput) {
@@ -322,7 +372,7 @@ function selectElement(element) {
                         tempShiftedElem = element;
                         allowInput = false;
                         //Swap animation
-                        swapElements(selectedElement, tempShiftedElem);
+                        gamePanel.swapElements(selectedElement, tempShiftedElem);
                         //Check game logic
                         game.time.events.add(300, gamePanel.checkGame);
                     }
@@ -387,6 +437,46 @@ function killElemRange(fromX, fromY, toX, toY) {
         }
     }
 }
+//just check element's matches (does not kill them)(hint=true, ligth up the elements)
+function checkElemMatches(elem, hint) {
+    if (elem !== null) {
+        var countUp = countSameElemElements(elem, 0, -1);
+        var countDown = countSameElemElements(elem, 0, 1);
+        var countLeft = countSameElemElements(elem, -1, 0);
+        var countRight = countSameElemElements(elem, 1, 0);
+        var countHoriz = countLeft + countRight + 1;
+        var countVert = countUp + countDown + 1;
+        if (countHoriz >= MATCH_MIN) {
+            if (hint) {
+                if (!gamePanel.findHint) {
+                    hintSelect = game.add.sprite(gamePanel.swappedElement.posX * ELEM_SIZE + gamePanel.internalX, gamePanel.swappedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                    hintSelect.width = elem.width;
+                    hintSelect.height = elem.height;
+                    gamePanel.arrayHint.push(hintSelect);
+                    hintElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY, elem.posX, elem.posY);
+                }
+                gamePanel.findHint = true;
+            }
+            else {
+                gamePanel.playsLeft = true;
+            }
+        } else if (countVert >= MATCH_MIN) {
+            if (hint) {
+                if (!gamePanel.findHint) {
+                    hintSelect = game.add.sprite(gamePanel.swappedElement.posX * ELEM_SIZE + gamePanel.internalX, gamePanel.swappedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                    hintSelect.width = elem.width;
+                    hintSelect.height = elem.height;
+                    gamePanel.arrayHint.push(hintSelect);
+                    hintElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown, elem.posX, elem.posY);
+                }
+                gamePanel.findHint = true;
+            }
+            else {
+                gamePanel.playsLeft = true;
+            }
+        }
+    }
+}
 function unselectHint() {
     for (var i = 0; i < gamePanel.arrayHint.length; i++) {
         gamePanel.arrayHint[i].kill();
@@ -401,7 +491,7 @@ function hintElemRange(fromX, fromY, toX, toY, elemX, elemY) {
     for (var i = fromX; i <= toX; i++) {
         for (var j = fromY; j <= toY; j++) {
 
-            var elem = getElement(i, j);
+            var elem = gamePanel.getElement(i, j);
             if ((elem.posX !== elemX || elem.posY !== elemY)) {
                 hintSelect = game.add.sprite(elem.posX * ELEM_SIZE + gamePanel.internalX, elem.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
                 hintSelect.width = elem.width;
@@ -505,12 +595,12 @@ function boardRefilled() {
             gamePanel.beginningGame = true;
             for (var i = 0; i < BOARD_COLS; i++) {
                 for (var j = 0; j < BOARD_ROWS; j++) {
-                    var elem = getElement(i, j);
+                    var elem = gamePanel.getElement(i, j);
                     elem.kill();
                 }
             }
             removeKilledElems();
-            fillBoard();
+            gamePanel.fillBoard();
         }
         gamePanel.checkWinLose();
     }
