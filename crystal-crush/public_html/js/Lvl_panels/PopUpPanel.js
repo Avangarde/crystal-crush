@@ -24,9 +24,8 @@ create: function() {
     this.background.width = this.width;
     this.background.height = this.height;
     game.paused = true;
-    // ACA TENES QUE PONER PAUSA ANDY!!!
-    game.input.onDown.add(this.unpause, self);
-    
+    gamePanel.timer.pause();
+    game.input.onDown.add(this.unpause, self);    
     this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
     this.xButton.width = 50;
     this.xButton.height = 50;
@@ -64,8 +63,7 @@ destroypopUp: function() {
     if(popUpName === 'welcome'){
         welcomePopUp.destroy();
     }
-    // ACA TENES QUE PONER PLAY ANDY!!!
-    // PONE PLAAAAAAAAAAAAAAAAAAAAAAAAAAY
+    gamePanel.timer.resume();
 }
 }
 

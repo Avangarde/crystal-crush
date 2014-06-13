@@ -24,6 +24,7 @@ GamePanel = function(game, x, y, width, height) {
     this.swappedElement;
     this.playsLeft = false;
     this.currentScore = 0;
+    this.isPower = false;
 };
 
 GamePanel.prototype = {
@@ -112,7 +113,7 @@ GamePanel.prototype = {
             return Phaser.Math.floor((coordinate - this.internalY) / ELEM_SIZE);
         }
     },
-     setElementPosition: function(elem, posX, posY) {
+    setElementPosition: function(elem, posX, posY) {
         elem.posX = posX;
         elem.posY = posY;
         elem.id = this.calcElementId(posX, posY);
@@ -228,6 +229,11 @@ GamePanel.prototype = {
         this.selectedPower.startY = element.y;
     },
     runPower: function(element) {
+        this.isPower = true;
+        gamePanel.timer.stop();
+        gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
+        gamePanel.timer.start();
+        unselectHint();
         if (this.selectedPower.name === SALT || this.selectedPower.name === CORUNDUM) {
             PowerA(element);
         }
@@ -354,6 +360,11 @@ function helpTest(hint) {
 function selectElement(element) {
     if (allowInput) {
         if (gamePanel.selectedPower !== null) {
+            gamePanel.isPower = true;
+            gamePanel.timer.stop();
+            gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
+            gamePanel.timer.start();
+            unselectHint();
             if (gamePanel.selectedPower.name === SALT || gamePanel.selectedPower.name === CORUNDUM) {
                 PowerA(element);
             }
@@ -394,7 +405,7 @@ function selectElement(element) {
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
-                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
@@ -425,6 +436,8 @@ function killElemRange(fromX, fromY, toX, toY) {
     gamePanel.timer.stop();
     gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
     gamePanel.timer.start();
+    unselectHint();
+
     //gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
@@ -567,6 +580,7 @@ function refillBoard() {
 function boardRefilled() {
     tempShiftedElem = null;
     stillGame = false;
+    selectedElement = null;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
             var elem = gamePanel.getElement(i, j);
@@ -574,7 +588,7 @@ function boardRefilled() {
         }
     }
     removeKilledElems();
-    if (stillGame) {
+    if (stillGame) {        
         game.time.events.add(300, dropAndRefill);
     }
     else {
@@ -585,9 +599,12 @@ function boardRefilled() {
             scorePanel.score_general = gamePanel.currentScore;
             gamePanel.beginningGame = false;
         } else if (gamePanel.rightMove) {
-            --(this.game.numMoves);
-            gamePanel.rightMove = false;
+            if (!gamePanel.isPower) {
+                --(this.game.numMoves);
+                gamePanel.rightMove = false;
+            }
         }
+        gamePanel.isPower = false;
         gamePanel.playsLeft = false;
         helpTest(false);
         if (!gamePanel.playsLeft) {
@@ -604,4 +621,5 @@ function boardRefilled() {
         }
         gamePanel.checkWinLose();
     }
+    
 }
