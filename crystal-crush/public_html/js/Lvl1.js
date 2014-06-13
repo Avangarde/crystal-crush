@@ -30,6 +30,7 @@ CrystalCrush.Lvl1.prototype = {
         tempShiftedElem = null;
         matched = false;
         selection = null;
+        hintSelect = null;
         stillGame = false;
 
         gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);

@@ -1,6 +1,6 @@
 var LOST_MENU_WIDTH = 1500;
 var LOST_MENU_HEIGHT = 751;
-
+var TIME_HELP = 10000;
 GamePanel = function(game, x, y, width, height) {
     this.game = game;
     this.x = x;
@@ -16,8 +16,14 @@ GamePanel = function(game, x, y, width, height) {
     this.beginningGame = true;
     this.rightMove = false;
     this.sequence = 0;
-    //this.fx;
-
+    this.fx;
+    this.timer;
+    this.arrayHint = [];
+    this.kill = true;
+    this.findHint = false;
+    this.swappedElement;
+    this.playsLeft = false;
+    this.currentScore = 0;
 };
 
 GamePanel.prototype = {
@@ -25,20 +31,21 @@ GamePanel.prototype = {
         //this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
     },
     create: function() {
-        //this.fx = this.game.add.audio('coinFx');
-
-        //this.fx.addMarker('dogui', 0.0, 1.0);
-
+        this.fx = game.add.audio('sound_fx');
+        this.timer = this.game.time.create(this.game);
+        this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
+        this.fx.addMarker('dogui', 1, 1.0);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
         this.selectedPower = null;
-        this.fillBoard();
+        this.swappedElement = null;
+        fillBoard();
         allowInput = true;
+
     },
     update: function() {
-
         if (game.input.activePointer.justReleased() && allowInput) {
             if (this.selectedPower !== null && typeof this.selectedPower !== 'undefined') {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
@@ -65,7 +72,6 @@ GamePanel.prototype = {
                         tempShiftedElem = this.getElement(cursorGemPosX, cursorGemPosY);
 
                         allowInput = false;
-
                         //Swap animation
                         this.swapElements(selectedElement, tempShiftedElem);
                         //Check game logic
@@ -242,6 +248,7 @@ GamePanel.prototype = {
     }
 };
 
+
 //Power A
 function PowerA(element) {
     allowInput = false;
@@ -306,7 +313,6 @@ function selectElement(element) {
             else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
                 PowerC(element);
             }
-
             gamePanel.selectedPower = null;
         }
         else {
@@ -338,7 +344,7 @@ function selectElement(element) {
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
-                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
@@ -366,7 +372,10 @@ function countSameElemElements(elem, moveX, moveY) {
 
 // kill all elements from a starting position to an end position
 function killElemRange(fromX, fromY, toX, toY) {
-    //gamePanel.fx.play('dogui');
+    gamePanel.timer.stop();
+    gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
+    gamePanel.timer.start();
+    gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
     toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
@@ -378,7 +387,32 @@ function killElemRange(fromX, fromY, toX, toY) {
         }
     }
 }
+function unselectHint() {
+    for (var i = 0; i < gamePanel.arrayHint.length; i++) {
+        gamePanel.arrayHint[i].kill();
+    }
+}
+// hint all elements from a starting position to an end position
+function hintElemRange(fromX, fromY, toX, toY, elemX, elemY) {
+    fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
+    fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
+    toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
+    toY = Phaser.Math.clamp(toY, 0, BOARD_ROWS - 1);
+    for (var i = fromX; i <= toX; i++) {
+        for (var j = fromY; j <= toY; j++) {
 
+            var elem = getElement(i, j);
+            if ((elem.posX !== elemX || elem.posY !== elemY)) {
+                hintSelect = game.add.sprite(elem.posX * ELEM_SIZE + gamePanel.internalX, elem.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                hintSelect.width = elem.width;
+                hintSelect.height = elem.height;
+                gamePanel.arrayHint.push(hintSelect);
+            }
+        }
+    }
+    game.time.events.add(1000, unselectHint);
+
+}
 // move elements that have been killed off the board
 function removeKilledElems() {
     elements.forEach(function(element) {
@@ -454,15 +488,30 @@ function boardRefilled() {
         game.time.events.add(300, dropAndRefill);
     }
     else {
+        gamePanel.timer.start();
         allowInput = true;
         gamePanel.sequence = 0;
         if (gamePanel.beginningGame) {
-            scorePanel.score_general = 0;
+            scorePanel.score_general = gamePanel.currentScore;
             gamePanel.beginningGame = false;
         } else if (gamePanel.rightMove) {
             --(this.game.numMoves);
             gamePanel.rightMove = false;
         }
-        gamePanel.checkWinLose();                
-    }    
+        gamePanel.playsLeft = false;
+        helpTest(false);
+        if (!gamePanel.playsLeft) {
+            gamePanel.currentScore = scorePanel.score_general;
+            gamePanel.beginningGame = true;
+            for (var i = 0; i < BOARD_COLS; i++) {
+                for (var j = 0; j < BOARD_ROWS; j++) {
+                    var elem = getElement(i, j);
+                    elem.kill();
+                }
+            }
+            removeKilledElems();
+            fillBoard();
+        }
+        gamePanel.checkWinLose();
+    }
 }

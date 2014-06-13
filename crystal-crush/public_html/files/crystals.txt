@@ -28,5 +28,5 @@ ALTIAL
 O-ALO-
 Quartz
 O-SIO-
-SIX-SI
+SIXSI
 O-SIO-
