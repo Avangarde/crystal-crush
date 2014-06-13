@@ -234,7 +234,7 @@ GamePanel.prototype = {
         gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         gamePanel.timer.start();
         unselectHint();
-        if (this.selectedPower.name === SALT || this.selectedPower.name === CORUNDUM) {
+        if (this.selectedPower.name === CORUNDUM) {
             PowerA(element);
         }
         else if (this.selectedPower.name === ICE || this.selectedPower.name === RUBY) {
@@ -242,6 +242,9 @@ GamePanel.prototype = {
         }
         else if (this.selectedPower.name === SUGAR || this.selectedPower.name === SAPPHIRE || this.selectedPower.name === QUARTZ) {
             PowerC(element);
+        }
+        else if(this.selectedPower.name === SALT){
+            PowerD(element);
         }
 
     },
@@ -306,6 +309,27 @@ function PowerC(element) {
     scorePanel.decreaseElement(idx);
 }
 
+//Power D
+function PowerD(element) {
+    allowInput = false;
+    var rowElem = element.posY;
+    var colElem = element.posX;
+    var destroyed = 0;
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            if (Math.abs(i - colElem)<2 && Math.abs(j - rowElem)<2) {
+                destroyed++;
+                var elem = gamePanel.getElement(i, j);
+                elem.kill();
+            }
+        }
+    }
+    removeKilledElems();
+    scorePanel.score_general += (destroyed * MATCH_MIN);
+    game.time.events.add(300, dropAndRefill);
+    var idx = panelElements.indexOf(gamePanel.selectedPower.name);    
+    scorePanel.decreaseElement(idx);
+}
 function helpTest(hint) {
     gamePanel.findHint = false;
     //for each element in matrix we try with the adjacent elements
@@ -365,7 +389,7 @@ function selectElement(element) {
             gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
             gamePanel.timer.start();
             unselectHint();
-            if (gamePanel.selectedPower.name === SALT || gamePanel.selectedPower.name === CORUNDUM) {
+            if (gamePanel.selectedPower.name === CORUNDUM) {
                 PowerA(element);
             }
             else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
@@ -373,6 +397,9 @@ function selectElement(element) {
             }
             else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
                 PowerC(element);
+            }
+            else if (gamePanel.selectedPower.name === SALT) {
+                PowerD(element);
             }
             gamePanel.selectedPower = null;
         }
@@ -588,7 +615,7 @@ function boardRefilled() {
         }
     }
     removeKilledElems();
-    if (stillGame) {        
+    if (stillGame) {
         game.time.events.add(300, dropAndRefill);
     }
     else {
@@ -621,5 +648,5 @@ function boardRefilled() {
         }
         gamePanel.checkWinLose();
     }
-    
+
 }
