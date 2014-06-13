@@ -1,5 +1,8 @@
 
-PopUpPanel = function(game, x , y , width , height, father) {
+
+
+// PopUp types: 'welcome', 'tuto', 'info'
+PopUpPanel = function(game, x , y , width , height, father, type) {
 
     this.x = x;
     this.y = y;
