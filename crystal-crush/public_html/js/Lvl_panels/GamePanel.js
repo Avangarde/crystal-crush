@@ -425,7 +425,7 @@ function killElemRange(fromX, fromY, toX, toY) {
     gamePanel.timer.stop();
     gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
     gamePanel.timer.start();
-    gamePanel.fx.play('dogui');
+    //gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
     toX = Phaser.Math.clamp(toX, 0, BOARD_COLS - 1);
