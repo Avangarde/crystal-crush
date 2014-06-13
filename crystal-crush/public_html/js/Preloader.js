@@ -18,19 +18,20 @@ CrystalCrush.Preloader.prototype = {
         
         //Menu
         this.game.load.image('title', 'assets/Home/Title.png');
-        this.game.load.image('lvl1', 'assets/Home/lvl1.png');
-        this.game.load.image('lvl2', 'assets/Home/lvl2.png');
-        this.game.load.image('lvl3', 'assets/Home/lvl3.png');
-
+        this.game.load.image('play', CrystalCrush.language.playButton);
         this.game.load.image('backgroundHome', 'assets/Home/backgroundTitleScreen.png');
 
-        this.game.load.image('highscore_img', 'assets/Home/highscore.png');
-        this.game.load.image('about', 'assets/Home/about.png');
+        this.game.load.image('highscore_img', CrystalCrush.language.highScoreButton);
+        this.game.load.image('about', CrystalCrush.language.aboutButton);
         
         this.game.load.image('backgroundLvl1', 'assets/kitchenLevel.png');
         this.game.load.image('backgroundLvl2', 'assets/beachLevel.png');
         this.game.load.text('crystals', 'files/crystals.txt');
         this.game.load.text('highScore', 'files/highScore');
+        
+        this.game.load.image('en', 'assets/Home/en.jpg');
+        this.game.load.image('fr', 'assets/Home/fr.jpg');
+        this.game.load.image('es', 'assets/Home/es.jpg');
         
         //GamePanel
         this.game.load.image(CU, 'assets/sprites/Cu.png');
@@ -50,7 +51,7 @@ CrystalCrush.Preloader.prototype = {
         
         //ScorePanel
         this.game.load.image('scorePanelBackground', 'assets/scorePanel.png');
-        this.game.load.spritesheet('createElement', 'assets/buttons/button_create_element.png', BUTTONWIDTH, BUTTONHEIGHT);
+        this.game.load.spritesheet('createElement', CrystalCrush.language.createCrystalButton, BUTTONWIDTH, BUTTONHEIGHT);
         this.game.load.image('camera', 'assets/camera.png');
         this.game.load.image(SALT, 'assets/sprites/salt_crystal.png');
         this.game.load.image(ICE, 'assets/sprites/ice.png');
@@ -63,22 +64,22 @@ CrystalCrush.Preloader.prototype = {
         //popUpPanel
         this.game.load.image('PopUpBackground', 'assets/popUpPanel.png');
         this.game.load.image('xButton', 'assets/buttons/xButton.png');
-        this.game.load.image('playButton', 'assets/Home/lvl1.png');
+        this.game.load.image('playButton', CrystalCrush.language.playButton);
         
         //AlchemyPanel
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
         this.game.load.image('grid', 'assets/sprites/Grille_2.png');
-        this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', CREATE_BUTTON_WIDTH, CREATE_BUTTON_HEIGHT);
+        this.game.load.spritesheet('createButton2', CrystalCrush.language.createButton, CREATE_BUTTON_WIDTH, CREATE_BUTTON_HEIGHT);
 	this.game.load.image('gridMistake','assets/sprites/Grille_Mistake.png');
 
         //LostPanel
         this.game.load.image('lost', 'assets/lost.png');
-        this.game.load.spritesheet('playAgain', 'assets/buttons/play_again.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
+        this.game.load.spritesheet('playAgain', CrystalCrush.language.playAgainButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
         this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
         //WinPanel
         this.game.load.image('win', 'assets/win.png');
-        this.game.load.spritesheet('nextLevel', 'assets/buttons/next_level.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
+        this.game.load.spritesheet('nextLevel', CrystalCrush.language.nextLevelButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         
     },
     create: function() {

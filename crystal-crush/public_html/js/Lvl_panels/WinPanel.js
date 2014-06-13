@@ -13,8 +13,6 @@ CrystalCrush.Win = function(game) {
     this.winMenu;
     this.score_txt;
     this.highScore_txt;
-    this.messageFBHiScore = "I got ?, a new high score in #CrystalCrush, try to beat me !";
-    this.messageFBScore = "I got ? points in #CrystalCrush, try to beat me!";
 };
 
 CrystalCrush.Win.prototype = {
@@ -62,8 +60,9 @@ CrystalCrush.Win.prototype = {
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
-                this.messageFBHiScore.replace("?", scorePanel.score_general) :
-                this.messageFBScore.replace("?", scorePanel.score_general);
+                CrystalCrush.language.winMessageFBHighScore.replace("?", scorePanel.score_general) :
+                CrystalCrush.language.winMessageFBScore.replace("?", scorePanel.score_general);
+        console.log(message);
         FB.ui({
             method: 'feed',
             name: 'Crystal Crush',

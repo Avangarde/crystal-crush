@@ -2,6 +2,7 @@ CrystalCrush = {
 //    score: 0,
 //    music: null,
 //    orientated: false
+    language: null
 };
 
 CrystalCrush.Boot = function (game) {
@@ -29,6 +30,7 @@ CrystalCrush.Boot.prototype = {
         if (!this.game.device.desktop) {
             this.game.scale.forceOrientation(true, false);
         }
+        CrystalCrush.language = new Language.English();
         game.state.start('preloader');
     },
 
