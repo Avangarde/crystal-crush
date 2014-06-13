@@ -143,7 +143,7 @@ AlchemyPanel.prototype = {
                if(elem === null){
                    toAdd += 'X-';
                }
-               else{
+               else{                   
                    toAdd += elem.key;
                }
            }
@@ -165,14 +165,11 @@ AlchemyPanel.prototype = {
         if (guest !== "no match") {
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
+            alchemyPanel.killElemRange(0, 0, 3, 3);
+            alchemyPanel.removeKilledElems();
         }else{
-
-	    this.fadeGrid();
-	
-	}
-	
-        alchemyPanel.killElemRange(0, 0, 3, 3);
-        alchemyPanel.removeKilledElems();
+	    this.fadeGrid();	
+	}       
     },
     killElemRange: function(fromX, fromY, toX, toY) {
         fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);

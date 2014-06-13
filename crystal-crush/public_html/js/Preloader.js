@@ -44,7 +44,8 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(CR, 'assets/sprites/Cr.png');
         this.game.load.image(SI, 'assets/sprites/Si.png');
         this.game.load.image(TI, 'assets/sprites/Ti.png');
-        this.game.load.image(SELECT, 'assets/sprites/selection.png');        
+        this.game.load.image(SELECT, 'assets/sprites/selection.png');     
+        this.game.load.image(SELECTHINT, 'assets/sprites/selectionHint.png');     
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
         
         //ScorePanel
