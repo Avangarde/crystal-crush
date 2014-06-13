@@ -1,6 +1,6 @@
 CrystalCrush.Lvl1 = function(game) {
     this.game = game;
-    this.game.numMoves;    
+    this.game.numMoves;
     this.game.targetScore;
     this.game.activeLevel;
     this.game.nextLevel;
@@ -21,7 +21,7 @@ CrystalCrush.Lvl1.prototype = {
         this.game.targetScore = 1500;
         this.game.activeLevel = "lvl1";
         this.game.nextLevel = "lvl2";
-        
+
         elemNames = [NA, CL, C, H, O, CU];
         powerNames = [SALT, ICE, SUGAR];
         allowInput = true;
@@ -50,9 +50,9 @@ CrystalCrush.Lvl1.prototype = {
         gamePanel.create();
         alchemyPanel.create();
         scorePanel.create();
-        scorePanel.highScore = localStorage.getItem("highScore") === null ?
-                0 : localStorage.getItem("highScore");
-
+        var hs = localStorage.getItem("hs" + this.game.activeLevel);
+        hs = (hs === null ? scorePanel.score_general : hs);
+        scorePanel.highScore = hs;
         var t = game.cache.getText('crystals');
         crystals = t.split('\n');
         welcomePopUp.create();
