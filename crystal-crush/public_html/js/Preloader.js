@@ -90,8 +90,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
         //WinPanel
-        this.game.load.image('win', 'assets/win.png');
-        this.game.load.spritesheet('nextLevel', 'assets/buttons/next_level.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
+        this.game.load.image('win', 'assets/win.png');      
         //TODO Change for the right image
         this.game.load.spritesheet('backToMenu', 'assets/buttons/back_to_menu.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         this.game.load.spritesheet('nextLevel', CrystalCrush.language.nextLevelButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
