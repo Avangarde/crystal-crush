@@ -21,11 +21,11 @@ PopUpPanel = function(game, x , y , width , height, father, type) {
 
 PopUpPanel.prototype = {
 create: function() {
-    if(popUpPanel === 'welcome'){
+    if(popUpPanel.type === 'welcome'){
         this.createWelcome();
-    } else if (popUpPanel === 'info'){
+    } else if (popUpPanel.type === 'info'){
         this.createInfo();
-    } else if (popUpPanel === 'tuto'){
+    } else if (popUpPanel.type === 'tuto'){
         this.createTuto();
     }
 },
@@ -74,15 +74,12 @@ unpause: function(event) {
         return;
     }
 
-    console.log('here we are');
-    console.log(popUpPanel);
-    if(popUpPanel === 'welcome'){
-        console.log('enter the if');
-        this.unpauseWelcome(event);
-    } else if (popUpPanel === 'info'){
-        this.unpauseInfo(event);
-    } else if (popUpPanel === 'tuto'){
-        this.unpauseTuto(event);
+    if(popUpPanel.type === 'welcome'){
+        popUpPanel.unpauseWelcome(event);
+    } else if (popUpPanel.type === 'info'){
+        popUpPanel.unpauseInfo(event);
+    } else if (popUpPanel.type === 'tuto'){
+        popUpPanel.unpauseTuto(event);
     }
 },
 unpauseWelcome: function(event){
@@ -112,8 +109,7 @@ unpauseTuto: function(event){
 destroypopUp: function() {
     popUpPanel.background.kill();
     popUpPanel.xButton.kill();
-    //if(this.father != null){
-    if(popUpName === 'welcome'){
+    if(popUpPanel.type === 'welcome'){
         welcomePopUp.destroy();
     }
     // ACA TENES QUE PONER PLAY ANDY!!!
