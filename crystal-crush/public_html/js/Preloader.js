@@ -12,9 +12,14 @@ CrystalCrush.Preloader.prototype = {
         //Preloading
         this.background = this.game.add.sprite(0, 0, 'backG');
         this.background.width = canvasWidth;
-        this.background.height = canvasHeight;        
-        this.preloadBar = this.game.add.sprite(canvasWidth/2, canvasHeight/2, 'preloaderBar');        
-        this.game.load.setPreloadSprite(this.preloadBar);
+        this.background.height = canvasHeight;
+	this.preloadBar = this.game.add.sprite(canvasWidth/4, canvasHeight/2, 'preloaderBar');        
+	//this.preloadBar.width = canvasWidth/2;
+	//this.preloadBar.height = canvasHeight/20;       
+                
+
+	this.game.load.setPreloadSprite(this.preloadBar);
+
         
         //Menu
         this.game.load.image('title', 'assets/Home/Title.png');
@@ -44,6 +49,8 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(CR, 'assets/sprites/Cr.png');
         this.game.load.image(SI, 'assets/sprites/Si.png');
         this.game.load.image(TI, 'assets/sprites/Ti.png');
+	this.game.load.image(AU, 'assets/sprites/Au.png');
+	this.game.load.image(FE, 'assets/sprites/Fe.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');     
         this.game.load.image(SELECTHINT, 'assets/sprites/selectionHint.png');     
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
@@ -58,7 +65,12 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(CORUNDUM, 'assets/sprites/VioletPower.png');
         this.game.load.image(SAPPHIRE, 'assets/sprites/sapphire.png');
         this.game.load.image(RUBY, 'assets/sprites/ruby.png');
-        this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');        
+        this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');
+	this.game.load.image(BRASS, 'assets/sprites/brass.png');
+	this.game.load.image(STEEL, 'assets/sprites/steel.png');
+	this.game.load.image(GOLD, 'assets/sprites/gold.png');
+	this.game.load.image(ALUMINIUM, 'assets/sprites/aluminium.png');
+                
         
         //popUpPanel
         this.game.load.image('PopUpBackground', 'assets/popUpPanel.png');

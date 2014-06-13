@@ -53,7 +53,7 @@ CrystalCrush.Win.prototype = {
             this.highScore_txt = game.add.text(canvasWidth / 2, this.score_txt.y + this.score_txt.height + margin, 'New High Score !', style1);
             this.highScore_txt.anchor.setTo(0.5, 0.5);
         }
-        localStorage.setItem("highScore", scorePanel.highScore);
+        localStorage.setItem("hs"+this.game.activeLevel, scorePanel.highScore);
     },
     update: function() {
     },
