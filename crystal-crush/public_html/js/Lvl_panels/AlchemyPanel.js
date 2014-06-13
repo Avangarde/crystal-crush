@@ -80,7 +80,7 @@ AlchemyPanel.prototype = {
     },
     // find a elem on the board according to its position on the board
     getElement: function(posX, posY) {
-        return alchemyPanel.alcElements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
+        return alchemyPanel.alcElements.iterate("id", this.calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
     },
     // convert world coordinates to board position
     getRelativeElementPos: function(coordinate, axisX) {
@@ -93,7 +93,7 @@ AlchemyPanel.prototype = {
     setElementPosition: function(elem, posX, posY) {
         elem.posX = posX;
         elem.posY = posY;
-        elem.id = calcElementId(posX, posY);
+        elem.id = this.calcElementId(posX, posY);
     },
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
@@ -121,7 +121,7 @@ AlchemyPanel.prototype = {
                     //alchemyPanel.elementToAdd = null;
                 }
             } else { 
-                if (alchemyPanel.elementToAdd.isIntern) {
+                if (alchemyPanel.elementToAdd !== null && alchemyPanel.elementToAdd.isIntern) {
                     alchemyPanel.tweenElemPos(alchemyPanel.elementToAdd, alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY,
                                 Phaser.Math.distance(alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY, alchemyPanel.elementToAdd.x, alchemyPanel.elementToAdd.y) / alchemyPanel.gridWidth);
                 }

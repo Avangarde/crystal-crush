@@ -64,7 +64,6 @@ CrystalCrush.Win.prototype = {
         var message = scorePanel.score_general === scorePanel.highScore ?
                 this.messageFBHiScore.replace("?", scorePanel.score_general) :
                 this.messageFBScore.replace("?", scorePanel.score_general);
-        console.log(message);
         FB.ui({
             method: 'feed',
             name: 'Crystal Crush',
