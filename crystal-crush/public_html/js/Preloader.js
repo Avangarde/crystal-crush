@@ -59,8 +59,8 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(RUBY, 'assets/sprites/ruby.png');
         this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');        
         
-        //WelcomePanel
-        this.game.load.image('welcomePanelBackground', 'assets/welcomePanel.png');
+        //popUpPanel
+        this.game.load.image('popUpPanelBackground', 'assets/popUpPanel.png');
         this.game.load.image('xButton', 'assets/buttons/xButton.png');
         this.game.load.image('playButton', 'assets/Home/lvl1.png');
         
@@ -68,6 +68,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
         this.game.load.image('grid', 'assets/sprites/Grille_2.png');
         this.game.load.spritesheet('createButton2', 'assets/buttons/button_create.png', CREATE_BUTTON_WIDTH, CREATE_BUTTON_HEIGHT);
+	this.game.load.image('gridMistake','assets/sprites/Grille_Mistake.png');
 
         //LostPanel
         this.game.load.image('lost', 'assets/lost.png');

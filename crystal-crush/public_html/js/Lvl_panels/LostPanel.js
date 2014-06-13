@@ -5,85 +5,58 @@ var LOST_BUTTON_HEIGHT = 81;
 var SHAREFB_BUTTON_DIM = 256;
 
 
-LostPanel = function(game) {
+CrystalCrush.Lost = function(game) {
     this.game = game;
     this.buttonPlayAgain;
     this.buttonShareFb;
-    this.lostMenu;
     this.score_txt;
     this.highScore_txt;
+    this.messageFBHiScore = "I got ?, a new high score in #CrystalCrush, try to beat me !";
+    this.messageFBScore = "I got ? points in #CrystalCrush, try to beat me!";
 };
 
-LostPanel.prototype = {
+CrystalCrush.Lost.prototype = {
     create: function() {
+        //BackGround
+        lostMenu = this.game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'lost');
+        lostMenu.anchor.setTo(0.5, 0.5);
+        lostMenu.width = canvasWidth;
+        lostMenu.height = canvasWidth * LOST_MENU_HEIGHT / LOST_MENU_WIDTH;
+        
+        //Buttons
+        var buttonWidth = canvasWidth * 0.15;
+        var buttonHeight = buttonWidth * LOST_BUTTON_HEIGHT / LOST_BUTTON_WIDTH;
+        this.buttonPlayAgain = this.game.add.button(canvasWidth / 2, canvasHeight / 2, 'playAgain', this.playAgain, this, 1, 0, 0);
+        this.buttonPlayAgain.anchor.setTo(0.5, 0.5);
+        this.buttonPlayAgain.height = buttonHeight;
+        this.buttonPlayAgain.width = buttonWidth;
+        
+        var buttonDim = canvasWidth * 0.05;
+        this.buttonShareFb = this.game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + this.buttonPlayAgain.height, 'shareFb', this.shareFb, this, 1, 0, 0);
+        this.buttonShareFb.anchor.setTo(0.5, 0.5);
+        this.buttonShareFb.height = buttonDim;
+        this.buttonShareFb.width = buttonDim;
+        
+        //Score
+        this.score_txt = game.add.text(canvasWidth / 2, this.buttonShareFb.y + this.buttonShareFb.height + margin, 'Your Score : ' + scorePanel.score_general, style1);
+        this.score_txt.anchor.setTo(0.5, 0.5);
+
+        if (scorePanel.score_general === scorePanel.highScore) {
+            this.highScore_txt = game.add.text(canvasWidth / 2, this.score_txt.y + this.score_txt.height + margin, 'New High Score !', style1);
+            this.highScore_txt.anchor.setTo(0.5, 0.5);
+        }
+        localStorage.setItem("highScore", scorePanel.highScore);
     },
     update: function() {
     },
-    lost: function() {
-        if (this.game.numMoves === 0) {
-            drawBackground();
-            drawButtonPlayAgain();
-            drawButtonShare();
-            drawScore();
-            drawHighScore();
-            localStorage.setItem("highScore", scorePanel.highScore);
-            game.paused = true;
-            game.input.onDown.add(unpause, self);
-        }
-    }
-};
-
-function drawBackground() {
-    lostMenu = game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'lost');
-    lostMenu.anchor.setTo(0.5, 0.5);
-    lostMenu.width = canvasWidth;
-    lostMenu.height = canvasWidth * LOST_MENU_HEIGHT / LOST_MENU_WIDTH;
-}
-
-function drawButtonPlayAgain() {
-    var buttonWidth = canvasWidth * 0.15;
-    var buttonHeight = buttonWidth * LOST_BUTTON_HEIGHT / LOST_BUTTON_WIDTH;
-    buttonPlayAgain = game.add.button(canvasWidth / 2, canvasHeight / 2, 'playAgain', null, this, 1, 0, 0);
-    buttonPlayAgain.anchor.setTo(0.5, 0.5);
-    buttonPlayAgain.height = buttonHeight;
-    buttonPlayAgain.width = buttonWidth;
-}
-
-function drawButtonShare() {
-    var buttonDim = canvasWidth * 0.05;
-    buttonShareFb = game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + buttonPlayAgain.height, 'shareFb', null, this, 1, 0, 0);
-    buttonShareFb.anchor.setTo(0.5, 0.5);
-    buttonShareFb.height = buttonDim;
-    buttonShareFb.width = buttonDim;
-}
-
-function drawScore() {
-    this.score_txt = game.add.text(canvasWidth / 2, buttonShareFb.y + buttonShareFb.height + margin, 'Your Score : ' + scorePanel.score_general, style1);
-    this.score_txt.anchor.setTo(0.5, 0.5);
-
-}
-function drawHighScore() {
-    if (scorePanel.score_general === scorePanel.highScore) {
-        this.highScore_txt = game.add.text(canvasWidth / 2, this.score_txt.y + this.score_txt.height + margin, 'New High Score !', style1);
-        this.highScore_txt.anchor.setTo(0.5, 0.5);
-    }
-}
-
-function unpause(event) {
-    // Calculate the corners of the menus
-    var bPlayBorders = getButtonBorders(buttonPlayAgain);
-    var bShareBorders = getButtonBorders(buttonShareFb);
-
-    var message = scorePanel.score_general === scorePanel.highScore ?
-            "I got " + scorePanel.score_general + ", a new high score in #CrystalCrush, try to beat me !" :
-            "I got " + scorePanel.score_general
-            + " points in #CandyCrush, try to beat me!";
-
-    if (event.x > bPlayBorders[0] && event.x < bPlayBorders[1] && event.y > bPlayBorders[2] && event.y < bPlayBorders[3]) {
-        game.paused = false;
+    playAgain: function() {
         this.game.state.start(this.game.activeLevel);
-
-    } else if (event.x > bShareBorders[0] && event.x < bShareBorders[1] && event.y > bShareBorders[2] && event.y < bShareBorders[3]) {
+    },
+    shareFb: function() {
+        var message = scorePanel.score_general === scorePanel.highScore ?
+                this.messageFBHiScore.replace("?", scorePanel.score_general) :
+                this.messageFBScore.replace("?", scorePanel.score_general);
+        console.log(message);
         FB.ui({
             method: 'feed',
             name: 'Crystal Crush',
@@ -95,15 +68,4 @@ function unpause(event) {
             picture: 'http://www.hartrao.ac.za/nccs/Esrf.gif'
         });
     }
-}
-/**
- * Calcule the top left (x1,y1) and bottom right (x2,y2) corners of a button
- * @param {type} button
- * @returns {Array} an array with values [x1,y1,x2,y2]
- */
-function getButtonBorders(button) {
-    return [button.x - button.width / 2,
-        button.x + button.width / 2,
-        button.y - button.height / 2,
-        button.y + button.height / 2];
-}
+};
