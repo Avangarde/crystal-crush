@@ -46,6 +46,7 @@ var CR = "CR";
 var SI = "SI";
 var TI = "TI";
 var SELECT = "SELECT";
+var SELECTHINT = "SELECTHINT"
 var SALT = "Salt";
 var ICE = "Ice";
 var SUGAR = "Sugar";
