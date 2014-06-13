@@ -6,7 +6,7 @@ WelcomePopUp = function(game) {
 };
 WelcomePopUp.prototype = {
     create: function() {
-        this.popup = new PopUpPanel(game, xPopup, yPopup, widthPopup, heightPopup, this);
+        this.popup = new PopUpPanel(game, xPopup, yPopup, widthPopup, heightPopup, this, 'welcome');
         popUpPanel = this.popup
         popUpName = 'welcome';
         this.popup.create();

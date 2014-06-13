@@ -11,9 +11,7 @@ PopUpPanel = function(game, x , y , width , height, father, type) {
 
     this.background;
 
-    this.title_txt;
-    this.title_box;
-    this.description;
+    this.type = type;
 
     this.xButton;
     this.father = father;
