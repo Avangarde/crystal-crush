@@ -117,7 +117,7 @@ destroypopUp: function() {
 }
 }
 
- function eventInBorder(event, button) {
+function eventInBorder(event, button) {
     if(!scorePanel.inAlchemyPanel){
         if (event.x >= button.x && event.x <= button.x + button.width) {
             if (event.y >= button.y && event.y <= button.y + button.height) {
