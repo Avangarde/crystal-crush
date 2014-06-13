@@ -80,6 +80,8 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('win', 'assets/win.png');
         this.game.load.spritesheet('nextLevel', 'assets/buttons/next_level.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         
+        // RecipesPanel
+        this.game.load.image('recipesPanel', 'assets/recipesPanel.png');
     },
     create: function() {
         this.state.start('home');

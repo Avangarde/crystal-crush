@@ -5,7 +5,7 @@ var margin = canvasHeight * 0.015;
 
 var xScorePanel = margin;
 var yScorePanel = margin;
-var widthScorePanel = (canvasWidth * 0.3) - (2 * margin);
+var widthScorePanel = ((canvasWidth - margin) / 3) -  margin;
 var heigthScorePanel = canvasHeight - (2 * margin);
 
 var widthGamePanel = canvasHeight - (2 * margin);
@@ -13,21 +13,20 @@ var heigthGamePanel = canvasHeight - (2 * margin);
 var xGamePanel = (canvasWidth + widthScorePanel + margin - widthGamePanel)/2;
 var yGamePanel = margin;
 
-//var widthAlchemyPanel = canvasHeight - (2 * margin);
-var widthAlchemyPanel = canvasWidth * 0.3;
+var widthAlchemyPanel = (canvasWidth - margin) / 3 - margin;
 var heightAlchemyPanel = canvasHeight - (2 * margin);
-var xAlchemyPanel = (2 * margin + widthAlchemyPanel) * -1;
+var xAlchemyPanel = widthAlchemyPanel * -1;
 var yAlchemyPanel = margin;
+
+var widthRecipesPanel = (canvasWidth - margin) * 0.3 - margin;
+var heightRecipesPanel = canvasHeight - (2 * margin);
+var xRecipesPanel = (2 * widthAlchemyPanel) * -1;
+var yRecipesPanel= margin;
 
 var widthPopup = canvasWidth * 5 / 6;
 var heightPopup = canvasHeight * 5 / 6;
 var xPopup = canvasWidth / 12;
 var yPopup = canvasHeight / 12;
-
-var widthRecipes = null;
-var heightRecipes = null;
-var xRecipes = null;
-var yRecipes = null;
 
 var BOARD_COLS = 6;
 var BOARD_ROWS = 6;
