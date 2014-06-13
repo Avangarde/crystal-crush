@@ -34,7 +34,7 @@ GamePanel.prototype = {
         this.background.height = this.height;
         selectedElementStartPos = {x: 0, y: 0};
         this.selectedPower = null;
-        fillBoard();
+        this.fillBoard();
         allowInput = true;
     },
     update: function() {
@@ -44,7 +44,7 @@ GamePanel.prototype = {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
                     if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
                             && this.selectedPower.y + this.selectedPower.height / 2 >= this.internalY && this.selectedPower.y + this.selectedPower.height / 2 <= this.internalY + this.internalHeight) {
-                        var elem = getElement(getRelativeElementPos(this.selectedPower.x, true), getRelativeElementPos(this.selectedPower.y, false));
+                        var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x, true), this.getRelativeElementPos(this.selectedPower.y, false));
                         this.runPower(elem);
                     }
                     alchemyPanel.tweenElemPos(this.selectedPower, this.selectedPower.startX, this.selectedPower.startY,
@@ -57,22 +57,158 @@ GamePanel.prototype = {
         if (game.input.activePointer.isDown && allowInput) {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
 
-                var cursorGemPosX = getRelativeElementPos(game.input.activePointer.x, true);
-                var cursorGemPosY = getRelativeElementPos(game.input.activePointer.y, false);
+                var cursorGemPosX = this.getRelativeElementPos(game.input.activePointer.x, true);
+                var cursorGemPosY = this.getRelativeElementPos(game.input.activePointer.y, false);
 
-                if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
+                if (this.canMove(selectedElementStartPos.x, selectedElementStartPos.y, cursorGemPosX, cursorGemPosY)) {
                     if (cursorGemPosX !== selectedElement.posX || cursorGemPosY !== selectedElement.posY) {
-                        tempShiftedElem = getElement(cursorGemPosX, cursorGemPosY);
+                        tempShiftedElem = this.getElement(cursorGemPosX, cursorGemPosY);
 
                         allowInput = false;
 
                         //Swap animation
-                        swapElements(selectedElement, tempShiftedElem);
+                        this.swapElements(selectedElement, tempShiftedElem);
                         //Check game logic
-                        game.time.events.add(300, checkGame);
+                        game.time.events.add(300, this.checkGame);
                     }
                 }
             }
+        }
+    },
+    fillBoard: function() {
+        elements = game.add.group();
+        var boardRowsAndColumns = (this.internalWidth) / BOARD_ROWS;
+        for (var i = 0; i < BOARD_COLS; i++) {
+            for (var j = 0; j < BOARD_ROWS; j++) {
+                var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
+                var element = elements.create(i * ELEM_SIZE + this.internalX,
+                        j * ELEM_SIZE + this.internalY, elemNames[rndIndex]);
+                element.name = elemNames[rndIndex];
+                element.width = boardRowsAndColumns;
+                element.height = boardRowsAndColumns;
+                element.inputEnabled = true;
+
+                element.events.onInputDown.add(selectElement);
+                this.setElementPosition(element, i, j);
+            }
+        }
+        boardRefilled();
+    },
+    // find a elem on the board according to its position on the board
+    getElement: function(posX, posY) {
+        return elements.iterate("id", this.calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
+    },
+    // convert world coordinates to board position
+    getRelativeElementPos: function(coordinate, axisX) {
+        if (axisX) {
+            return Phaser.Math.floor((coordinate - this.internalX) / ELEM_SIZE);
+        } else {
+            return Phaser.Math.floor((coordinate - this.internalY) / ELEM_SIZE);
+        }
+    },
+     setElementPosition: function(elem, posX, posY) {
+        elem.posX = posX;
+        elem.posY = posY;
+        elem.id = this.calcElementId(posX, posY);
+    },
+    calcElementId: function(posX, posY) {
+        return posX + posY * BOARD_COLS;
+    },
+    // Elements can only be moved 1 square up/down or left/right
+    canMove: function(fromPosX, fromPosY, toPosX, toPosY) {
+        if (toPosX < 0 || toPosX >= BOARD_COLS || toPosY < 0 || toPosY >= BOARD_ROWS) {
+            return false;
+        }
+        if (fromPosX === toPosX && fromPosY >= toPosY - 1 && fromPosY <= toPosY + 1) {
+            return true;
+        }
+        if (fromPosY === toPosY && fromPosX >= toPosX - 1 && fromPosX <= toPosX + 1) {
+            return true;
+        }
+        return false;
+    },
+    swapElements: function(elem1, elem2) {
+        selection.kill();
+        this.tweenElemPos(elem1, elem2.posX, elem2.posY, 3);
+        this.tweenElemPos(elem2, elem1.posX, elem1.posY, 3);
+        this.swapElemPosition(elem1, elem2);
+    },
+    // animated element movement
+    tweenElemPos: function(elem, newPosX, newPosY, durationMultiplier) {
+        if (durationMultiplier === null) {
+            durationMultiplier = 1;
+        }
+        return game.add.tween(elem).to(
+                {x: newPosX * ELEM_SIZE + this.internalX, y: newPosY * ELEM_SIZE + this.internalY}, 100 * durationMultiplier,
+                Phaser.Easing.Linear.None, true);
+    },
+    checkGame: function() {
+        gamePanel.checkAndKillElemMatches(tempShiftedElem);
+        gamePanel.checkAndKillElemMatches(selectedElement);
+        selectedElement = null;
+        removeKilledElems();
+        game.time.events.add(300, dropAndRefill);
+    },
+    // swap the position of 2 elements when the player drags the selected element into a new location
+    swapElemPosition: function(elem1, elem2) {
+        var tempPosX = elem1.posX;
+        var tempPosY = elem1.posY;
+        gamePanel.setElementPosition(elem1, elem2.posX, elem2.posY);
+        gamePanel.setElementPosition(elem2, tempPosX, tempPosY);
+    },
+    checkAndKillElemMatches: function(elem) {
+
+        if (elem !== null) {
+            var countUp = countSameElemElements(elem, 0, -1);
+            var countDown = countSameElemElements(elem, 0, 1);
+            var countLeft = countSameElemElements(elem, -1, 0);
+            var countRight = countSameElemElements(elem, 1, 0);
+
+            var countHoriz = countLeft + countRight + 1;
+            var countVert = countUp + countDown + 1;
+
+            if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
+                killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+                killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+                matched = true;
+                gamePanel.rightMove = true;
+                stillGame = true;
+                gamePanel.sequence++;
+                scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
+            } else if (countHoriz >= MATCH_MIN) {
+                killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
+                matched = true;
+                gamePanel.rightMove = true;
+                stillGame = true;
+                gamePanel.sequence++;
+                scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
+            } else if (countVert >= MATCH_MIN) {
+                killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
+                matched = true;
+                gamePanel.rightMove = true;
+                stillGame = true;
+                gamePanel.sequence++;
+                scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
+            }
+            else {
+                if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
+                    if (!matched && tempShiftedElem !== null) {
+                        game.time.events.add(300, gamePanel.swapNoMatch, this, elem);
+                        gamePanel.rightMove = false;
+                    }
+                }
+                matched = false;
+            }
+        }
+    },
+    swapNoMatch: function(elem) {
+        if (selectedElemTween !== null) {
+            game.tweens.remove(selectedElemTween);
+        }
+        selectedElemTween = gamePanel.tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
+        if (tempShiftedElem !== null) {
+            gamePanel.tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
+            gamePanel.swapElemPosition(elem, tempShiftedElem);
         }
     },
     //we receive the power element from the score panel
@@ -111,7 +247,7 @@ function PowerA(element) {
     allowInput = false;
     var rowElem = element.posY;
     for (var i = 0; i < BOARD_COLS; i++) {
-        var elem = getElement(i, rowElem);
+        var elem = gamePanel.getElement(i, rowElem);
         elem.kill();
     }
     removeKilledElems();
@@ -126,7 +262,7 @@ function PowerB(element) {
     allowInput = false;
     var colElem = element.posX;
     for (var i = 0; i < BOARD_ROWS; i++) {
-        var elem = getElement(colElem, i);
+        var elem = gamePanel.getElement(colElem, i);
         elem.kill();
     }
     removeKilledElems();
@@ -141,12 +277,12 @@ function PowerC(element) {
     allowInput = false;
     var rowElem = element.posY;
     for (var i = 0; i < BOARD_COLS; i++) {
-        var elem = getElement(i, rowElem);
+        var elem = gamePanel.getElement(i, rowElem);
         elem.kill();
     }
     var colElem = element.posX;
     for (var i = 0; i < BOARD_ROWS; i++) {
-        var elem = getElement(colElem, i);
+        var elem = gamePanel.getElement(colElem, i);
         elem.kill();
     }
     removeKilledElems();
@@ -157,62 +293,17 @@ function PowerC(element) {
     scorePanel.decreaseElement(idx);
 }
 
-// find a elem on the board according to its position on the board
-function getElement(posX, posY) {
-    return elements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
-}
-
-// convert world coordinates to board position
-function getRelativeElementPos(coordinate, axisX) {
-    if (axisX) {
-        return Phaser.Math.floor((coordinate - gamePanel.internalX) / ELEM_SIZE);
-    } else {
-        return Phaser.Math.floor((coordinate - gamePanel.internalY) / ELEM_SIZE);
-    }
-}
-
-function setElementPosition(elem, posX, posY) {
-    elem.posX = posX;
-    elem.posY = posY;
-    elem.id = calcElementId(posX, posY);
-}
-
-function calcElementId(posX, posY) {
-    return posX + posY * BOARD_COLS;
-}
-
-function fillBoard() {
-    elements = game.add.group();
-    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
-    for (var i = 0; i < BOARD_COLS; i++) {
-        for (var j = 0; j < BOARD_ROWS; j++) {
-            var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
-            var element = elements.create(i * ELEM_SIZE + gamePanel.internalX,
-                    j * ELEM_SIZE + gamePanel.internalY, elemNames[rndIndex]);
-            element.name = elemNames[rndIndex];
-            element.width = boardRowsAndColumns;
-            element.height = boardRowsAndColumns;
-            element.inputEnabled = true;
-
-            element.events.onInputDown.add(selectElement);
-            setElementPosition(element, i, j);
-        }
-    }
-    boardRefilled();
-//    selectedElement = getElement(0, 0);
-}
-
 // select an element and remember its starting position
 function selectElement(element) {
     if (allowInput) {
         if (gamePanel.selectedPower !== null) {
-            if (this.selectedPower.name === SALT || this.selectedPower.name === CORUNDUM) {
+            if (gamePanel.selectedPower.name === SALT || gamePanel.selectedPower.name === CORUNDUM) {
                 PowerA(element);
             }
-            else if (this.selectedPower.name === ICE || this.selectedPower.name === RUBY) {
+            else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
                 PowerB(element);
             }
-            else if (this.selectedPower.name === SUGAR || this.selectedPower.name === SAPPHIRE || this.selectedPower.name === QUARTZ) {
+            else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
                 PowerC(element);
             }
 
@@ -220,14 +311,14 @@ function selectElement(element) {
         }
         else {
             if (selectedElement !== null && typeof selectedElement !== 'undefined') {
-                if (canMove(selectedElementStartPos.x, selectedElementStartPos.y, element.posX, element.posY)) {
+                if (gamePanel.canMove(selectedElementStartPos.x, selectedElementStartPos.y, element.posX, element.posY)) {
                     if (element.posX !== selectedElement.posX || element.posY !== selectedElement.posY) {
                         tempShiftedElem = element;
                         allowInput = false;
                         //Swap animation
                         swapElements(selectedElement, tempShiftedElem);
                         //Check game logic
-                        game.time.events.add(300, checkGame);
+                        game.time.events.add(300, gamePanel.checkGame);
                     }
                 } else {
                     if (selection !== null && typeof selection !== 'undefined') {
@@ -255,110 +346,6 @@ function selectElement(element) {
     }
 }
 
-// Elements can only be moved 1 square up/down or left/right
-function canMove(fromPosX, fromPosY, toPosX, toPosY) {
-    if (toPosX < 0 || toPosX >= BOARD_COLS || toPosY < 0 || toPosY >= BOARD_ROWS) {
-        return false;
-    }
-    if (fromPosX === toPosX && fromPosY >= toPosY - 1 && fromPosY <= toPosY + 1) {
-        return true;
-    }
-    if (fromPosY === toPosY && fromPosX >= toPosX - 1 && fromPosX <= toPosX + 1) {
-        return true;
-    }
-    return false;
-}
-
-function swapElements(elem1, elem2) {
-    selection.kill();
-    tweenElemPos(elem1, elem2.posX, elem2.posY, 3);
-    tweenElemPos(elem2, elem1.posX, elem1.posY, 3);
-    swapElemPosition(elem1, elem2);
-}
-
-function checkGame() {
-    checkAndKillElemMatches(tempShiftedElem);
-    checkAndKillElemMatches(selectedElement);
-    selectedElement = null;
-    removeKilledElems();
-    game.time.events.add(300, dropAndRefill);
-}
-
-// animated element movement
-function tweenElemPos(elem, newPosX, newPosY, durationMultiplier) {
-    if (durationMultiplier === null) {
-        durationMultiplier = 1;
-    }
-    return game.add.tween(elem).to(
-            {x: newPosX * ELEM_SIZE + gamePanel.internalX, y: newPosY * ELEM_SIZE + gamePanel.internalY}, 100 * durationMultiplier,
-            Phaser.Easing.Linear.None, true);
-}
-
-// swap the position of 2 elements when the player drags the selected element into a new location
-function swapElemPosition(elem1, elem2) {
-    var tempPosX = elem1.posX;
-    var tempPosY = elem1.posY;
-    setElementPosition(elem1, elem2.posX, elem2.posY);
-    setElementPosition(elem2, tempPosX, tempPosY);
-}
-
-function checkAndKillElemMatches(elem) {
-
-    if (elem !== null) {
-        var countUp = countSameElemElements(elem, 0, -1);
-        var countDown = countSameElemElements(elem, 0, 1);
-        var countLeft = countSameElemElements(elem, -1, 0);
-        var countRight = countSameElemElements(elem, 1, 0);
-
-        var countHoriz = countLeft + countRight + 1;
-        var countVert = countUp + countDown + 1;
-
-        if (countVert >= MATCH_MIN && countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
-            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
-            matched = true;
-            gamePanel.rightMove = true;
-            stillGame = true;
-            gamePanel.sequence++;
-            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
-        } else if (countHoriz >= MATCH_MIN) {
-            killElemRange(elem.posX - countLeft, elem.posY, elem.posX + countRight, elem.posY);
-            matched = true;
-            gamePanel.rightMove = true;
-            stillGame = true;
-            gamePanel.sequence++;
-            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
-        } else if (countVert >= MATCH_MIN) {
-            killElemRange(elem.posX, elem.posY - countUp, elem.posX, elem.posY + countDown);
-            matched = true;
-            gamePanel.rightMove = true;
-            stillGame = true;
-            gamePanel.sequence++;
-            scorePanel.addMatch(countHoriz, countVert, elem.key, gamePanel.sequence);
-        }
-        else {
-            if (elem.posX !== selectedElementStartPos.x || elem.posY !== selectedElementStartPos.y) {
-                if (!matched && tempShiftedElem !== null) {
-                    game.time.events.add(300, swapNoMatch, this, elem);
-                    gamePanel.rightMove = false;
-                }
-            }
-            matched = false;
-        }
-    }
-}
-
-function swapNoMatch(elem) {
-    if (selectedElemTween !== null) {
-        game.tweens.remove(selectedElemTween);
-    }
-    selectedElemTween = tweenElemPos(elem, selectedElementStartPos.x, selectedElementStartPos.y, 3);
-    if (tempShiftedElem !== null) {
-        tweenElemPos(tempShiftedElem, elem.posX, elem.posY, 3);
-        swapElemPosition(elem, tempShiftedElem);
-    }
-}
-
 // count how many elements of the same color lie in a given direction
 // eg if moveX=1 and moveY=0, it will count how many elements of the same color lie to the right of the element
 // stops counting as soon as a element of a different color or the board end is encountered
@@ -367,8 +354,8 @@ function countSameElemElements(elem, moveX, moveY) {
     var curY = elem.posY + moveY;
     var count = 0;
     while (curX >= 0 && curY >= 0 && curX < BOARD_COLS && curY < BOARD_ROWS
-            && getElement(curX, curY) !== null &&
-            getElement(curX, curY).key === elem.key) {
+            && gamePanel.getElement(curX, curY) !== null &&
+            gamePanel.getElement(curX, curY).key === elem.key) {
         count++;
         curX += moveX;
         curY += moveY;
@@ -386,7 +373,7 @@ function killElemRange(fromX, fromY, toX, toY) {
     toY = Phaser.Math.clamp(toY, 0, BOARD_ROWS - 1);
     for (var i = fromX; i <= toX; i++) {
         for (var j = fromY; j <= toY; j++) {
-            var elem = getElement(i, j);
+            var elem = gamePanel.getElement(i, j);
             elem.kill();
         }
     }
@@ -396,7 +383,7 @@ function killElemRange(fromX, fromY, toX, toY) {
 function removeKilledElems() {
     elements.forEach(function(element) {
         if (!element.alive) {
-            setElementPosition(element, -1, -1);
+            gamePanel.setElementPosition(element, -1, -1);
         }
     });
 }
@@ -412,12 +399,12 @@ function dropElements() {
     for (var i = 0; i < BOARD_COLS; i++) {
         var dropRowCount = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
-            var elem = getElement(i, j);
+            var elem = gamePanel.getElement(i, j);
             if (elem === null) {
                 dropRowCount++;
             } else if (dropRowCount > 0) {
-                setElementPosition(elem, elem.posX, elem.posY + dropRowCount);
-                tweenElemPos(elem, elem.posX, elem.posY, dropRowCount);
+                gamePanel.setElementPosition(elem, elem.posX, elem.posY + dropRowCount);
+                gamePanel.tweenElemPos(elem, elem.posX, elem.posY, dropRowCount);
             }
         }
         dropRowCountMax = Math.max(dropRowCount, dropRowCountMax);
@@ -432,7 +419,7 @@ function refillBoard() {
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
-            var elem = getElement(i, j);
+            var elem = gamePanel.getElement(i, j);
             if (elem === null) {
                 elementsMissingFromCol++;
                 var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
@@ -443,8 +430,8 @@ function refillBoard() {
                 elem.height = boardRowsAndColumns;
                 elem.inputEnabled = true;
                 elem.events.onInputDown.add(selectElement);
-                setElementPosition(elem, i, j);
-                tweenElemPos(elem, elem.posX, elem.posY, elementsMissingFromCol * 2);
+                gamePanel.setElementPosition(elem, i, j);
+                gamePanel.tweenElemPos(elem, elem.posX, elem.posY, elementsMissingFromCol * 2);
             }
         }
         maxElementsMissingFromCol = Math.max(maxElementsMissingFromCol, elementsMissingFromCol);
@@ -458,8 +445,8 @@ function boardRefilled() {
     stillGame = false;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
-            var elem = getElement(i, j);
-            checkAndKillElemMatches(elem);
+            var elem = gamePanel.getElement(i, j);
+            gamePanel.checkAndKillElemMatches(elem);
         }
     }
     removeKilledElems();

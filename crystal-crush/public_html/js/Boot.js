@@ -1,9 +1,9 @@
-/* CrystalCrush = {
-    score: 0,
-    music: null,
-    orientated: false
+CrystalCrush = {
+//    score: 0,
+//    music: null,
+//    orientated: false
 };
-*/
+
 CrystalCrush.Boot = function (game) {
     this.game = game;
 };
