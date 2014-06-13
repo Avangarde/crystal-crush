@@ -1,5 +1,8 @@
 
-PopUpPanel = function(game, x , y , width , height, father) {
+
+
+// PopUp types: 'welcome', 'tuto', 'info'
+PopUpPanel = function(game, x , y , width , height, father, type) {
 
     this.x = x;
     this.y = y;
@@ -8,9 +11,7 @@ PopUpPanel = function(game, x , y , width , height, father) {
 
     this.background;
 
-    this.title_txt;
-    this.title_box;
-    this.description;
+    this.type = type;
 
     this.xButton;
     this.father = father;
@@ -20,24 +21,68 @@ PopUpPanel = function(game, x , y , width , height, father) {
 
 PopUpPanel.prototype = {
 create: function() {
-    this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
-    this.background.width = this.width;
-    this.background.height = this.height;
-    game.paused = true;
-    // ACA TENES QUE PONER PAUSA ANDY!!!
-    game.input.onDown.add(this.unpause, self);
-    
-    this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
-    this.xButton.width = 50;
-    this.xButton.height = 50;
+    if(popUpPanel.type === 'welcome'){
+        this.createWelcome();
+    } else if (popUpPanel.type === 'info'){
+        this.createInfo();
+    } else if (popUpPanel.type === 'tuto'){
+        this.createTuto();
+    }
 },
+createWelcome: function (){
+        this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
+        this.background.width = this.width;
+        this.background.height = this.height;
+        game.paused = true;
+        // ACA TENES QUE PONER PAUSA ANDY!!!
+        game.input.onDown.add(this.unpause, self);
+        
+        this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
+        this.xButton.width = 50;
+        this.xButton.height = 50;
+},
+createInfo: function (){
+        this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
+        this.background.width = this.width;
+        this.background.height = this.height;
+        game.paused = true;
+        // ACA TENES QUE PONER PAUSA ANDY!!!
+        game.input.onDown.add(this.unpause, self);
+        
+        this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
+        this.xButton.width = 50;
+        this.xButton.height = 50;
+},
+createTuto: function (){
+        this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
+        this.background.width = this.width;
+        this.background.height = this.height;
+        game.paused = true;
+        // ACA TENES QUE PONER PAUSA ANDY!!!
+        game.input.onDown.add(this.unpause, self);
+        
+        this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
+        this.xButton.width = 50;
+        this.xButton.height = 50;
+},
+
 update: function() {
-        },
+},
+
 unpause: function(event) {
     if (!game.paused) {
         return;
     }
 
+    if(popUpPanel.type === 'welcome'){
+        popUpPanel.unpauseWelcome(event);
+    } else if (popUpPanel.type === 'info'){
+        popUpPanel.unpauseInfo(event);
+    } else if (popUpPanel.type === 'tuto'){
+        popUpPanel.unpauseTuto(event);
+    }
+},
+unpauseWelcome: function(event){
     if (eventInBorder(event, popUpPanel.xButton)){
         game.paused = false;
         popUpPanel.destroypopUp();
@@ -55,13 +100,16 @@ unpause: function(event) {
         }
     }
 },
+unpauseInfo: function(event){
+},
+unpauseTuto: function(event){
+},
 
 
 destroypopUp: function() {
     popUpPanel.background.kill();
     popUpPanel.xButton.kill();
-    //if(this.father != null){
-    if(popUpName === 'welcome'){
+    if(popUpPanel.type === 'welcome'){
         welcomePopUp.destroy();
     }
     // ACA TENES QUE PONER PLAY ANDY!!!
