@@ -64,6 +64,10 @@ var GOLD = "Gold";
 var ALUMINIUM = "Aluminium";
 var elemNames = [];
 var powerNames = [];
+var powerA = [];
+var powerB = [];
+var powerC = [];
+var powerD = [];
 var panelElements = [];
 
 var allowInput;
