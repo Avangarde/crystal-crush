@@ -24,6 +24,7 @@ GamePanel = function(game, x, y, width, height) {
     this.swappedElement;
     this.playsLeft = false;
     this.currentScore = 0;
+    this.isPower = false;
 };
 
 GamePanel.prototype = {
@@ -83,15 +84,14 @@ GamePanel.prototype = {
     },
     fillBoard: function() {
         elements = game.add.group();
-        var boardRowsAndColumns = (this.internalWidth) / BOARD_ROWS;
         for (var i = 0; i < BOARD_COLS; i++) {
             for (var j = 0; j < BOARD_ROWS; j++) {
                 var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
                 var element = elements.create(i * ELEM_SIZE + this.internalX,
                         j * ELEM_SIZE + this.internalY, elemNames[rndIndex]);
                 element.name = elemNames[rndIndex];
-                element.width = boardRowsAndColumns;
-                element.height = boardRowsAndColumns;
+                element.width = ELEM_SIZE;
+                element.height = ELEM_SIZE;
                 element.inputEnabled = true;
 
                 element.events.onInputDown.add(selectElement);
@@ -112,7 +112,7 @@ GamePanel.prototype = {
             return Phaser.Math.floor((coordinate - this.internalY) / ELEM_SIZE);
         }
     },
-     setElementPosition: function(elem, posX, posY) {
+    setElementPosition: function(elem, posX, posY) {
         elem.posX = posX;
         elem.posY = posY;
         elem.id = this.calcElementId(posX, posY);
@@ -228,14 +228,22 @@ GamePanel.prototype = {
         this.selectedPower.startY = element.y;
     },
     runPower: function(element) {
-        if (this.selectedPower.name === SALT || this.selectedPower.name === CORUNDUM) {
+        this.isPower = true;
+        gamePanel.timer.stop();
+        gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
+        gamePanel.timer.start();
+        unselectHint();
+        if (this.selectedPower.name === CORUNDUM) {
             PowerA(element);
         }
-        else if (this.selectedPower.name === ICE || this.selectedPower.name === RUBY) {
+        else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
             PowerB(element);
         }
-        else if (this.selectedPower.name === SUGAR || this.selectedPower.name === SAPPHIRE || this.selectedPower.name === QUARTZ) {
+        else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
             PowerC(element);
+        }
+        else if(this.selectedPower.name === SALT){
+            PowerD(element);
         }
 
     },
@@ -296,10 +304,30 @@ function PowerC(element) {
     scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf(gamePanel.selectedPower.name);
-    console.log(idx);
     scorePanel.decreaseElement(idx);
 }
 
+//Power D
+function PowerD(element) {
+    allowInput = false;
+    var rowElem = element.posY;
+    var colElem = element.posX;
+    var destroyed = 0;
+    for (var i = 0; i < BOARD_COLS; i++) {
+        for (var j = 0; j < BOARD_ROWS; j++) {
+            if (Math.abs(i - colElem)<2 && Math.abs(j - rowElem)<2) {
+                destroyed++;
+                var elem = gamePanel.getElement(i, j);
+                elem.kill();
+            }
+        }
+    }
+    removeKilledElems();
+    scorePanel.score_general += (destroyed * MATCH_MIN);
+    game.time.events.add(300, dropAndRefill);
+    var idx = panelElements.indexOf(gamePanel.selectedPower.name);    
+    scorePanel.decreaseElement(idx);
+}
 function helpTest(hint) {
     gamePanel.findHint = false;
     //for each element in matrix we try with the adjacent elements
@@ -354,7 +382,12 @@ function helpTest(hint) {
 function selectElement(element) {
     if (allowInput) {
         if (gamePanel.selectedPower !== null) {
-            if (gamePanel.selectedPower.name === SALT || gamePanel.selectedPower.name === CORUNDUM) {
+            gamePanel.isPower = true;
+            gamePanel.timer.stop();
+            gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
+            gamePanel.timer.start();
+            unselectHint();
+            if (gamePanel.selectedPower.name === CORUNDUM) {
                 PowerA(element);
             }
             else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
@@ -362,6 +395,9 @@ function selectElement(element) {
             }
             else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
                 PowerC(element);
+            }
+            else if (gamePanel.selectedPower.name === SALT) {
+                PowerD(element);
             }
             gamePanel.selectedPower = null;
         }
@@ -394,7 +430,7 @@ function selectElement(element) {
                 selectedElement = element;
                 selectedElementStartPos.x = element.posX;
                 selectedElementStartPos.y = element.posY;
-                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECTHINT);
+                selection = game.add.sprite(selectedElement.posX * ELEM_SIZE + gamePanel.internalX, selectedElement.posY * ELEM_SIZE + gamePanel.internalY, SELECT);
                 selection.width = selectedElement.width;
                 selection.height = selectedElement.height;
             }
@@ -425,6 +461,8 @@ function killElemRange(fromX, fromY, toX, toY) {
     gamePanel.timer.stop();
     gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
     gamePanel.timer.start();
+    unselectHint();
+
     //gamePanel.fx.play('dogui');
     fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
     fromY = Phaser.Math.clamp(fromY, 0, BOARD_ROWS - 1);
@@ -539,7 +577,6 @@ function dropElements() {
 // look for any empty spots on the board and spawn new gems in their place that fall down from above
 function refillBoard() {
     var maxElementsMissingFromCol = 0;
-    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
@@ -550,8 +587,8 @@ function refillBoard() {
                 var elem = elements.create(i * ELEM_SIZE + gamePanel.internalX,
                         -elementsMissingFromCol * ELEM_SIZE, elemNames[rndIndex]);
                 elem.name = elemNames[rndIndex];
-                elem.width = boardRowsAndColumns;
-                elem.height = boardRowsAndColumns;
+                elem.width = ELEM_SIZE;
+                elem.height = ELEM_SIZE;
                 elem.inputEnabled = true;
                 elem.events.onInputDown.add(selectElement);
                 gamePanel.setElementPosition(elem, i, j);
@@ -567,6 +604,7 @@ function refillBoard() {
 function boardRefilled() {
     tempShiftedElem = null;
     stillGame = false;
+    selectedElement = null;
     for (var j = 0; j < BOARD_ROWS; j++) {
         for (var i = 0; i < BOARD_COLS; i++) {
             var elem = gamePanel.getElement(i, j);
@@ -585,9 +623,12 @@ function boardRefilled() {
             scorePanel.score_general = gamePanel.currentScore;
             gamePanel.beginningGame = false;
         } else if (gamePanel.rightMove) {
-            --(this.game.numMoves);
-            gamePanel.rightMove = false;
+            if (!gamePanel.isPower) {
+                --(this.game.numMoves);
+                gamePanel.rightMove = false;
+            }
         }
+        gamePanel.isPower = false;
         gamePanel.playsLeft = false;
         helpTest(false);
         if (!gamePanel.playsLeft) {
@@ -604,4 +645,5 @@ function boardRefilled() {
         }
         gamePanel.checkWinLose();
     }
+
 }

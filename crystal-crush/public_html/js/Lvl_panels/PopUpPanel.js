@@ -34,7 +34,7 @@ createWelcome: function (){
         this.background.width = this.width;
         this.background.height = this.height;
         game.paused = true;
-        // ACA TENES QUE PONER PAUSA ANDY!!!
+        gamePanel.timer.pause();
         game.input.onDown.add(this.unpause, self);
         
         this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
@@ -89,6 +89,7 @@ unpauseWelcome: function(event){
     }else if (popUpName = 'welcome') {
         if(welcomePopUp.eventInButton(event)){
             game.paused = false;
+            gamePanel.timer.resume();
             popUpPanel.destroypopUp();
         }
     }else if(!eventInBorder(event, popUpPanel)){
@@ -112,8 +113,6 @@ destroypopUp: function() {
     if(popUpPanel.type === 'welcome'){
         welcomePopUp.destroy();
     }
-    // ACA TENES QUE PONER PLAY ANDY!!!
-    // PONE PLAAAAAAAAAAAAAAAAAAAAAAAAAAY
 }
 }
 

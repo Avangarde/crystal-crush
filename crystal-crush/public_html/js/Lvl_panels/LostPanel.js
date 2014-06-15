@@ -9,6 +9,7 @@ CrystalCrush.Lost = function(game) {
     this.game = game;
     this.buttonPlayAgain;
     this.buttonShareFb;
+    this.buttonBackToMenu;
     this.score_txt;
     this.highScore_txt;
     this.messageFBHiScore = "I got ?, a new high score in #CrystalCrush, try to beat me !";
@@ -31,8 +32,13 @@ CrystalCrush.Lost.prototype = {
         this.buttonPlayAgain.height = buttonHeight;
         this.buttonPlayAgain.width = buttonWidth;
         
+        this.buttonBackToMenu = game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + this.buttonPlayAgain.height, 'backToMenu', this.backToMenu, this, 1, 0, 0);
+        this.buttonBackToMenu.anchor.setTo(0.5, 0.5);
+        this.buttonBackToMenu.height = buttonHeight;
+        this.buttonBackToMenu.width = buttonWidth;
+        
         var buttonDim = canvasWidth * 0.05;
-        this.buttonShareFb = this.game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + this.buttonPlayAgain.height, 'shareFb', this.shareFb, this, 1, 0, 0);
+        this.buttonShareFb = game.add.button(canvasWidth / 2, this.buttonBackToMenu.y + this.buttonBackToMenu.height + margin, 'shareFb', this.shareFb, this, 1, 0, 0);
         this.buttonShareFb.anchor.setTo(0.5, 0.5);
         this.buttonShareFb.height = buttonDim;
         this.buttonShareFb.width = buttonDim;
@@ -45,7 +51,7 @@ CrystalCrush.Lost.prototype = {
             this.highScore_txt = game.add.text(canvasWidth / 2, this.score_txt.y + this.score_txt.height + margin, 'New High Score !', style1);
             this.highScore_txt.anchor.setTo(0.5, 0.5);
         }
-        localStorage.setItem("highScore", scorePanel.highScore);
+        localStorage.setItem("hs"+this.game.activeLevel, scorePanel.highScore);
     },
     update: function() {
     },
@@ -54,8 +60,9 @@ CrystalCrush.Lost.prototype = {
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
-                this.messageFBHiScore.replace("?", scorePanel.score_general) :
-                this.messageFBScore.replace("?", scorePanel.score_general);
+                CrystalCrush.language.lostMessageFBHighScore.replace("?", scorePanel.score_general) :
+                CrystalCrush.language.lostMessageFBScore.replace("?", scorePanel.score_general);
+        console.log(message);
         FB.ui({
             method: 'feed',
             name: 'Crystal Crush',
@@ -66,5 +73,8 @@ CrystalCrush.Lost.prototype = {
             link: 'http://avangarde.github.io/crystal-crush/crystal-crush.html',
             picture: 'http://www.hartrao.ac.za/nccs/Esrf.gif'
         });
+    },
+    backToMenu: function() {
+        this.game.state.start('home');
     }
 };
