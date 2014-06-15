@@ -32,6 +32,7 @@ RecipesPanel.prototype = {
                 powerImgs[0] = 'aluminium';
                 powerImgs[1] = 'brass';
                 powerImgs[2] = 'steel';
+                powerImgs[3] = 'gold';
             default:
                 break;
         }

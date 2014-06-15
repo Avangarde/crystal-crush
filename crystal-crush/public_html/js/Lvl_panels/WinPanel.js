@@ -18,7 +18,6 @@ CrystalCrush.Win = function(game) {
 
 CrystalCrush.Win.prototype = {
     create: function() {
-                    console.log("backG");
         //BackGround
         this.winMenu = game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'win');
         this.winMenu.anchor.setTo(0.5, 0.5);
@@ -26,7 +25,6 @@ CrystalCrush.Win.prototype = {
         this.winMenu.height = canvasWidth * WIN_MENU_HEIGHT / WIN_MENU_WIDTH;
             
         //Buttons
-        console.log("Button PayAgain");
         var buttonWidth = canvasWidth * 0.15;
         var buttonHeight = buttonWidth * WIN_BUTTON_HEIGHT / WIN_BUTTON_WIDTH;
         this.buttonPlayAgain = game.add.button(canvasWidth / 2 - buttonWidth / 2, canvasHeight / 2, 'playAgain', this.playAgain, this, 1, 0, 0);
@@ -34,26 +32,22 @@ CrystalCrush.Win.prototype = {
         this.buttonPlayAgain.height = buttonHeight;
         this.buttonPlayAgain.width = buttonWidth;
 
-console.log("Button NextLevel");
         this.buttonNextLevel = game.add.button(canvasWidth / 2 + buttonWidth / 2 + margin, canvasHeight / 2, 'nextLevel', this.nextLevel, this, 1, 0, 0);
         this.buttonNextLevel.anchor.setTo(0.5, 0.5);
         this.buttonNextLevel.height = buttonHeight;
         this.buttonNextLevel.width = buttonWidth;
         
-        console.log("Button Menu");
         this.buttonBackToMenu = game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + this.buttonPlayAgain.height, 'backToMenu', this.backToMenu, this, 1, 0, 0);
         this.buttonBackToMenu.anchor.setTo(0.5, 0.5);
         this.buttonBackToMenu.height = buttonHeight;
         this.buttonBackToMenu.width = buttonWidth;
 
-console.log("Button FB");
         var buttonDim = canvasWidth * 0.05;
         this.buttonShareFb = game.add.button(canvasWidth / 2, this.buttonBackToMenu.y + this.buttonBackToMenu.height + margin, 'shareFb', this.shareFb, this, 1, 0, 0);
         this.buttonShareFb.anchor.setTo(0.5, 0.5);
         this.buttonShareFb.height = buttonDim;
         this.buttonShareFb.width = buttonDim;
 
-                    console.log("score");
         //Score
         this.score_txt = game.add.text(canvasWidth / 2, this.buttonShareFb.y + this.buttonShareFb.height + margin, 'Your Score : ' + scorePanel.score_general, style1);
         this.score_txt.anchor.setTo(0.5, 0.5);

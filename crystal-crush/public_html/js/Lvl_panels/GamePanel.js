@@ -47,13 +47,15 @@ GamePanel.prototype = {
 
     },
     update: function() {
-        if (game.input.activePointer.justReleased() && allowInput) {
+        if (game.input.activePointer.justReleased()) {
             if (this.selectedPower !== null && typeof this.selectedPower !== 'undefined') {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
-                    if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
-                            && this.selectedPower.y + this.selectedPower.height / 2 >= this.internalY && this.selectedPower.y + this.selectedPower.height / 2 <= this.internalY + this.internalHeight) {
-                        var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x, true), this.getRelativeElementPos(this.selectedPower.y, false));
-                        this.runPower(elem);
+                    if (allowInput) {
+                        if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
+                                && this.selectedPower.y + (this.selectedPower.height / 2) >= this.internalY && this.selectedPower.y + (this.selectedPower.height / 2) <= this.internalY + this.internalHeight) {
+                            var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x + (this.selectedPower.width / 2), true), this.getRelativeElementPos(this.selectedPower.y + (this.selectedPower.height / 2), false));
+                            this.runPower(elem);
+                        }
                     }
                     alchemyPanel.tweenElemPos(this.selectedPower, this.selectedPower.startX, this.selectedPower.startY,
                             Phaser.Math.distance(this.selectedPower.startX, this.selectedPower.startY, this.selectedPower.x, this.selectedPower.y) / canvasWidth);
