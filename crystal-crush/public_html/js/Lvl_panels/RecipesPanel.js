@@ -1,3 +1,6 @@
+var RECIPEBUTTONWIDTH = 408;
+var RECIPEBUTTONHEIGHT = 185;
+
 RecipesPanel = function(game, x, y, width, height, lvl) {
 
     this.game = game;
@@ -12,33 +15,55 @@ RecipesPanel = function(game, x, y, width, height, lvl) {
 };
 RecipesPanel.prototype = {
     create: function() {
+        var powerImgs = []
+        switch(this.lvl){
+            case 1:
+                powerImgs[0] = 'salt';
+                powerImgs[1] = 'ice';
+                powerImgs[2] = 'sugar';
+                break;
+            case 2:
+                powerImgs[0] = 'corondum';
+                powerImgs[1] = 'sapphire';
+                powerImgs[2] = 'ruby';
+                powerImgs[3] = 'quartz';
+                break;
+            case 3:
+                powerImgs[0] = 'aluminium';
+                powerImgs[1] = 'brass';
+                powerImgs[2] = 'steel';
+            default:
+                break;
+        }
+        
+        
         this.background = game.add.sprite(this.x, this.y, 'recipesPanel');
         this.background.width = this.width;
         this.background.height = this.height;
 
         var buttonX = [];
         var buttonY = [];
-        for(var i = 0 ; i<4 ; i++){
-           buttonX[i] = this.x;
-           buttonY[i] = this.y + i* this.height/4;
+        var buttonHeight = 0.95 * this.height / 4;
+        var buttonWidth  = buttonHeight * RECIPEBUTTONWIDTH / RECIPEBUTTONHEIGHT;
+        if(buttonWidth >= this.width * 0.95){
+            var tmp = buttonWidth;
+            buttonWidth = this.width * 0.95;
+            buttonHeight = buttonHeight * buttonWidth / tmp;
         }
+        var nb_powers = powerNames.length;
+        for(var i = 0; i < nb_powers ; i++){
+            buttonX[i] = this.x + (this.width - buttonWidth)/2
+            buttonY[i] = this.y + i * this.height / nb_powers + (this.height / nb_powers - buttonHeight ) / 2;
+        }
+        
 
-        for(var i = 0 ; i<4 ; i++){
-            this.buttons[0] = game.add.button(buttonX[i], buttonY[i], 'recipe1', this.openPopUp, this, 0, 0, 0);
-            this.buttons[0].height = this.height/4;
+
+        for(var i = 0 ; i < nb_powers ; i++){
+            this.buttons[i] = game.add.button(buttonX[i], buttonY[i], powerImgs[i], this.openPopUp, this, 0, 0, 0);
+            this.buttons[i].width  = buttonWidth;
+            this.buttons[i].height = buttonHeight;
             
         }
-        /*
-    switch(this.lvl){
-        case 1:
-            button
-            this.button1 = this.game.add.button( 
-        case 2:
-        case 3:
-        default:
-            break;
-        }
-        */
     },
     update: function() {
     },
