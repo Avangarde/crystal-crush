@@ -47,13 +47,15 @@ GamePanel.prototype = {
 
     },
     update: function() {
-        if (game.input.activePointer.justReleased() && allowInput) {
+        if (game.input.activePointer.justReleased()) {
             if (this.selectedPower !== null && typeof this.selectedPower !== 'undefined') {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
-                    if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
-                            && this.selectedPower.y + this.selectedPower.height / 2 >= this.internalY && this.selectedPower.y + this.selectedPower.height / 2 <= this.internalY + this.internalHeight) {
-                        var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x, true), this.getRelativeElementPos(this.selectedPower.y, false));
-                        this.runPower(elem);
+                    if (allowInput) {
+                        if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
+                                && this.selectedPower.y + (this.selectedPower.height / 2) >= this.internalY && this.selectedPower.y + (this.selectedPower.height / 2) <= this.internalY + this.internalHeight) {
+                            var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x + (this.selectedPower.width / 2), true), this.getRelativeElementPos(this.selectedPower.y + (this.selectedPower.height / 2), false));
+                            this.runPower(elem);
+                        }
                     }
                     alchemyPanel.tweenElemPos(this.selectedPower, this.selectedPower.startX, this.selectedPower.startY,
                             Phaser.Math.distance(this.selectedPower.startX, this.selectedPower.startY, this.selectedPower.x, this.selectedPower.y) / canvasWidth);
@@ -84,15 +86,14 @@ GamePanel.prototype = {
     },
     fillBoard: function() {
         elements = game.add.group();
-        var boardRowsAndColumns = (this.internalWidth) / BOARD_ROWS;
         for (var i = 0; i < BOARD_COLS; i++) {
             for (var j = 0; j < BOARD_ROWS; j++) {
                 var rndIndex = game.rnd.integerInRange(0, elemNames.length - 1);
                 var element = elements.create(i * ELEM_SIZE + this.internalX,
                         j * ELEM_SIZE + this.internalY, elemNames[rndIndex]);
                 element.name = elemNames[rndIndex];
-                element.width = boardRowsAndColumns;
-                element.height = boardRowsAndColumns;
+                element.width = ELEM_SIZE;
+                element.height = ELEM_SIZE;
                 element.inputEnabled = true;
 
                 element.events.onInputDown.add(selectElement);
@@ -237,10 +238,10 @@ GamePanel.prototype = {
         if (this.selectedPower.name === CORUNDUM) {
             PowerA(element);
         }
-        else if (this.selectedPower.name === ICE || this.selectedPower.name === RUBY) {
+        else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
             PowerB(element);
         }
-        else if (this.selectedPower.name === SUGAR || this.selectedPower.name === SAPPHIRE || this.selectedPower.name === QUARTZ) {
+        else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
             PowerC(element);
         }
         else if(this.selectedPower.name === SALT){
@@ -305,7 +306,6 @@ function PowerC(element) {
     scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
     var idx = panelElements.indexOf(gamePanel.selectedPower.name);
-    console.log(idx);
     scorePanel.decreaseElement(idx);
 }
 
@@ -579,7 +579,6 @@ function dropElements() {
 // look for any empty spots on the board and spawn new gems in their place that fall down from above
 function refillBoard() {
     var maxElementsMissingFromCol = 0;
-    var boardRowsAndColumns = (gamePanel.internalWidth) / BOARD_ROWS;
     for (var i = 0; i < BOARD_COLS; i++) {
         var elementsMissingFromCol = 0;
         for (var j = BOARD_ROWS - 1; j >= 0; j--) {
@@ -590,8 +589,8 @@ function refillBoard() {
                 var elem = elements.create(i * ELEM_SIZE + gamePanel.internalX,
                         -elementsMissingFromCol * ELEM_SIZE, elemNames[rndIndex]);
                 elem.name = elemNames[rndIndex];
-                elem.width = boardRowsAndColumns;
-                elem.height = boardRowsAndColumns;
+                elem.width = ELEM_SIZE;
+                elem.height = ELEM_SIZE;
                 elem.inputEnabled = true;
                 elem.events.onInputDown.add(selectElement);
                 gamePanel.setElementPosition(elem, i, j);
