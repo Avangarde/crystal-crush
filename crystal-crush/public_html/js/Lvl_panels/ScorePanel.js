@@ -186,11 +186,11 @@ ScorePanel.prototype = {
             var tmp = txt.height;
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
-            /*
             if(txt.width > img_size * 0.33){
+                var tmp = txt.width;
                 txt.width = img_size * 0.33;
+                txt.height = txt.height / tmp * txt.width;
             }
-            */
             this.txt_group[i] = txt;
             this.countElems[i + 1] = 10;
         }
