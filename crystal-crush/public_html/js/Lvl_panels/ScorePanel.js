@@ -235,6 +235,9 @@ ScorePanel.prototype = {
         } else {
             points = ((MATCH_MIN * 3 + 1) * seq);
         }
+        if (audioActived) {
+            gamePanel.matchSound.play();
+        }        
         this.score_general += points;
         this.addMatch2(elem_name, 1);
     },

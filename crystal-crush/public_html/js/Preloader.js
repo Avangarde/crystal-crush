@@ -93,25 +93,35 @@ CrystalCrush.Preloader.prototype = {
         //WinPanel
         this.game.load.image('win', 'assets/win.png');      
         //TODO Change for the right image
-        this.game.load.spritesheet('backToMenu', 'assets/buttons/back_to_menu.png', LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
+        this.game.load.spritesheet('backToMenu', CrystalCrush.language.backToMenuButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         this.game.load.spritesheet('nextLevel', CrystalCrush.language.nextLevelButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         
         // RecipesPanel
         this.game.load.image('recipesPanel', 'assets/recipesPanel.png');
 
-        this.game.load.image('salt','assets/buttons/salt_crystal_button_en.png');
-        this.game.load.image('ice','assets/buttons/ice_crystal_button_en.png');
-        this.game.load.image('sugar','assets/buttons/sugar_crystal_button_en.png');
+        this.game.load.image('salt', CrystalCrush.language.saltRecipe);
+        this.game.load.image('ice', CrystalCrush.language.iceRecipe);
+        this.game.load.image('sugar', CrystalCrush.language.sugarRecipe);
 
-        this.game.load.image('sapphire','assets/buttons/sapphire_crystal_button_en.png');
-        this.game.load.image('quartz','assets/buttons/quartz_crystal_button_en.png');
-        this.game.load.image('ruby','assets/buttons/ruby_crystal_button_en.png');
-        this.game.load.image('corondum','assets/buttons/corondum_crystal_button_en.png');
+        this.game.load.image('sapphire', CrystalCrush.language.sapphireRecipe);
+        this.game.load.image('quartz', CrystalCrush.language.quartzRecipe);
+        this.game.load.image('ruby', CrystalCrush.language.rubyRecipe);
+        this.game.load.image('corondum', CrystalCrush.language.corondumRecipe);
 
-        this.game.load.image('aluminium','assets/buttons/aluminium_crystal_button_en.png');
-        this.game.load.image('brass','assets/buttons/brass_crystal_button_en.png');
-        this.game.load.image('steel','assets/buttons/steel_crystal_button_en.png');
-        this.game.load.image('gold','assets/buttons/gold_crystal_button_en.png');
+        this.game.load.image('aluminium', CrystalCrush.language.aluminiumRecipe);
+        this.game.load.image('brass', CrystalCrush.language.brassRecipe);
+        this.game.load.image('steel', CrystalCrush.language.steelRecipe);
+        this.game.load.image('gold', CrystalCrush.language.goldRecipe);
+        
+        //Audio
+        if(audioActived){
+            this.game.load.audio('ambientMusic', CrystalCrush.audio.ambientMusic);
+            this.game.load.audio('matchSound', CrystalCrush.audio.matchSound);
+            this.game.load.audio('elementCreatedSound', CrystalCrush.audio.elementCreatedSound);
+            this.game.load.audio('createMistakeSound', CrystalCrush.audio.createMistakeSound);
+            this.game.load.audio('winSound', CrystalCrush.audio.winSound);
+            this.game.load.audio('lostSound', CrystalCrush.audio.lostSound);            
+        }
     },
     create: function() {
         this.state.start('home');
