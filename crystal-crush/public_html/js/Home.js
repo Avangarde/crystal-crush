@@ -49,10 +49,10 @@ actionToLvl1 : function(){
     this.game.state.start('lvl1', CrystalCrush.Lvl1);
 },
 actionToLvl2 : function(){
-    //this.game.state.start('lvl2', CrystalCrush.Lvl2);
+    this.game.state.start('lvl2', CrystalCrush.Lvl2);
 },
 actionToLvl3 : function(){
-    //this.game.state.start('lvl3', CrystalCrush.Lvl3);
+    this.game.state.start('lvl3', CrystalCrush.Lvl3);
 },
 actionToAbout : function(){
     //Show about page?

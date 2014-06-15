@@ -35,10 +35,11 @@ CrystalCrush.Lvl2.prototype = {
         selection = null;
         stillGame = false;
 
-        gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heigthGamePanel);
-        scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heigthScorePanel, 0);
+        gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heightGamePanel);
+        scorePanel = new ScorePanel(game, xScorePanel, yScorePanel, widthScorePanel, heightScorePanel, 0);
         alchemyPanel = new AlchemyPanel(game, xAlchemyPanel, yAlchemyPanel, widthAlchemyPanel, heightAlchemyPanel);
         welcomePopUp = new WelcomePopUp(game);
+        recipesPanel = new RecipesPanel(game, xRecipesPanel, yRecipesPanel, widthRecipesPanel, heightRecipesPanel, 2);
 
     },
     create: function() {
@@ -56,6 +57,7 @@ CrystalCrush.Lvl2.prototype = {
         var t = game.cache.getText('crystals');
         crystals = t.split('\n');
         welcomePopUp.create();
+        recipesPanel.create();
 
     },
     update: function() {
