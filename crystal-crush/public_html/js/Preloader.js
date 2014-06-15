@@ -111,7 +111,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('aluminium','assets/buttons/aluminium_crystal_button_en.png');
         this.game.load.image('brass','assets/buttons/brass_crystal_button_en.png');
         this.game.load.image('steel','assets/buttons/steel_crystal_button_en.png');
-
+        this.game.load.image('gold','assets/buttons/gold_crystal_button_en.png');
     },
     create: function() {
         this.state.start('home');
