@@ -5,7 +5,7 @@ CrystalCrush.Lvl2.prototype = {
     preload: function() {
 
         this.game.numMoves = 30;
-        this.game.targetScore = 20000;
+        this.game.targetScore = 2000;
         this.game.numLevel = 2;
         this.game.activeLevel = "lvl2";
         this.game.nextLevel = "lvl3";
