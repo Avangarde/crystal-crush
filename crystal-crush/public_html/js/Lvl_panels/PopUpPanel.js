@@ -1,6 +1,3 @@
-
-
-
 // PopUp types: 'welcome', 'tuto', 'info'
 PopUpPanel = function(game, x , y , width , height, father, type) {
 
@@ -56,9 +53,15 @@ createWelcome: function (){
         gamePanel.timer.pause();
         game.input.onDown.add(this.unpause, self);
         
-        this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
-        this.xButton.width = 50;
-        this.xButton.height = 50;
+        this.xButton = game.add.sprite(this.x, this.y + 5, 'xButton');
+        if(this.width * 0.15 < this.height * 0.15){
+            this.xButton.width = this.width * 0.15;
+        }else{
+            this.xButton.width = this.height * 0.15;
+        }
+        this.xButton.height = this.xButton.width;
+
+        this.xButton.x = this.x + this.width - this.xButton.width;
 },
 createInfo: function (){
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
