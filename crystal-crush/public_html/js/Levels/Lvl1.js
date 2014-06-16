@@ -9,6 +9,7 @@ CrystalCrush.Lvl1.prototype = {
         this.game.activeLevel = "lvl1";
         this.game.nextLevel = "lvl2";
         this.game.backGround = "backgroundLvl1";
+        this.game.welcomeImg = "welcomeLvl1";
 
         elemNames = [NA, CL, C, H, O, CU];
         powerNames = [SALT, ICE, SUGAR];

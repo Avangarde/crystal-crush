@@ -49,6 +49,9 @@ createWelcome: function (){
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
+        this.welcome = game.add.sprite(this.x, this.y, game.welcomeImg);
+        this.welcome.width = this.width;
+        this.welcome.height = this.height;
         game.paused = true;
         gamePanel.timer.pause();
         game.input.onDown.add(this.unpause, self);
