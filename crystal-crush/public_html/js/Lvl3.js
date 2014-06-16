@@ -8,6 +8,7 @@ CrystalCrush.Lvl3.prototype = {
         this.game.numLevel = 3;
         this.game.activeLevel = "lvl3";
         this.game.nextLevel = "home";
+        this.game.backGround = "backgroundLvl3";
 
         elemNames = [CU, ZN, FE, C, AU, AL];
         powerNames = [BRASS, STEEL, GOLD, ALUMINIUM];

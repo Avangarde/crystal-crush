@@ -306,10 +306,24 @@ GamePanel.prototype = {
 function PowerA(element) {
     allowInput = false;
     var rowElem = element.posY;
+    var img = {startX:0, startY:0, endX:0, height:0};
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = gamePanel.getElement(i, rowElem);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endX = elem.x + elem.width;
+            img.height = elem.height;
+        }
         elem.kill();
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = img.endX - img.startX;
+    anim.height = img.height;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += BOARD_COLS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
@@ -321,10 +335,24 @@ function PowerA(element) {
 function PowerB(element) {
     allowInput = false;
     var colElem = element.posX;
+    var img = {startX:0, startY:0, endY:0, width:0};
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = gamePanel.getElement(colElem, i);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endY = elem.y + elem.height;
+            img.width = elem.width;
+        }
         elem.kill();
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = img.width;
+    anim.height = img.endY - img.startY;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += BOARD_ROWS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
@@ -336,15 +364,42 @@ function PowerB(element) {
 function PowerC(element) {
     allowInput = false;
     var rowElem = element.posY;
+    var img = {startX:0, startY:0, endX:0, endY:0, width:0, height:0};
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = gamePanel.getElement(i, rowElem);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endX = elem.x + elem.width;
+            img.height = elem.height;
+        }
         elem.kill();
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = img.endX - img.startX;
+    anim.height = img.height;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     var colElem = element.posX;
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = gamePanel.getElement(colElem, i);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endY = elem.y + elem.height;
+            img.width = elem.width;
+        }
         elem.kill();
     }
+    var anim2 = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim2.width = img.width;
+    anim2.height = img.endY - img.startY;
+    anim2.animations.add('explote');
+    anim2.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
@@ -358,15 +413,26 @@ function PowerD(element) {
     var rowElem = element.posY;
     var colElem = element.posX;
     var destroyed = 0;
+    var elem;
+    var img = {startX:0, startY:0};
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             if (Math.abs(i - colElem)<2 && Math.abs(j - rowElem)<2) {
                 destroyed++;
-                var elem = gamePanel.getElement(i, j);
+                elem = gamePanel.getElement(i, j);
+                if(destroyed === 1) {
+                    img.startX = elem.x;
+                    img.startY = elem.y;
+                }
                 elem.kill();
             }
         }
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = elem.x + elem.width - img.startX;
+    anim.height = elem.y + elem.height - img.startY;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += (destroyed * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
@@ -505,6 +571,11 @@ function killElemRange(fromX, fromY, toX, toY) {
     for (var i = fromX; i <= toX; i++) {
         for (var j = fromY; j <= toY; j++) {
             var elem = gamePanel.getElement(i, j);
+            var anim = game.add.sprite(elem.x, elem.y, 'explosion');
+            anim.width = elem.width;
+            anim.height = elem.height;
+            anim.animations.add('explote');
+            anim.animations.play('explote', 15, false, true);
             elem.kill();
         }
     }

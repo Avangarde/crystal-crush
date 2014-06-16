@@ -56,6 +56,8 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(SELECT, 'assets/sprites/selection.png');     
         this.game.load.image(SELECTHINT, 'assets/sprites/selectionHint.png');     
         this.game.load.image('gamePanel', 'assets/gamePanel.png');
+        this.game.load.spritesheet('explosion', 'assets/sprites/BlueExplosion.png', 120, 120, 12);
+        this.game.load.spritesheet('powerExplosion', 'assets/sprites/RedExplosion.png', 120, 120, 12);
         
         //ScorePanel
         this.game.load.image('scorePanelBackground', 'assets/scorePanel.png');
@@ -68,11 +70,11 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(SAPPHIRE, 'assets/sprites/sapphire.png');
         this.game.load.image(RUBY, 'assets/sprites/ruby.png');
         this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');
-		this.game.load.image(BRASS, 'assets/sprites/brass.png');
-		this.game.load.image(STEEL, 'assets/sprites/steel.png');
-		this.game.load.image(GOLD, 'assets/sprites/gold.png');
-		this.game.load.image(ALUMINIUM, 'assets/sprites/aluminium.png');
-		this.game.load.image('bar', 'assets/bar.png');        
+        this.game.load.image(BRASS, 'assets/sprites/brass.png');
+        this.game.load.image(STEEL, 'assets/sprites/steel.png');
+        this.game.load.image(GOLD, 'assets/sprites/gold.png');
+        this.game.load.image(ALUMINIUM, 'assets/sprites/aluminium.png');
+        this.game.load.image('bar', 'assets/bar.png');
                 
         
         //popUpPanel
@@ -100,19 +102,19 @@ CrystalCrush.Preloader.prototype = {
         // RecipesPanel
         this.game.load.image('recipesPanel', 'assets/recipesPanel.png');
 
-        this.game.load.image('salt', CrystalCrush.language.saltRecipe);
-        this.game.load.image('ice', CrystalCrush.language.iceRecipe);
-        this.game.load.image('sugar', CrystalCrush.language.sugarRecipe);
+        this.game.load.image(SALT+'recipe', CrystalCrush.language.saltRecipe);
+        this.game.load.image(ICE+'recipe', CrystalCrush.language.iceRecipe);
+        this.game.load.image(SUGAR+'recipe', CrystalCrush.language.sugarRecipe);
 
-        this.game.load.image('sapphire', CrystalCrush.language.sapphireRecipe);
-        this.game.load.image('quartz', CrystalCrush.language.quartzRecipe);
-        this.game.load.image('ruby', CrystalCrush.language.rubyRecipe);
-        this.game.load.image('corondum', CrystalCrush.language.corondumRecipe);
+        this.game.load.image(SAPPHIRE+'recipe', CrystalCrush.language.sapphireRecipe);
+        this.game.load.image(QUARTZ+'recipe', CrystalCrush.language.quartzRecipe);
+        this.game.load.image(RUBY+'recipe', CrystalCrush.language.rubyRecipe);
+        this.game.load.image(CORUNDUM+'recipe', CrystalCrush.language.corondumRecipe);
 
-        this.game.load.image('aluminium', CrystalCrush.language.aluminiumRecipe);
-        this.game.load.image('brass', CrystalCrush.language.brassRecipe);
-        this.game.load.image('steel', CrystalCrush.language.steelRecipe);
-        this.game.load.image('gold', CrystalCrush.language.goldRecipe);
+        this.game.load.image(ALUMINIUM+'recipe', CrystalCrush.language.aluminiumRecipe);
+        this.game.load.image(BRASS+'recipe', CrystalCrush.language.brassRecipe);
+        this.game.load.image(STEEL+'recipe', CrystalCrush.language.steelRecipe);
+        this.game.load.image(GOLD+'recipe', CrystalCrush.language.goldRecipe);
         
         //Audio
         if(audioActivated){

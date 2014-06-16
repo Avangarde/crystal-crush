@@ -15,28 +15,10 @@ RecipesPanel = function(game, x, y, width, height, lvl) {
 };
 RecipesPanel.prototype = {
     create: function() {
-        var powerImgs = []
-        switch(this.lvl){
-            case 1:
-                powerImgs[0] = 'salt';
-                powerImgs[1] = 'ice';
-                powerImgs[2] = 'sugar';
-                break;
-            case 2:
-                powerImgs[0] = 'corondum';
-                powerImgs[1] = 'sapphire';
-                powerImgs[2] = 'ruby';
-                powerImgs[3] = 'quartz';
-                break;
-            case 3:
-                powerImgs[0] = 'aluminium';
-                powerImgs[1] = 'brass';
-                powerImgs[2] = 'steel';
-                powerImgs[3] = 'gold';
-            default:
-                break;
-        }
-        
+        var powerImgs = [];
+        for (var i = 0; i < powerNames.length; i++){
+            powerImgs[i] = powerNames[i]+'recipe';
+        }        
         
         this.background = game.add.sprite(this.x, this.y, 'recipesPanel');
         this.background.width = this.width;
