@@ -29,6 +29,7 @@ Language.English = function() {
     this.winMessageFBScore = 'I got ? points in #CrystalCrush, try to beat me!';
     this.lostMessageFBHighScore = 'I got ?, a new high score in #CrystalCrush, try to beat me !';
     this.lostMessageFBScore = 'I got ? points in #CrystalCrush, try to beat me!';
+    this.aboutScreen = 'assets/Home/about_en.png';
 };
 
 Language.French = function() {
@@ -58,4 +59,5 @@ Language.French = function() {
     this.winMessageFBScore;
     this.lostMessageFBHighScore;
     this.lostMessageFBScore;
+    this.aboutScreen = 'assets/Home/about_fr.png';
 };

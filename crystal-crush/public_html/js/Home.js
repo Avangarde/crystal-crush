@@ -13,7 +13,7 @@ create : function () {
              title.width = 1.5*canvasWidth/3;
              title.height = 1.5*canvasHeight/9;
 
-             var b1 = game.add.button(canvasWidth/3,canvasHeight/3 + canvasHeight*0.24, 'play', this.actionToLvl1, this,0,0,0);
+             var b1 = game.add.button(canvasWidth/3,canvasHeight/3 + canvasHeight*0.36, 'play', this.actionToLvl1, this,0,0,0);
              b1.width = canvasWidth/3;
              b1.height = canvasHeight/9;
 /*
@@ -27,10 +27,11 @@ create : function () {
              b3.height = canvasHeight/9;
 
             */
-             var b4 = game.add.button(canvasWidth/3,canvasHeight/3 + canvasHeight*0.36, 'highscore_img', this.actionToHighScore, this,0,0,0);
+             
+/*var b4 = game.add.button(canvasWidth/3,canvasHeight/3 + canvasHeight*0.36, 'highscore_img', this.actionToHighScore, this,0,0,0);
              b4.width = canvasWidth/3;
              b4.height = canvasHeight/9;
-
+*/
 	     var b5 = game.add.button(canvasWidth/3,canvasHeight/3 + canvasHeight*0.48, 'about', this.actionToAbout, this,0,0,0);
              b5.width = canvasWidth/3;
              b5.height = canvasHeight/9;

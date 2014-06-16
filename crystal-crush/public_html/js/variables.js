@@ -80,7 +80,7 @@ var matched = false;
 var selection;
 var stillGame;
 
-var audioActivated = true;
+var audioActivated = false;
 
 var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
 var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
