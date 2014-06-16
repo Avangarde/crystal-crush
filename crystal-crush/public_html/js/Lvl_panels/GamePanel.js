@@ -26,13 +26,14 @@ GamePanel = function(game, x, y, width, height) {
     this.playsLeft = false;
     this.currentScore = 0;
     this.isPower = false;
+    this.matchAnimation;
 };
 
 GamePanel.prototype = {
     preload: function() {        
     },
     create: function() {
-        if (audioActived) {
+        if (audioActivated) {
             this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
             this.ambientMusic.play();
             this.matchSound = game.add.audio('matchSound');
@@ -40,6 +41,10 @@ GamePanel.prototype = {
             this.createMistakeSound = game.add.audio('createMistakeSound');
             this.winSound = game.add.audio('winSound');
             this.lostSound = game.add.audio('lostSound');
+            this.powerASound = game.add.audio('powerASound');
+            this.powerBSound = game.add.audio('powerBSound');
+            this.powerCSound = game.add.audio('powerCSound');
+            this.powerDSound = game.add.audio('powerDSound');
         }
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
@@ -243,33 +248,56 @@ GamePanel.prototype = {
         gamePanel.timer.start();
         unselectHint();
         if (powerA.indexOf(this.selectedPower.name) !== -1) {
+            if (audioActivated) {
+                this.powerASound.play();
+            }
             PowerA(element);
         }
         else if (powerB.indexOf(this.selectedPower.name) !== -1) {
+            if (audioActivated) {
+                this.powerBSound.play();
+            }
             PowerB(element);
         }
         else if (powerC.indexOf(this.selectedPower.name) !== -1) {
+            if (audioActivated) {
+                this.powerCSound.play();
+            }
             PowerC(element);
         }
         else if(powerD.indexOf(this.selectedPower.name) !== -1){
+            if (audioActivated) {
+                this.powerDSound.play();
+            }
             PowerD(element);
         }
 
     },
     checkWinLose: function() {
         if (scorePanel.score_general >= this.game.targetScore) {
-            if (audioActived) {
+            if (audioActivated) {
                 this.ambientMusic.stop();
                 this.winSound.play();
             }
             this.game.state.start("win");
         } else if (this.game.numMoves === 0) {
-            if (audioActived) {
+            if (audioActivated) {
                 this.ambientMusic.stop();
                 this.lostSound.play();
             }
             this.game.state.start("lost");            
         }
+    },
+    fadeElement: function(element) {
+        this.matchAnimation = game.add.sprite(element.x, element.y, SELECTHINT);
+        this.matchAnimation.width = element.width;
+        this.matchAnimation.height = element.height;
+        game.add.tween(this.matchAnimation).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(300, gamePanel.unFadeElement, this, this.matchAnimation);
+    },
+    unFadeElement: function(element) {
+        game.add.tween(element).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+
     }
 };
 
