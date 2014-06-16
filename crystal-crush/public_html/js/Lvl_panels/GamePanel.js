@@ -279,12 +279,14 @@ GamePanel.prototype = {
                 this.ambientMusic.stop();
                 this.winSound.play();
             }
+            console.log("here");
             this.game.state.start("win");
         } else if (this.game.numMoves === 0) {
             if (audioActivated) {
                 this.ambientMusic.stop();
                 this.lostSound.play();
             }
+            console.log("here");
             this.game.state.start("lost");            
         }
     },

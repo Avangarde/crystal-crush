@@ -29,9 +29,9 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('highscore_img', CrystalCrush.language.highScoreButton);
         this.game.load.image('about', CrystalCrush.language.aboutButton);
         
-        this.game.load.image('backgroundLvl1', 'assets/kitchenLevel.png');
-        this.game.load.image('backgroundLvl2', 'assets/beachLevel.png');
-        this.game.load.image('backgroundLvl3', 'assets/forgeLevel.png');
+        this.game.load.image('backgroundLvl1', 'assets/backgrounds/kitchenLevel.png');
+        this.game.load.image('backgroundLvl2', 'assets/backgrounds/beachLevel.png');
+        this.game.load.image('backgroundLvl3', 'assets/backgrounds/forgeLevel.png');
         this.game.load.text('crystals', 'files/crystals.txt');
         
         this.game.load.image('en', 'assets/Home/en.jpg');
@@ -88,12 +88,12 @@ CrystalCrush.Preloader.prototype = {
 	this.game.load.image('gridMistake','assets/sprites/Grille_Mistake.png');
 
         //LostPanel
-        this.game.load.image('lost', 'assets/lost.png');
+        this.game.load.image('lost', 'assets/backgrounds/lost.png');
         this.game.load.spritesheet('playAgain', CrystalCrush.language.playAgainButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
-        this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
+        this.game.load.spritesheet('share', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
         //WinPanel
-        this.game.load.image('win', 'assets/win.png');      
+        this.game.load.image('win', 'assets/backgrounds/win.png');      
         //TODO Change for the right image
         this.game.load.spritesheet('backToMenu', CrystalCrush.language.backToMenuButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         this.game.load.spritesheet('nextLevel', CrystalCrush.language.nextLevelButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        

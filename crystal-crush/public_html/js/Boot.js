@@ -11,7 +11,7 @@ CrystalCrush.Boot.prototype = {
 
     preload: function () {
         this.game.load.image('preloaderBar', 'assets/preload.png');
-        this.game.load.image('backG', 'assets/splash.png');
+        this.game.load.image('backG', 'assets/backgrounds/splash.png');
     },
 
     create: function () {
