@@ -179,7 +179,7 @@ AlchemyPanel.prototype = {
             }
         } else {
             this.fadeGrid();
-            if (audioActived) {
+            if (audioActivated) {
                 gamePanel.createMistakeSound.play();
             }
         }
@@ -221,6 +221,9 @@ AlchemyPanel.prototype = {
         game.add.tween(this.grid).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true);
 
     },backToMenu: function() {
+        if (audioActivated) {
+            gamePanel.ambientMusic.stop();
+        }
         this.game.state.start('home');
     }
 };
