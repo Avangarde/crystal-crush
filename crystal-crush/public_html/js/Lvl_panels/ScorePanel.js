@@ -160,7 +160,7 @@ ScorePanel.prototype = {
             var separatorH = img_size * 0.25;
             var separatorW = elemsPanelW;
             var separatorX = elemsPanelX;
-            var separatorY = elemsPanelY + 2 * img_size + separatorH /2;
+            var separatorY = elemsPanelY + 2 * img_size + separatorH / 2;
 
         }
 
@@ -187,7 +187,7 @@ ScorePanel.prototype = {
             var tmp = txt.height;
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
-            if(txt.width > img_size * 0.33){
+            if (txt.width > img_size * 0.33) {
                 var tmp = txt.width;
                 txt.width = img_size * 0.33;
                 txt.height = txt.height / tmp * txt.width;
@@ -198,13 +198,13 @@ ScorePanel.prototype = {
 
         // Separator
         this.separator = game.add.sprite(separatorX, separatorY, 'bar');
-        this.separator.width  = separatorW;
+        this.separator.width = separatorW;
         this.separator.height = separatorH;
 
     },
     update: function() {
-        this.highScore = scorePanel.score_general > scorePanel.highScore ?
-                scorePanel.score_general : scorePanel.highScore;        
+        this.highScore = (!gamePanel.beginningGame && scorePanel.score_general > scorePanel.highScore) ?
+                scorePanel.score_general : scorePanel.highScore;
         this.score_txt.text = CrystalCrush.language.scoreText + " : " +
                 (gamePanel.beginningGame ? gamePanel.currentScore : this.score_general);
         this.highScore_txt.text = CrystalCrush.language.highScoreText + " : " + this.highScore;
@@ -244,7 +244,7 @@ ScorePanel.prototype = {
         }
         if (audioActivated) {
             gamePanel.matchSound.play();
-        }        
+        }
         this.score_general += points;
         this.addMatch2(elem_name, 1);
     },
