@@ -11,9 +11,10 @@ WelcomePopUp.prototype = {
         popUpName = 'welcome';
         this.popup.create();
 
-        this.playButton = game.add.sprite(this.popup.x + this.popup.width / 4, this.popup.y + this.popup.height * 5 / 8, 'playButton');
-        this.playButton.width = this.popup.width / 2;
-        this.playButton.height = this.popup.height / 4;
+        this.playButton = game.add.sprite(this.popup.x , this.popup.y + this.popup.height * 5 / 8, 'playButton');
+        this.playButton.width = this.popup.width / 4;
+        this.playButton.height = this.popup.height / 8;
+        this.playButton.x = this.popup.x + (this.popup.width - this.playButton.width) / 2 ; 
     },
     update: function() {
     },
