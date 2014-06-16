@@ -54,10 +54,10 @@ createWelcome: function (){
         game.input.onDown.add(this.unpause, self);
         
         this.xButton = game.add.sprite(this.x, this.y + 5, 'xButton');
-        if(this.width * 0.05 < this.height * 0.05){
-            this.xButton.width = this.width * 0.05;
+        if(this.width * 0.15 < this.height * 0.15){
+            this.xButton.width = this.width * 0.15;
         }else{
-            this.xButton.width = this.height * 0.05;
+            this.xButton.width = this.height * 0.15;
         }
         this.xButton.height = this.xButton.width;
 
