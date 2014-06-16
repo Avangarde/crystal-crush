@@ -33,7 +33,6 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('backgroundLvl2', 'assets/beachLevel.png');
         this.game.load.image('backgroundLvl3', 'assets/forgeLevel.png');
         this.game.load.text('crystals', 'files/crystals.txt');
-        this.game.load.text('highScore', 'files/highScore');
         
         this.game.load.image('en', 'assets/Home/en.jpg');
         this.game.load.image('fr', 'assets/Home/fr.jpg');
