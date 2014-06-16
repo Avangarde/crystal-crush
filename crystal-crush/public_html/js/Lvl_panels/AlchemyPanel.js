@@ -167,8 +167,14 @@ AlchemyPanel.prototype = {
             scorePanel.addMatch2(guest.trim(), 1);
             alchemyPanel.killElemRange(0, 0, 3, 3);
             alchemyPanel.removeKilledElems();
+            if (audioActived) {
+                gamePanel.elementCreatedSound.play();
+            }
         }else{
-	    this.fadeGrid();	
+	    this.fadeGrid();
+            if (audioActived) {
+                gamePanel.createMistakeSound.play();
+            }
 	}       
     },
     killElemRange: function(fromX, fromY, toX, toY) {

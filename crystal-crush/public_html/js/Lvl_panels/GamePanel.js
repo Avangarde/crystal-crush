@@ -16,7 +16,8 @@ GamePanel = function(game, x, y, width, height) {
     this.beginningGame = true;
     this.rightMove = false;
     this.sequence = 0;
-    this.fx;
+    this.ambientMusic;
+    this.matchSound;
     this.timer;
     this.arrayHint = [];
     this.kill = true;
@@ -28,14 +29,20 @@ GamePanel = function(game, x, y, width, height) {
 };
 
 GamePanel.prototype = {
-    preload: function() {
-        //this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
+    preload: function() {        
     },
     create: function() {
-        //this.fx = game.add.audio('sound_fx');
+        if (audioActived) {
+            this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
+            this.ambientMusic.play();
+            this.matchSound = game.add.audio('matchSound');
+            this.elementCreatedSound = game.add.audio('elementCreatedSound');
+            this.createMistakeSound = game.add.audio('createMistakeSound');
+            this.winSound = game.add.audio('winSound');
+            this.lostSound = game.add.audio('lostSound');
+        }
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
-        //this.fx.addMarker('dogui', 1, 1.0);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
@@ -47,13 +54,15 @@ GamePanel.prototype = {
 
     },
     update: function() {
-        if (game.input.activePointer.justReleased() && allowInput) {
+        if (game.input.activePointer.justReleased()) {
             if (this.selectedPower !== null && typeof this.selectedPower !== 'undefined') {
                 if (this.selectedPower.x !== this.selectedPower.startX || this.selectedPower.y !== this.selectedPower.startY) {
-                    if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
-                            && this.selectedPower.y + this.selectedPower.height / 2 >= this.internalY && this.selectedPower.y + this.selectedPower.height / 2 <= this.internalY + this.internalHeight) {
-                        var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x, true), this.getRelativeElementPos(this.selectedPower.y, false));
-                        this.runPower(elem);
+                    if (allowInput) {
+                        if (this.selectedPower.x + (this.selectedPower.width / 2) >= this.internalX && this.selectedPower.x + (this.selectedPower.width / 2) <= this.internalX + this.internalWidth
+                                && this.selectedPower.y + (this.selectedPower.height / 2) >= this.internalY && this.selectedPower.y + (this.selectedPower.height / 2) <= this.internalY + this.internalHeight) {
+                            var elem = this.getElement(this.getRelativeElementPos(this.selectedPower.x + (this.selectedPower.width / 2), true), this.getRelativeElementPos(this.selectedPower.y + (this.selectedPower.height / 2), false));
+                            this.runPower(elem);
+                        }
                     }
                     alchemyPanel.tweenElemPos(this.selectedPower, this.selectedPower.startX, this.selectedPower.startY,
                             Phaser.Math.distance(this.selectedPower.startX, this.selectedPower.startY, this.selectedPower.x, this.selectedPower.y) / canvasWidth);
@@ -233,25 +242,33 @@ GamePanel.prototype = {
         gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         gamePanel.timer.start();
         unselectHint();
-        if (this.selectedPower.name === CORUNDUM) {
+        if (powerA.indexOf(this.selectedPower.name) !== -1) {
             PowerA(element);
         }
-        else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
+        else if (powerB.indexOf(this.selectedPower.name) !== -1) {
             PowerB(element);
         }
-        else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
+        else if (powerC.indexOf(this.selectedPower.name) !== -1) {
             PowerC(element);
         }
-        else if(this.selectedPower.name === SALT){
+        else if(powerD.indexOf(this.selectedPower.name) !== -1){
             PowerD(element);
         }
 
     },
     checkWinLose: function() {
         if (scorePanel.score_general >= this.game.targetScore) {
+            if (audioActived) {
+                this.ambientMusic.stop();
+                this.winSound.play();
+            }
             this.game.state.start("win");
         } else if (this.game.numMoves === 0) {
-            this.game.state.start("lost");
+            if (audioActived) {
+                this.ambientMusic.stop();
+                this.lostSound.play();
+            }
+            this.game.state.start("lost");            
         }
     }
 };
@@ -387,18 +404,7 @@ function selectElement(element) {
             gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
             gamePanel.timer.start();
             unselectHint();
-            if (gamePanel.selectedPower.name === CORUNDUM) {
-                PowerA(element);
-            }
-            else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
-                PowerB(element);
-            }
-            else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
-                PowerC(element);
-            }
-            else if (gamePanel.selectedPower.name === SALT) {
-                PowerD(element);
-            }
+            gamePanel.runPower(element);
             gamePanel.selectedPower = null;
         }
         else {

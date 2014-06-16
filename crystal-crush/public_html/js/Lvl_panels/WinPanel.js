@@ -10,7 +10,7 @@ CrystalCrush.Win = function(game) {
     this.buttonPlayAgain;
     this.buttonShareFb;
     this.buttonNextLevel;
-    this.backToMenu;
+    this.buttonBackToMenu;
     this.winMenu;
     this.score_txt;
     this.highScore_txt;
@@ -23,7 +23,7 @@ CrystalCrush.Win.prototype = {
         this.winMenu.anchor.setTo(0.5, 0.5);
         this.winMenu.width = canvasWidth;
         this.winMenu.height = canvasWidth * WIN_MENU_HEIGHT / WIN_MENU_WIDTH;
-
+            
         //Buttons
         var buttonWidth = canvasWidth * 0.15;
         var buttonHeight = buttonWidth * WIN_BUTTON_HEIGHT / WIN_BUTTON_WIDTH;
@@ -37,13 +37,13 @@ CrystalCrush.Win.prototype = {
         this.buttonNextLevel.height = buttonHeight;
         this.buttonNextLevel.width = buttonWidth;
         
-        this.backToMenu = game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + this.buttonPlayAgain.height, 'backToMenu', this.backToMenu, this, 1, 0, 0);
-        this.backToMenu.anchor.setTo(0.5, 0.5);
-        this.backToMenu.height = buttonHeight;
-        this.backToMenu.width = buttonWidth;
+        this.buttonBackToMenu = game.add.button(canvasWidth / 2, canvasHeight / 2 + margin + this.buttonPlayAgain.height, 'backToMenu', this.backToMenu, this, 1, 0, 0);
+        this.buttonBackToMenu.anchor.setTo(0.5, 0.5);
+        this.buttonBackToMenu.height = buttonHeight;
+        this.buttonBackToMenu.width = buttonWidth;
 
         var buttonDim = canvasWidth * 0.05;
-        this.buttonShareFb = game.add.button(canvasWidth / 2, this.backToMenu.y + this.backToMenu.height + margin, 'shareFb', this.shareFb, this, 1, 0, 0);
+        this.buttonShareFb = game.add.button(canvasWidth / 2, this.buttonBackToMenu.y + this.buttonBackToMenu.height + margin, 'shareFb', this.shareFb, this, 1, 0, 0);
         this.buttonShareFb.anchor.setTo(0.5, 0.5);
         this.buttonShareFb.height = buttonDim;
         this.buttonShareFb.width = buttonDim;

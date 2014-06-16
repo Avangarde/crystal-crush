@@ -64,6 +64,10 @@ var GOLD = "Gold";
 var ALUMINIUM = "Aluminium";
 var elemNames = [];
 var powerNames = [];
+var powerA = [];
+var powerB = [];
+var powerC = [];
+var powerD = [];
 var panelElements = [];
 
 var allowInput;
@@ -75,6 +79,8 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 var stillGame;
+
+var audioActived = true;
 
 var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
 var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
