@@ -1,6 +1,3 @@
-
-
-
 // PopUp types: 'welcome', 'tuto', 'info'
 PopUpPanel = function(game, x , y , width , height, father, type) {
 

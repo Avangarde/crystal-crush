@@ -16,9 +16,6 @@ var yGamePanel = margin;
 var widthAlchemyPanel = widthScorePanel;
 var heightAlchemyPanel = heightScorePanel;
 var xAlchemyPanel = widthAlchemyPanel * -1;
-//var widthAlchemyPanel = canvasWidth * 0.6;
-//var heightAlchemyPanel = canvasHeight - (2 * margin);
-//var xAlchemyPanel = (2 * margin + widthAlchemyPanel) * -1;
 var yAlchemyPanel = margin;
 
 var widthRecipesPanel = widthScorePanel;
@@ -26,6 +23,26 @@ var heightRecipesPanel = heightScorePanel;
 var xRecipesPanel = - (widthRecipesPanel + widthAlchemyPanel + margin);
 var yRecipesPanel= margin;
 
+//var widthOptionPanel  = ELEM_SIZE;
+var widthOptionPanel  = 100;
+var heightOptionPanel = heightScorePanel;
+var xOptionPanel = canvasWidth - widthOptionPanel - margin;
+var yOptionPanel= margin;
+
+
+// GUIDO
+if((2 / 3 * canvasWidth - xGamePanel) / 2 < widthOptionPanel + 2 * margin){
+    if(2 / 3 * canvasWidth - xGamePanel < widthOptionPanel + 2 * margin){
+        //IF WE ARE HERE, WE ARE IN TROUBLES
+    }
+    xGamePanel = widthScorePanel + margin + (canvasWidth - widthScorePanel - margin - widthGamePanel - widthOptionPanel)/2;
+
+    // Not enought place to our OptionButtoms! gamePanel needs to be replaced dude
+}else{
+    // enough place, just place them bitch
+}
+
+    
 var widthPopup = canvasWidth * 5 / 6;
 var heightPopup = canvasHeight * 5 / 6;
 var xPopup = canvasWidth / 12;

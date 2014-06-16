@@ -89,10 +89,12 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('lost', 'assets/lost.png');
         this.game.load.spritesheet('playAgain', CrystalCrush.language.playAgainButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
         this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
+        this.game.load.image('backToMenuIcon', 'assets/buttons/home.png');
         
         //WinPanel
         this.game.load.image('win', 'assets/win.png');      
         //TODO Change for the right image
+        this.game.load.spritesheet('backToMenu', CrystalCrush.language.backToMenuButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         this.game.load.spritesheet('backToMenu', CrystalCrush.language.backToMenuButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         this.game.load.spritesheet('nextLevel', CrystalCrush.language.nextLevelButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         
