@@ -167,12 +167,12 @@ AlchemyPanel.prototype = {
             scorePanel.addMatch2(guest.trim(), 1);
             alchemyPanel.killElemRange(0, 0, 3, 3);
             alchemyPanel.removeKilledElems();
-            if (audioActived) {
+            if (audioActivated) {
                 gamePanel.elementCreatedSound.play();
             }
         }else{
 	    this.fadeGrid();
-            if (audioActived) {
+            if (audioActivated) {
                 gamePanel.createMistakeSound.play();
             }
 	}       
@@ -205,17 +205,13 @@ AlchemyPanel.prototype = {
         return game.add.tween(elem).to(
                 {x: newPosX, y: newPosY}, 100 * durationMultiplier, Phaser.Easing.Linear.None, true);
     },
-    fadeGrid: function(){
-	game.add.tween(this.grid).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-	game.time.events.add(Phaser.Timer.SECOND * 1, this.unFadeGrid, this);
+    fadeGrid: function() {
+        game.add.tween(this.grid).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(Phaser.Timer.SECOND * 1, this.unFadeGrid, this);
+    },
+    unFadeGrid: function() {
+        game.add.tween(this.grid).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true);
+    }
 	
-	},
-
-	unFadeGrid: function(){
-	game.add.tween(this.grid).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-	
-	}
-	
-
 };
 

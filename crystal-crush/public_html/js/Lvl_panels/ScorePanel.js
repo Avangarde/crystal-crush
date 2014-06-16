@@ -213,6 +213,9 @@ ScorePanel.prototype = {
     addMatch2: function(elem_name, count) {
         var idx = panelElements.indexOf(elem_name);
         this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);
+        if (!gamePanel.beginningGame) {
+            gamePanel.fadeElement(scorePanel.getElement(idx));
+        }
     },
     addMatch: function(countHoriz, countVert, elem_name, seq) {
         var points = 0;
@@ -235,7 +238,7 @@ ScorePanel.prototype = {
         } else {
             points = ((MATCH_MIN * 3 + 1) * seq);
         }
-        if (audioActived) {
+        if (audioActivated) {
             gamePanel.matchSound.play();
         }        
         this.score_general += points;
