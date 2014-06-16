@@ -2,7 +2,7 @@ var LOST_MENU_WIDTH = 1500;
 var LOST_MENU_HEIGHT = 751;
 var LOST_BUTTON_WIDTH = 593 / 2;
 var LOST_BUTTON_HEIGHT = 81;
-var SHAREFB_BUTTON_DIM = 256;
+var SHAREFB_BUTTON_DIM = 100;
 
 
 CrystalCrush.Lost = function(game) {
