@@ -55,7 +55,7 @@ actionToLvl3 : function(){
     this.game.state.start('lvl3', CrystalCrush.Lvl3);
 },
 actionToAbout : function(){
-    //Show about page?
+    this.game.state.start('about', CrystalCrush.About);
 },
 actionToHighScore : function(){
     this.game.state.start('highscore');  //, CrystalCrush.HighScore);
