@@ -181,12 +181,12 @@ ScorePanel.prototype = {
 
         //Elems_count
         for (var i = 0; i < panelElements.length; i++) {
-            this.countElems[i] = 30;
+            this.countElems[i] = 0;
             var txt = this.game.add.text(elemsX[i] + img_size, elemsY[i] + img_size / 4, '' + this.countElems[i], style1);
             var tmp = txt.height;
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
-            if(txt.width > img_size * 0.33){
+            if (txt.width > img_size * 0.33) {
                 var tmp = txt.width;
                 txt.width = img_size * 0.33;
                 txt.height = txt.height / tmp * txt.width;
@@ -200,7 +200,7 @@ ScorePanel.prototype = {
     },
     update: function() {
         this.highScore = scorePanel.score_general > scorePanel.highScore ?
-                scorePanel.score_general : scorePanel.highScore;        
+                scorePanel.score_general : scorePanel.highScore;
         this.score_txt.text = CrystalCrush.language.scoreText + " : " +
                 (gamePanel.beginningGame ? gamePanel.currentScore : this.score_general);
         this.highScore_txt.text = CrystalCrush.language.highScoreText + " : " + this.highScore;
@@ -213,6 +213,19 @@ ScorePanel.prototype = {
     addMatch2: function(elem_name, count) {
         var idx = panelElements.indexOf(elem_name);
         this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);
+        //If it's the first time playing
+        if (elem_name === NA || elem_name === CL) {
+            var idNa = panelElements.indexOf(NA);
+            var idCl = panelElements.indexOf(CL);
+            if (this.countElems[idNa] >= 5 && this.countElems[idCl] >= 5 &&
+                    currentTuto === 3) {
+                tutoPanel = new PopUpPanel(game, buttonGame.x + buttonGame.width + 10,
+                        buttonGame.y, TUTO_WIDTH, TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+            }
+        }
+        //End if
     },
     addMatch: function(countHoriz, countVert, elem_name, seq) {
         var points = 0;
@@ -263,7 +276,18 @@ ScorePanel.prototype = {
     actionOnClick: function() {
         alchemyPanel.elementToAdd = null;
         if (!this.inAlchemyPanel) {
-            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
+            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);            
+            if (currentTuto === 4) {
+                tutoPanel.background.destroy();
+                tutoPanel = new PopUpPanel(game, alchemyPanel.x +
+                        (alchemyPanel.width / 2 - TUTO_WIDTH / 2), alchemyPanel.y +
+                        (alchemyPanel.height / 2 - TUTO_HEIGHT / 2), TUTO_WIDTH, TUTO_HEIGHT,
+                        this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+                game.input.onDown.add(tutoPanel.killTuto, self);
+            }
+            
             for (var i = 0; i < panelElements.length; i++) {
                 if (i < elemNames.length) {
                     if (scorePanel.countElems[i] > 0) {
@@ -274,7 +298,17 @@ ScorePanel.prototype = {
                 }
             }
             this.inAlchemyPanel = true;
-        } else {
+        } else {            
+            if (currentTuto === 9) {
+                tutoPanel.background.destroy();
+                tutoPanel = new PopUpPanel(game, gamePanel.x + (gamePanel.width / 2 - TUTO_WIDTH / 2),
+                        gamePanel.y + (gamePanel.height / 2 - TUTO_HEIGHT / 2), TUTO_WIDTH,
+                        TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+                game.input.onDown.add(tutoPanel.killTuto, self);
+            }
+            
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
             for (var i = 0; i < panelElements.length; i++) {
                 if (i < elemNames.length) {

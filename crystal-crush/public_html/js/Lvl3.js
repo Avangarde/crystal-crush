@@ -13,7 +13,7 @@ var welcomePopUp = null;
 var popUpPanel = null;
 var popUpName = null;
 var recipesPanel = null;
-
+var tutoPanel = null;
 var crystals;
 
 CrystalCrush.Lvl3.prototype = {

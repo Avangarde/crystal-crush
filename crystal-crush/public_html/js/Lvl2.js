@@ -11,7 +11,7 @@ var scorePanel = null;
 var welcomePopUp = null;
 var popUpPanel = null;
 var popUpName = null;
-
+var tutoPanel = null;
 var crystals;
 
 CrystalCrush.Lvl2.prototype = {
