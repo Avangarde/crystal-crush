@@ -60,15 +60,22 @@ RecipesPanel.prototype = {
 
 
         for(var i = 0 ; i < nb_powers ; i++){
-            this.buttons[i] = game.add.button(buttonX[i], buttonY[i], powerImgs[i], this.openPopUp, this, 0, 0, 0);
+            var x = function(i){openPopUp(i);};
+            this.buttons[i] = game.add.button(buttonX[i], buttonY[i], powerImgs[i], x, this, 0, 0, 0);
+            //(function(i){openPopUp(i)})(i)
             this.buttons[i].width  = buttonWidth;
             this.buttons[i].height = buttonHeight;
-            
         }
     },
+
     update: function() {
-    },
-    openPopUp: function(){
-        console.log("open popup");
     }
+}
+
+function openPopUp(i){
+    if(i.key ==='ice'){
+        console.log('i = ice');
+    }
+    console.log(i.key);
+    //var my_popUp = new InfoPopUp(game, 
 }

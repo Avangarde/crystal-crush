@@ -68,10 +68,11 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(SAPPHIRE, 'assets/sprites/sapphire.png');
         this.game.load.image(RUBY, 'assets/sprites/ruby.png');
         this.game.load.image(QUARTZ, 'assets/sprites/quartz_crystal.png');
-	this.game.load.image(BRASS, 'assets/sprites/brass.png');
-	this.game.load.image(STEEL, 'assets/sprites/steel.png');
-	this.game.load.image(GOLD, 'assets/sprites/gold.png');
-	this.game.load.image(ALUMINIUM, 'assets/sprites/aluminium.png');
+		this.game.load.image(BRASS, 'assets/sprites/brass.png');
+		this.game.load.image(STEEL, 'assets/sprites/steel.png');
+		this.game.load.image(GOLD, 'assets/sprites/gold.png');
+		this.game.load.image(ALUMINIUM, 'assets/sprites/aluminium.png');
+		this.game.load.image('bar', 'assets/bar.png');        
                 
         
         //popUpPanel
