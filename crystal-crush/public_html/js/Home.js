@@ -35,12 +35,12 @@ create : function () {
              b5.width = canvasWidth/3;
              b5.height = canvasHeight/9;
              
-             var enB = game.add.button(canvasWidth * 0.9,margin, 'en', this.toEnglish, this,0,0,0);
-             enB.width = canvasHeight * 0.05;
+             var enB = game.add.button(canvasWidth * 0.85,margin, 'en', this.toEnglish, this,0,0,0);
+             enB.width = canvasWidth * 0.05;
              enB.height = canvasHeight * 0.05;
              
-             var frB = game.add.button(canvasWidth * 0.95,margin, 'fr', this.toFrench, this,0,0,0);
-             frB.width = canvasHeight * 0.05;
+             var frB = game.add.button(canvasWidth * 0.92,margin, 'fr', this.toFrench, this,0,0,0);
+             frB.width = canvasWidth * 0.05;
              frB.height = canvasHeight * 0.05;
 
          },
