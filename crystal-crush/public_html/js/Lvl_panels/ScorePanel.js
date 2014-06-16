@@ -10,6 +10,7 @@ ScorePanel = function(game, x, y, width, height) {
     this.width = width;
     this.height = height;
     this.background;
+    this.separator;
 
     this.score_general = 0;
     this.countElems = [];
@@ -196,6 +197,9 @@ ScorePanel.prototype = {
         }
 
         // Separator
+        this.separator = game.add.sprite(separatorX, separatorY, 'bar');
+        this.separator.width  = separatorW;
+        this.separator.height = separatorH;
 
     },
     update: function() {

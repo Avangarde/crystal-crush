@@ -4,10 +4,26 @@
 // PopUp types: 'welcome', 'tuto', 'info'
 PopUpPanel = function(game, x , y , width , height, father, type) {
 
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+    if(x == null){
+        this.x = xPopup
+    }else{
+        this.x = x;
+    }
+    if(y == null){
+        this.y = yPopup
+    }else{
+        this.y = y;
+    }
+    if(width == null){
+        this.width = widthPopup
+    }else{
+        this.width = width;
+    }
+    if(height == null){
+        this.height = heightPopup
+    }else{
+        this.height = height;
+    }
 
     this.background;
 
