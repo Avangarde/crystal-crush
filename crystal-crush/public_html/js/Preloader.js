@@ -28,15 +28,15 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('highscore_img', CrystalCrush.language.highScoreButton);
         this.game.load.image('about', CrystalCrush.language.aboutButton);
 	this.game.load.image('aboutScreen', CrystalCrush.language.aboutScreen);
-	    //this.game.load.spritesheet('backToHomeButton', CrystalCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
+	this.game.load.spritesheet('backToHomeButton', CrystalCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
         
         this.game.load.image('backgroundLvl1', 'assets/backgrounds/kitchenLevel.png');
         this.game.load.image('backgroundLvl2', 'assets/backgrounds/beachLevel.png');
         this.game.load.image('backgroundLvl3', 'assets/backgrounds/forgeLevel.png');
         
-        this.game.load.image('welcomeLvl1', 'assets/panels/welcomeLvl1.png');
-        this.game.load.image('welcomeLvl2', 'assets/panels/welcomeLvl2.png');
-        this.game.load.image('welcomeLvl3', 'assets/panels/welcomeLvl3.png');
+        this.game.load.image('welcomeLvl1', CrystalCrush.language.welcomeLvl1);
+        this.game.load.image('welcomeLvl2', CrystalCrush.language.welcomeLvl2);
+        this.game.load.image('welcomeLvl3', CrystalCrush.language.welcomeLvl3);
         this.game.load.text('crystals', 'files/crystals.txt');
         
         this.game.load.image('en', 'assets/Home/en.jpg');
