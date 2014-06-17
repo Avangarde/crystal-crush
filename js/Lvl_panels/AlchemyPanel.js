@@ -10,6 +10,7 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.height = height;
     this.background;
     this.grid;
+    this.gridMistake;
     this.alcElements;
     this.columns = 3;
     this.rows = 3;
@@ -29,15 +30,20 @@ AlchemyPanel.prototype = {
         this.background = game.add.sprite(this.x, this.y, 'alchemyPanel');
         this.background.width = this.width;
         this.background.height = this.height;
+        this.gridMistake = game.add.sprite(this.gridX, this.gridY, 'gridMistake');
+        this.gridMistake.width = this.gridWidth;
+        this.gridMistake.height = this.gridHeight;
         this.grid = game.add.sprite(this.gridX, this.gridY, 'grid');
         this.grid.width = this.gridWidth;
         this.grid.height = this.gridHeight;
         this.grid.inputEnabled = true;
         this.grid.events.onInputDown.add(this.addElementToGrid);
+
         var createButton = game.add.button(this.buttonX, this.buttonY, 'createButton2', this.createCrystal, this, 2, 1, 0);
         createButton.width = this.buttonWidth;
         createButton.height = this.buttonHeight;
         createButton.anchor.setTo(0.5, 0.5);
+
         this.alcElements = this.game.add.group();
         this.elementToAdd;
     },
@@ -45,14 +51,14 @@ AlchemyPanel.prototype = {
         if (game.input.activePointer.justReleased() && allowInput) {
             if (this.elementToAdd !== null && typeof this.elementToAdd !== 'undefined') {
                 if (this.elementToAdd.x !== this.elementToAdd.startX || this.elementToAdd.y !== this.elementToAdd.startY) {
-                    if (this.elementToAdd.x + (this.elementToAdd.width/2) >= this.gridX && this.elementToAdd.x + (this.elementToAdd.width/2) <= this.gridX + this.gridWidth
-                            && this.elementToAdd.y + this.elementToAdd.height/2 >= this.gridY  && this.elementToAdd.y + this.elementToAdd.height/2 <= this.gridY + this.gridHeight) {
-                        this.addElementToGrid();                        
+                    if (this.elementToAdd.x + (this.elementToAdd.width / 2) >= this.gridX && this.elementToAdd.x + (this.elementToAdd.width / 2) <= this.gridX + this.gridWidth
+                            && this.elementToAdd.y + this.elementToAdd.height / 2 >= this.gridY && this.elementToAdd.y + this.elementToAdd.height / 2 <= this.gridY + this.gridHeight) {
+                        this.addElementToGrid();
                     } else {
                         if (this.elementToAdd.isIntern) {
                             scorePanel.addMatch2(this.elementToAdd.name, 1);
                             this.elementToAdd.kill();
-                            this.setElementPosition(this.elementToAdd, -1, -1);                            
+                            this.setElementPosition(this.elementToAdd, -1, -1);
                         }
                     }
                     if (!this.elementToAdd.isIntern) {
@@ -76,7 +82,7 @@ AlchemyPanel.prototype = {
     },
     // find a elem on the board according to its position on the board
     getElement: function(posX, posY) {
-        return alchemyPanel.alcElements.iterate("id", calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
+        return alchemyPanel.alcElements.iterate("id", this.calcElementId(posX, posY), Phaser.Group.RETURN_CHILD);
     },
     // convert world coordinates to board position
     getRelativeElementPos: function(coordinate, axisX) {
@@ -89,14 +95,14 @@ AlchemyPanel.prototype = {
     setElementPosition: function(elem, posX, posY) {
         elem.posX = posX;
         elem.posY = posY;
-        elem.id = calcElementId(posX, posY);
+        elem.id = this.calcElementId(posX, posY);
     },
     addElementToGrid: function() {
         var curX = alchemyPanel.getRelativeElementPos(game.input.activePointer.x, true);
         var curY = alchemyPanel.getRelativeElementPos(game.input.activePointer.y, false);
         if (curX < alchemyPanel.columns && curY < alchemyPanel.rows) {
             if (alchemyPanel.elementToAdd !== null && alchemyPanel.getElement(curX, curY) === null) {
-                
+
                 if (alchemyPanel.elementToAdd.isIntern || scorePanel.decreaseElement(alchemyPanel.elementToAdd.index)) {
                     var elem = alchemyPanel.alcElements.create(curX * ELEM_SIZE + alchemyPanel.gridX,
                             curY * ELEM_SIZE + alchemyPanel.gridY, alchemyPanel.elementToAdd.key);
@@ -116,10 +122,10 @@ AlchemyPanel.prototype = {
                 } else {
                     //alchemyPanel.elementToAdd = null;
                 }
-            } else { 
-                if (alchemyPanel.elementToAdd.isIntern) {
+            } else {
+                if (alchemyPanel.elementToAdd !== null && alchemyPanel.elementToAdd.isIntern) {
                     alchemyPanel.tweenElemPos(alchemyPanel.elementToAdd, alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY,
-                                Phaser.Math.distance(alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY, alchemyPanel.elementToAdd.x, alchemyPanel.elementToAdd.y) / alchemyPanel.gridWidth);
+                            Phaser.Math.distance(alchemyPanel.elementToAdd.startX, alchemyPanel.elementToAdd.startY, alchemyPanel.elementToAdd.x, alchemyPanel.elementToAdd.y) / alchemyPanel.gridWidth);
                 }
             }
         }
@@ -127,43 +133,58 @@ AlchemyPanel.prototype = {
     selectInternalElement: function(element) {
         alchemyPanel.elementToAdd = element;
         alchemyPanel.elementToAdd.startX = element.x;
-        alchemyPanel.elementToAdd.startY = element.y;        
+        alchemyPanel.elementToAdd.startY = element.y;
         alchemyPanel.elementToAdd.isIntern = true;
     },
     createCrystal: function() {
         var grille = [];
-        for(var i = 0; i < alchemyPanel.columns; i++){
-           var toAdd = "";
-           for(var j = 0; j < alchemyPanel.rows; j++){
-               var elem = alchemyPanel.getElement(j,i);
-               if(elem === null){
-                   toAdd += 'X-';
-               }
-               else{
-                   toAdd += elem.key;
-               }
-           }
-           grille.push(toAdd);
+        for (var i = 0; i < alchemyPanel.columns; i++) {
+            var toAdd = "";
+            for (var j = 0; j < alchemyPanel.rows; j++) {
+                var elem = alchemyPanel.getElement(j, i);
+                if (elem === null) {
+                    toAdd += 'X';
+                }
+                else {
+                    toAdd += elem.key;
+                }
+            }
+            grille.push(toAdd);
         }
         var guest = "no match";
-        for(var i=0; i < crystals.length; i+=4){
+        for (var i = 0; i < crystals.length; i += 4) {
             var match = true;
-            for(var j=0; j < 3; j++){
-                if(grille[j].trim() !== crystals[i+j+1].trim()){
+            for (var j = 0; j < 3; j++) {
+                if (grille[j].trim() !== crystals[i + j + 1].trim()) {
                     match = false;
                 }
             }
-            if(match){
+            if (match) {
                 guest = crystals[i];
                 break;
             }
         }
         if (guest !== "no match") {
+            if (currentTuto === 8) {
+                tutoPanel = new PopUpPanel(game, buttonGame.x -
+                        (buttonGame.width / 2 + buttonGame.width / 10),
+                        buttonGame.y, TUTO_WIDTH, TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+            }
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
+            alchemyPanel.killElemRange(0, 0, 3, 3);
+            alchemyPanel.removeKilledElems();
+            if (audioActivated) {
+                gamePanel.elementCreatedSound.play();
+            }
+        } else {
+            this.fadeGrid();
+            if (audioActivated) {
+                gamePanel.createMistakeSound.play();
+            }
         }
-        alchemyPanel.killElemRange(0, 0, 3, 3);
-        alchemyPanel.removeKilledElems();
     },
     killElemRange: function(fromX, fromY, toX, toY) {
         fromX = Phaser.Math.clamp(fromX, 0, BOARD_COLS - 1);
@@ -192,6 +213,15 @@ AlchemyPanel.prototype = {
         }
         return game.add.tween(elem).to(
                 {x: newPosX, y: newPosY}, 100 * durationMultiplier, Phaser.Easing.Linear.None, true);
+    },
+    fadeGrid: function() {
+        game.add.tween(this.grid).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(Phaser.Timer.SECOND * 1, this.unFadeGrid, this);
+
+    },
+    unFadeGrid: function() {
+        game.add.tween(this.grid).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true);
+
     }
 };
 

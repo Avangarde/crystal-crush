@@ -10,6 +10,7 @@ ScorePanel = function(game, x, y, width, height) {
     this.width = width;
     this.height = height;
     this.background;
+    this.separator;
 
     this.score_general = 0;
     this.countElems = [];
@@ -44,7 +45,7 @@ ScorePanel.prototype = {
 
         // Text : Score, HighScore, MovesLeft
         this.score_txt = game.add.text(this.x + this.width * 0.15,
-                this.y + margin, '' + this.score_general, style1);
+                this.y + margin, '' + this.score_general + '/' + this.game.targetScore , style1);
         this.highScore_txt = game.add.text(this.x + this.width * 0.15,
                 this.y + this.score_txt.height + margin, '' + this.highScore, style1);
         this.moves_txt = game.add.text(this.x + this.width * 0.15,
@@ -81,68 +82,87 @@ ScorePanel.prototype = {
         this.img_group = game.add.group();
 
         var img_size;
+        var separatorX;
+        var separatorY;
+        var separatorW;
+        var separatorH;
+
+        var nb_pow = powerNames.length;
+
         if (elemsPanelW < elemsPanelH) {
-            if (0.18 * elemsPanelH < 0.35 * elemsPanelW) {
-                img_size = 0.2 * elemsPanelH;
+            if (elemsPanelH / 5.5 < elemsPanelW / 2.66) {
+                img_size = elemsPanelH / 5.5;
             } else {
-                img_size = 0.35 * elemsPanelW;
+                img_size = elemsPanelW / 2.66;
             }
 
             for (var i = 0; i < 5; i++) {
-                elemsX[2 * i] = elemsPanelX;
+                elemsX[2 * i] = elemsPanelX + (elemsPanelW / 2 - img_size * 1.33) / 2;
             }
             for (var i = 0; i < 5; i++) {
-                elemsX[2 * i + 1] = elemsPanelX + elemsPanelW * 0.5;
+                elemsX[2 * i + 1] = elemsPanelX + elemsPanelW / 2 + (elemsPanelW / 2 - img_size * 1.33) / 2;
             }
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 3; i++) {
                 elemsY[2 * i] = elemsPanelY + i * img_size;
                 elemsY[2 * i + 1] = elemsY[2 * i];
             }
 
-        } else {
-            if (elemsPanelH / 3.0 < elemsPanelW / 4.0) {
-                img_size = (elemsPanelH / 3.0);
-            } else {
-                img_size = (elemsPanelW / 4.0);
+            var separatorX = elemsPanelX;
+            var separatorY = elemsPanelY + 3 * img_size;
+            var separatorW = elemsPanelW;
+            var separatorH = img_size * 0.5;
+
+            for (var i = 3; i < 5; i++) {
+                elemsY[2 * i] = elemsPanelY + (i + 0.5) * img_size;
+                elemsY[2 * i + 1] = elemsY[2 * i];
             }
-            elemsX[0] = elemsPanelX;
+            if (nb_pow === 3) {
+                elemsX[8] = elemsPanelX + (elemsPanelW - img_size * 1.33) / 2;
+            }
+
+        } else {
+            if (elemsPanelH / 3.5 < elemsPanelW / (nb_pow * 1.33)) {
+                img_size = (elemsPanelH / 3.5);
+            } else {
+                img_size = (elemsPanelW / (nb_pow * 1.33));
+            }
+            elemsX[0] = elemsPanelX + (elemsPanelW / 3 - img_size * 4 / 3) / 2;
             elemsY[0] = elemsPanelY;
 
-            elemsX[1] = elemsPanelX;
+            elemsX[1] = elemsX[0];
             elemsY[1] = elemsPanelY + img_size;
 
-            elemsX[2] = elemsPanelX + elemsPanelW / 3;
+            elemsX[2] = elemsPanelX + elemsPanelW / 3 + (elemsPanelW / 3 - img_size * 4 / 3) / 2;
             elemsY[2] = elemsPanelY;
 
             elemsX[3] = elemsX[2];
-            elemsY[3] = elemsPanelY + img_size;
+            elemsY[3] = elemsY[1];
 
-            elemsX[4] = elemsPanelX + elemsPanelW * 2 / 3;
+            elemsX[4] = elemsPanelX + elemsPanelW * 2 / 3 + (elemsPanelW / 3 - img_size * 4 / 3) / 2;
             elemsY[4] = elemsPanelY;
 
             elemsX[5] = elemsX[4];
-            elemsY[5] = elemsPanelY + img_size;
+            elemsY[5] = elemsY[1];
 
-            elemsX[6] = elemsPanelX;
-            elemsY[6] = elemsPanelY + 2 * img_size + margin;
+            elemsX[6] = elemsPanelX + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
+            elemsY[6] = elemsY[1] + img_size * 1.5;
 
-            elemsX[7] = elemsX[6] + elemsPanelW / 4;
-            elemsY[7] = elemsPanelY + 2 * img_size;
+            elemsX[7] = elemsPanelX + elemsPanelW / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
+            elemsY[7] = elemsY[6];
 
-            elemsX[8] = elemsX[7] + elemsPanelW / 4;
-            elemsY[8] = elemsPanelY + 2 * img_size;
+            elemsX[8] = elemsPanelX + elemsPanelW * 2 / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
+            elemsY[8] = elemsY[6];
 
-            elemsX[9] = elemsX[8] + elemsPanelW / 4;
-            elemsY[9] = elemsPanelY + 2 * img_size;
+            elemsX[9] = elemsPanelX + elemsPanelW * 3 / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
+            elemsY[9] = elemsY[6];
 
+            var separatorH = img_size * 0.25;
+            var separatorW = elemsPanelW;
+            var separatorX = elemsPanelX;
+            var separatorY = elemsPanelY + 2 * img_size + separatorH / 2;
 
         }
-
-        // var X1 = this.x + this.width * 0.15;
-        // var X2 = this.x + this.width * 0.55;
-        // var inter_img = this.width * 0.2;
-        // var startY = this.highScore_txt.y + 2 * this.highScore_txt.height + margin;// + inter_img;
 
 
         for (var i = 0; i < panelElements.length; i++) {
@@ -167,18 +187,28 @@ ScorePanel.prototype = {
             var tmp = txt.height;
             txt.height = img_size / 2;
             txt.width = txt.width / tmp * txt.height;
+            if (txt.width > img_size * 0.33) {
+                var tmp = txt.width;
+                txt.width = img_size * 0.33;
+                txt.height = txt.height / tmp * txt.width;
+            }
             this.txt_group[i] = txt;
             this.countElems[i + 1] = 10;
         }
 
+        // Separator
+        this.separator = game.add.sprite(separatorX, separatorY, 'bar');
+        this.separator.width = separatorW;
+        this.separator.height = separatorH;
+
     },
     update: function() {
-        this.highScore = scorePanel.score_general > scorePanel.highScore ?
+        this.highScore = (!gamePanel.beginningGame && scorePanel.score_general > scorePanel.highScore) ?
                 scorePanel.score_general : scorePanel.highScore;
-        this.score_txt.text = "Score : " +
-                (gamePanel.beginningGame ? 0 : this.score_general);
-        this.highScore_txt.text = "High Score : " + this.highScore;
-        this.moves_txt.text = "Moves Left : " + this.game.numMoves;
+        this.score_txt.text = CrystalCrush.language.scoreText + " : " +
+                (gamePanel.beginningGame ? gamePanel.currentScore + '/' + this.game.targetScore: this.score_general + '/' + this.game.targetScore);
+        this.highScore_txt.text = CrystalCrush.language.highScoreText + " : " + this.highScore;
+        this.moves_txt.text = CrystalCrush.language.movesLeftText + " : " + this.game.numMoves;
         for (var i = 0; i < panelElements.length; i++) {
             this.txt_group[i].text = this.countElems[i];
         }
@@ -186,7 +216,23 @@ ScorePanel.prototype = {
     },
     addMatch2: function(elem_name, count) {
         var idx = panelElements.indexOf(elem_name);
-        this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);
+        this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);        
+        //If it's the first time playing
+        if (elem_name === NA || elem_name === CL) {
+            var idNa = panelElements.indexOf(NA);
+            var idCl = panelElements.indexOf(CL);
+            if (this.countElems[idNa] >= 5 && this.countElems[idCl] >= 5 &&
+                    currentTuto === 3) {
+                tutoPanel = new PopUpPanel(game, buttonGame.x + buttonGame.width + 10,
+                        buttonGame.y, TUTO_WIDTH, TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+            }
+        }
+        if(!gamePanel.beginningGame){
+            gamePanel.fadeElement(scorePanel.getElement(idx));
+        }
+        //End if
     },
     addMatch: function(countHoriz, countVert, elem_name, seq) {
         var points = 0;
@@ -208,6 +254,12 @@ ScorePanel.prototype = {
             }
         } else {
             points = ((MATCH_MIN * 3 + 1) * seq);
+        }
+        if (audioActivated) {
+            gamePanel.matchSound.play();
+        }
+        if (audioActivated) {
+            gamePanel.matchSound.play();
         }
         this.score_general += points;
         this.addMatch2(elem_name, 1);
@@ -237,7 +289,18 @@ ScorePanel.prototype = {
     actionOnClick: function() {
         alchemyPanel.elementToAdd = null;
         if (!this.inAlchemyPanel) {
-            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);
+            alchemyPanel.tweenElemPos(this.camera, -canvasWidth / 2 + scorePanel.width + 2 * margin, canvasHeight / 2);            
+            if (currentTuto === 4) {
+                tutoPanel.background.destroy();
+                tutoPanel = new PopUpPanel(game, alchemyPanel.x +
+                        (alchemyPanel.width / 2 - TUTO_WIDTH / 2), alchemyPanel.y +
+                        (alchemyPanel.height / 2 - TUTO_HEIGHT / 2), TUTO_WIDTH, TUTO_HEIGHT,
+                        this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+                game.input.onDown.add(tutoPanel.killTuto, self);
+            }
+            
             for (var i = 0; i < panelElements.length; i++) {
                 if (i < elemNames.length) {
                     if (scorePanel.countElems[i] > 0) {
@@ -248,7 +311,17 @@ ScorePanel.prototype = {
                 }
             }
             this.inAlchemyPanel = true;
-        } else {
+        } else {            
+            if (currentTuto === 9) {
+                tutoPanel.background.destroy();
+                tutoPanel = new PopUpPanel(game, gamePanel.x + (gamePanel.width / 2 - TUTO_WIDTH / 2),
+                        gamePanel.y + (gamePanel.height / 2 - TUTO_HEIGHT / 2), TUTO_WIDTH,
+                        TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+                game.input.onDown.add(tutoPanel.killTuto, self);
+            }
+            
             alchemyPanel.tweenElemPos(this.camera, canvasWidth / 2, canvasHeight / 2);
             for (var i = 0; i < panelElements.length; i++) {
                 if (i < elemNames.length) {

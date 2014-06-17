@@ -1,9 +1,8 @@
-/* CrystalCrush = {
-    score: 0,
-    music: null,
-    orientated: false
+CrystalCrush = {
+    audio: null,
+    language: null
 };
-*/
+
 CrystalCrush.Boot = function (game) {
     this.game = game;
 };
@@ -12,7 +11,7 @@ CrystalCrush.Boot.prototype = {
 
     preload: function () {
         this.game.load.image('preloaderBar', 'assets/preload.png');
-        this.game.load.image('backG', 'assets/splash.png');
+        this.game.load.image('backG', 'assets/backgrounds/splash.png');
     },
 
     create: function () {
@@ -29,6 +28,8 @@ CrystalCrush.Boot.prototype = {
         if (!this.game.device.desktop) {
             this.game.scale.forceOrientation(true, false);
         }
+        CrystalCrush.language = new Language.English();
+        CrystalCrush.audio = new Audio();
         game.state.start('preloader');
     },
 
