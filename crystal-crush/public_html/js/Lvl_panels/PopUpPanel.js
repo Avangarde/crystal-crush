@@ -1,6 +1,5 @@
-
 // PopUp types: 'welcome', 'tuto', 'info'
-PopUpPanel = function(game, x, y, width, height, father, type) {
+PopUpPanel = function(game, x , y , width , height, father, type) {
 
     if(x == null){
         this.x = xPopup
@@ -24,31 +23,33 @@ PopUpPanel = function(game, x, y, width, height, father, type) {
     }
 
     this.background;
+
     this.type = type;
 
     this.xButton;
     this.father = father;
-    
+
     this.clickCounter = 0;
 
+    this.infoToDisplay;
 };
 
 PopUpPanel.prototype = {
-    create: function() {
-        if (this.type === 'welcome') {
-            this.createWelcome();
+create: function() {
+    if(popUpPanel.type === 'welcome'){
+        this.createWelcome();
             this.affiche = true;
-        } else if (this.type === 'info') {
-            this.createInfo();
-        } else if (this.type === 'tuto') {
-            this.createTuto();
-        }
-    },
-    createWelcome: function() {
+    } else if (popUpPanel.type === 'info'){
+        this.createInfo();
+    } else if (popUpPanel.type === 'tuto'){
+        this.createTuto();
+    }
+},
+createWelcome: function (){
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
-        this.welcome = game.add.sprite(this.x,this.y,game.welcomeImg);
+        this.welcome = game.add.sprite(this.x, this.y, game.welcomeImg);
         this.welcome.width = this.width;
         this.welcome.height = this.height;
         game.paused = true;
@@ -75,16 +76,17 @@ createInfo: function (){
         this.xButton.width = 50;
         this.xButton.height = 50;
     },
-    createTuto: function() {
+createTuto: function() {
         var imageKey = "TUTO" + currentTuto;
         this.background = game.add.sprite(this.x, this.y, imageKey);
         this.background.width = this.width;
         this.background.height = this.height;
 
     },
-    update: function() {
-    },
-    unpause: function(event) {
+update: function() {
+},
+
+unpause: function(event) {
 
         if (!game.paused) {
             return;
@@ -97,7 +99,7 @@ createInfo: function (){
             popUpPanel.killTuto(event);
         }
     },
-    unpauseWelcome: function(event) {
+unpauseWelcome: function(event) {
         if (eventInBorder(event, popUpPanel.xButton)) {
             this.resumeWelcome();
         } else if (popUpName = 'welcome') {
@@ -113,6 +115,7 @@ createInfo: function (){
         }
 
     },
+
     resumeWelcome: function() {
         game.paused = false;
         gamePanel.timer.resume();
