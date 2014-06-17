@@ -34,6 +34,8 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('backgroundLvl3', 'assets/backgrounds/forgeLevel.png');
         
         this.game.load.image('welcomeLvl1', 'assets/panels/welcomeLvl1.png');
+        this.game.load.image('welcomeLvl2', 'assets/panels/welcomeLvl2.png');
+        this.game.load.image('welcomeLvl3', 'assets/panels/welcomeLvl3.png');
         this.game.load.text('crystals', 'files/crystals.txt');
         
         this.game.load.image('en', 'assets/Home/en.jpg');
@@ -110,7 +112,7 @@ CrystalCrush.Preloader.prototype = {
 
 
 
-        this.game.load.spritesheet('share', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
+        this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
         //WinPanel
         this.game.load.image('win', 'assets/backgrounds/win.png');      
@@ -137,18 +139,17 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(GOLD+'recipe', CrystalCrush.language.goldRecipe);
         
         //Audio
-        if(audioActivated){
-            this.game.load.audio('ambientMusic', CrystalCrush.audio.ambientMusic);
-            this.game.load.audio('matchSound', CrystalCrush.audio.matchSound);
-            this.game.load.audio('elementCreatedSound', CrystalCrush.audio.elementCreatedSound);
-            this.game.load.audio('createMistakeSound', CrystalCrush.audio.createMistakeSound);
-            this.game.load.audio('winSound', CrystalCrush.audio.winSound);
-            this.game.load.audio('lostSound', CrystalCrush.audio.lostSound);
-            this.game.load.audio('powerASound', CrystalCrush.audio.powerASound);
-            this.game.load.audio('powerBSound', CrystalCrush.audio.powerBSound);
-            this.game.load.audio('powerCSound', CrystalCrush.audio.powerCSound);
-            this.game.load.audio('powerDSound', CrystalCrush.audio.powerDSound);
-        }
+        this.game.load.audio('ambientMusic', CrystalCrush.audio.ambientMusic);
+        this.game.load.audio('matchSound', CrystalCrush.audio.matchSound);
+        this.game.load.audio('elementCreatedSound', CrystalCrush.audio.elementCreatedSound);
+        this.game.load.audio('createMistakeSound', CrystalCrush.audio.createMistakeSound);
+        this.game.load.audio('winSound', CrystalCrush.audio.winSound);
+        this.game.load.audio('lostSound', CrystalCrush.audio.lostSound);
+        this.game.load.audio('powerASound', CrystalCrush.audio.powerASound);
+        this.game.load.audio('powerBSound', CrystalCrush.audio.powerBSound);
+        this.game.load.audio('powerCSound', CrystalCrush.audio.powerCSound);
+        this.game.load.audio('powerDSound', CrystalCrush.audio.powerDSound);
+
     },
     create: function() {
         this.state.start('home');

@@ -134,6 +134,7 @@ destroypopUp: function() {
     popUpPanel.xButton.kill();
     if(popUpPanel.type === 'welcome'){
         welcomePopUp.destroy();
+        popUpPanel.welcome.destroy();
     }
 }
 }
