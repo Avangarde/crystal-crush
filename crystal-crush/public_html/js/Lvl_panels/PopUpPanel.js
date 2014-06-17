@@ -2,24 +2,24 @@
 // PopUp types: 'welcome', 'tuto', 'info'
 PopUpPanel = function(game, x, y, width, height, father, type) {
 
-    if(x == null){
+    if (x == null) {
         this.x = xPopup
-    }else{
+    } else {
         this.x = x;
     }
-    if(y == null){
+    if (y == null) {
         this.y = yPopup
-    }else{
+    } else {
         this.y = y;
     }
-    if(width == null){
+    if (width == null) {
         this.width = widthPopup
-    }else{
+    } else {
         this.width = width;
     }
-    if(height == null){
+    if (height == null) {
         this.height = heightPopup
-    }else{
+    } else {
         this.height = height;
     }
 
@@ -28,7 +28,7 @@ PopUpPanel = function(game, x, y, width, height, father, type) {
 
     this.xButton;
     this.father = father;
-    
+
     this.clickCounter = 0;
 
 };
@@ -48,24 +48,23 @@ PopUpPanel.prototype = {
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
-        this.welcome = game.add.sprite(this.x,this.y,game.welcomeImg);
+        this.welcome = game.add.sprite(this.x, this.y, game.welcomeImg);
         this.welcome.width = this.width;
         this.welcome.height = this.height;
         game.paused = true;
         gamePanel.timer.pause();
         game.input.onDown.add(this.unpause, self);
-        
         this.xButton = game.add.sprite(this.x, this.y + 5, 'xButton');
-        if(this.width * 0.15 < this.height * 0.15){
+        if (this.width * 0.15 < this.height * 0.15) {
             this.xButton.width = this.width * 0.15;
-        }else{
+        } else {
             this.xButton.width = this.height * 0.15;
         }
         this.xButton.height = this.xButton.width;
 
         this.xButton.x = this.x + this.width - this.xButton.width;
-},
-createInfo: function (){
+    },
+    createInfo: function() {
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
@@ -120,20 +119,20 @@ createInfo: function (){
     },
     unpauseInfo: function(event) {
     },
-    killTuto: function(event) {        
+    killTuto: function(event) {
         var we = (welcomePopUp === null);
         if (we) {
             tutoPanel.background.destroy();
             game.input.onDown.remove(tutoPanel.killTuto, self);
         }
-        if (currentTuto === 1) {            
-            if (we) {                                
+        if (currentTuto === 1) {
+            if (we) {
                 gamePanel.unHint = true;
                 gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
                 gamePanel.timer.start();
                 unselectHint();
                 currentTuto++;
-            } else {                
+            } else {
                 game.input.onDown.add(tutoPanel.killTuto, self);
             }
         } else if (currentTuto === 2) {
@@ -177,7 +176,7 @@ createInfo: function (){
             game.input.onDown.add(tutoPanel.killTuto, self);
         }
     },
-    destroypopUp: function() {        
+    destroypopUp: function() {
         popUpPanel.background.kill();
         popUpPanel.xButton.kill();
         popUpPanel.welcome.destroy();
