@@ -95,10 +95,7 @@ var BRASS = "Brass";
 var STEEL = "Steel";
 var GOLD = "Gold";
 var ALUMINIUM = "Aluminium";
-
-//////////
-// Important Arrays
-//////////
+var FIRSTTIME = "FIRSTTIME";
 var elemNames = [];
 var powerNames = [];
 var powerA = [];
@@ -116,6 +113,10 @@ var tempShiftedElem = null;
 var matched = false;
 var selection;
 var stillGame;
+var currentTuto=1;
+var hintPresent = false;
+
+var audioActivated = true;
 
 //var audioActivated = true;
 var audioActivated = false;
