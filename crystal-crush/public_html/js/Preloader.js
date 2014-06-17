@@ -103,9 +103,7 @@ CrystalCrush.Preloader.prototype = {
 
 
 
-        //this.game.load.spritesheet('muteIcon', 'assets/buttons/home.png',);
-        //GUIDO ^
-        this.game.load.image('muteIcon','assets/buttons/mute.png');
+        this.game.load.spritesheet('muteIcon', 'assets/buttons/sound.png' , 100,100);
 
 
 
