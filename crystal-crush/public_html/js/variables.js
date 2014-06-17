@@ -3,56 +3,68 @@ var canvasWidth = window.innerWidth;
 var canvasHeight = canvasWidth * 10 / 16 < window.innerHeight ? canvasWidth * 10 / 16 : window.innerHeight;
 var margin = canvasHeight * 0.015;
 
+//////////
+// Panels sizes
+//////////
+
+// ScorePanel
 var xScorePanel = margin;
 var yScorePanel = margin;
 var widthScorePanel = ((canvasWidth - margin) / 3) -  margin;
 var heightScorePanel = canvasHeight - (2 * margin);
 
-var widthGamePanel = canvasHeight - (2 * margin);
-var heightGamePanel = canvasHeight - (2 * margin);
-var xGamePanel = (canvasWidth + widthScorePanel + margin - widthGamePanel)/2;
-var yGamePanel = margin;
+// GamePanel
+var sizeGamePanel = canvasHeight - (2 * margin);
 
+var BOARD_COLS = 6;
+var BOARD_ROWS = 6;
+var MATCH_MIN = 3;
+var ELEM_SIZE = (sizeGamePanel - (2 * margin)) / BOARD_ROWS;
+
+if( canvasWidth  < 4*margin + widthScorePanel + sizeGamePanel + ELEM_SIZE){
+    sizeGamePanel = ((BOARD_ROWS * ( canvasWidth - 4*margin - widthScorePanel)- 2*margin)/(BOARD_ROWS+1));
+    ELEM_SIZE = (sizeGamePanel - (2 * margin)) / BOARD_ROWS;
+    heightScorePanel = sizeGamePanel;
+    yScorePanel = (canvasHeight- heightScorePanel ) / 2 ;
+}
+
+var widthGamePanel = sizeGamePanel;
+var heightGamePanel = sizeGamePanel;
+var xGamePanel = xScorePanel + widthScorePanel + margin;
+var xGamePanel = xGamePanel + (canvasWidth * 2 / 3 - ELEM_SIZE - 3 * margin - sizeGamePanel) / 2
+var yGamePanel = yScorePanel;
+
+
+// AlchemyPanel
 var widthAlchemyPanel = widthScorePanel;
 var heightAlchemyPanel = heightScorePanel;
 var xAlchemyPanel = widthAlchemyPanel * -1;
-var yAlchemyPanel = margin;
+var yAlchemyPanel = yScorePanel;
 
+// RecipesPanel
 var widthRecipesPanel = widthScorePanel;
 var heightRecipesPanel = heightScorePanel;
 var xRecipesPanel = - (widthRecipesPanel + widthAlchemyPanel + margin);
-var yRecipesPanel= margin;
+var yRecipesPanel= yScorePanel;
 
-//var widthOptionPanel  = ELEM_SIZE;
-var widthOptionPanel  = 100;
+// OptionPanel
+var widthOptionPanel  = ELEM_SIZE;
 var heightOptionPanel = heightScorePanel;
 var xOptionPanel = canvasWidth - widthOptionPanel - margin;
-var yOptionPanel= margin;
-
-
-// GUIDO
-if((2 / 3 * canvasWidth - xGamePanel) / 2 < widthOptionPanel + 2 * margin){
-    if(2 / 3 * canvasWidth - xGamePanel < widthOptionPanel + 2 * margin){
-        //IF WE ARE HERE, WE ARE IN TROUBLES
-    }
-    xGamePanel = widthScorePanel + margin + (canvasWidth - widthScorePanel - margin - widthGamePanel - widthOptionPanel)/2;
-
-    // Not enought place to our OptionButtoms! gamePanel needs to be replaced dude
-}else{
-    // enough place, just place them bitch
-}
+var yOptionPanel= yScorePanel;
 
     
+// PopUpPanel
 var widthPopup = canvasWidth * 5 / 6;
 var heightPopup = canvasHeight * 5 / 6;
 var xPopup = canvasWidth / 12;
 var yPopup = canvasHeight / 12;
 
-var BOARD_COLS = 6;
-var BOARD_ROWS = 6;
-var MATCH_MIN = 3;
-var ELEM_SIZE = (heightGamePanel - (2 * margin)) / BOARD_ROWS;
+//////////
+// Important strings for images
+//////////
 
+// Elements
 var CU = "CU";
 var ZN = "ZN";
 var NA = "NA";
@@ -66,8 +78,12 @@ var SI = "SI";
 var TI = "TI";
 var AU = "AU";
 var FE = "FE";
+
+// Graphics
 var SELECT = "SELECT";
 var SELECTHINT = "SELECTHINT";
+
+// Powers
 var SALT = "Salt";
 var ICE = "Ice";
 var SUGAR = "Sugar";
@@ -79,6 +95,10 @@ var BRASS = "Brass";
 var STEEL = "Steel";
 var GOLD = "Gold";
 var ALUMINIUM = "Aluminium";
+
+//////////
+// Important Arrays
+//////////
 var elemNames = [];
 var powerNames = [];
 var powerA = [];
