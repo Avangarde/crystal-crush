@@ -3,8 +3,7 @@ var RECIPEBUTTONHEIGHT = 185;
 
 RecipesPanel = function(game, x, y, width, height, lvl) {
 
-    this.game = game;
-    this.x = x;
+    this.game = game; this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
@@ -17,7 +16,7 @@ RecipesPanel.prototype = {
     create: function() {
         var powerImgs = [];
         for (var i = 0; i < powerNames.length; i++){
-            powerImgs[i] = powerNames[i]+'recipe';
+            powerImgs[i] = powerNames[i]+RECIPE;
         }        
         
         this.background = game.add.sprite(this.x, this.y, 'recipesPanel');
@@ -55,6 +54,9 @@ RecipesPanel.prototype = {
 }
 
 function openPopUp(i){
-    
-    //var my_popUp = new InfoPopUp(game, 
+    var my_string = i.key.substring(0, i.key.length - 7) + INFO;
+    var my_popUp = new PopUpPanel(game, game.camera.x + xPopup ,null,null,null,this,'info'); 
+    my_popUp.infoToDisplay = my_string;
+    //my_popUp.create();
+    console.log(my_string);
 }

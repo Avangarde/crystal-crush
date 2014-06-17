@@ -123,3 +123,6 @@ var audioActivated = false;
 
 var style1 = { font: (canvasHeight/20)+"px Arial", fill: "#ffffff", align: "center" };
 var style2 = { font: (canvasHeight/20)+"px Arial", fill: "#00ffff", align: "center" };
+
+var RECIPE = '_recipe';
+var INFO = '_info';
