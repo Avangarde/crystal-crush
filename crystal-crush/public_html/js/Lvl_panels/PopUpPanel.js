@@ -2,10 +2,26 @@
 // PopUp types: 'welcome', 'tuto', 'info'
 PopUpPanel = function(game, x, y, width, height, father, type) {
 
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+    if(x == null){
+        this.x = xPopup
+    }else{
+        this.x = x;
+    }
+    if(y == null){
+        this.y = yPopup
+    }else{
+        this.y = y;
+    }
+    if(width == null){
+        this.width = widthPopup
+    }else{
+        this.width = width;
+    }
+    if(height == null){
+        this.height = heightPopup
+    }else{
+        this.height = height;
+    }
 
     this.background;
     this.type = type;
@@ -35,11 +51,18 @@ PopUpPanel.prototype = {
         game.paused = true;
         gamePanel.timer.pause();
         game.input.onDown.add(this.unpause, self);
-        this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
-        this.xButton.width = 50;
-        this.xButton.height = 50;
-    },
-    createInfo: function() {
+        
+        this.xButton = game.add.sprite(this.x, this.y + 5, 'xButton');
+        if(this.width * 0.15 < this.height * 0.15){
+            this.xButton.width = this.width * 0.15;
+        }else{
+            this.xButton.width = this.height * 0.15;
+        }
+        this.xButton.height = this.xButton.width;
+
+        this.xButton.x = this.x + this.width - this.xButton.width;
+},
+createInfo: function (){
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;

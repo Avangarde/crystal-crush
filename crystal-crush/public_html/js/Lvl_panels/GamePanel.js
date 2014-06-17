@@ -19,7 +19,8 @@ GamePanel = function(game, x, y, width, height) {
     this.beginningGame = true;
     this.rightMove = false;
     this.sequence = 0;
-    this.fx;
+    this.ambientMusic;
+    this.matchSound;
     this.timer;
     this.arrayHint = [];
     this.kill = true;
@@ -29,17 +30,28 @@ GamePanel = function(game, x, y, width, height) {
     this.currentScore = 0;
     this.isPower = false;
     this.unHint = true;
+    this.matchAnimation;
 };
 
 GamePanel.prototype = {
-    preload: function() {
-        //this.game.load.audio('coinFx', ['assets/audio/coin.ogg','assets/audio/smw_coin.wav'] );
+    preload: function() {        
     },
     create: function() {
-        //this.fx = game.add.audio('sound_fx');
+        if (audioActivated) {
+            this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
+            this.ambientMusic.play();
+            this.matchSound = game.add.audio('matchSound');
+            this.elementCreatedSound = game.add.audio('elementCreatedSound');
+            this.createMistakeSound = game.add.audio('createMistakeSound');
+            this.winSound = game.add.audio('winSound');
+            this.lostSound = game.add.audio('lostSound');
+            this.powerASound = game.add.audio('powerASound');
+            this.powerBSound = game.add.audio('powerBSound');
+            this.powerCSound = game.add.audio('powerCSound');
+            this.powerDSound = game.add.audio('powerDSound');
+        }        
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
-        //this.fx.addMarker('dogui', 1, 1.0);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
         this.background.width = this.width;
         this.background.height = this.height;
@@ -239,27 +251,60 @@ GamePanel.prototype = {
         gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         gamePanel.timer.start();
         unselectHint();
-        if (this.selectedPower.name === CORUNDUM) {
+        if (powerA.indexOf(this.selectedPower.name) !== -1) {
+            if (audioActivated) {
+                this.powerASound.play();
+            }
             PowerA(element);
         }
-        else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
+        else if (powerB.indexOf(this.selectedPower.name) !== -1) {
+            if (audioActivated) {
+                this.powerBSound.play();
+            }
             PowerB(element);
         }
-        else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
+        else if (powerC.indexOf(this.selectedPower.name) !== -1) {
+            if (audioActivated) {
+                this.powerCSound.play();
+            }
             PowerC(element);
         }
-        else if (this.selectedPower.name === SALT) {
+        else if(powerD.indexOf(this.selectedPower.name) !== -1){
+            if (audioActivated) {
+                this.powerDSound.play();
+            }
             PowerD(element);
         }
 
     },
     checkWinLose: function() {
         if (scorePanel.score_general >= this.game.targetScore) {
+            if (audioActivated) {
+                this.ambientMusic.stop();
+                this.winSound.play();
+            }
+            console.log("here");
             this.game.state.start("win");
             localStorage.setItem(FIRSTTIME, false);
         } else if (this.game.numMoves === 0) {
-            this.game.state.start("lost");
+            if (audioActivated) {
+                this.ambientMusic.stop();
+                this.lostSound.play();
+            }
+            console.log("here");
+            this.game.state.start("lost");            
         }
+    },
+    fadeElement: function(element) {
+        this.matchAnimation = game.add.sprite(element.x, element.y, SELECTHINT);
+        this.matchAnimation.width = element.width;
+        this.matchAnimation.height = element.height;
+        game.add.tween(this.matchAnimation).to({alpha: 1}, 1000, Phaser.Easing.Linear.None, true);
+        game.time.events.add(300, gamePanel.unFadeElement, this, this.matchAnimation);
+    },
+    unFadeElement: function(element) {
+        game.add.tween(element).to({alpha: 0}, 1000, Phaser.Easing.Linear.None, true);
+
     }
 };
 
@@ -268,10 +313,24 @@ GamePanel.prototype = {
 function PowerA(element) {
     allowInput = false;
     var rowElem = element.posY;
+    var img = {startX:0, startY:0, endX:0, height:0};
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = gamePanel.getElement(i, rowElem);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endX = elem.x + elem.width;
+            img.height = elem.height;
+        }
         elem.kill();
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = img.endX - img.startX;
+    anim.height = img.height;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += BOARD_COLS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
@@ -283,10 +342,24 @@ function PowerA(element) {
 function PowerB(element) {
     allowInput = false;
     var colElem = element.posX;
+    var img = {startX:0, startY:0, endY:0, width:0};
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = gamePanel.getElement(colElem, i);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endY = elem.y + elem.height;
+            img.width = elem.width;
+        }
         elem.kill();
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = img.width;
+    anim.height = img.endY - img.startY;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += BOARD_ROWS * MATCH_MIN;
     game.time.events.add(300, dropAndRefill);
@@ -298,15 +371,42 @@ function PowerB(element) {
 function PowerC(element) {
     allowInput = false;
     var rowElem = element.posY;
+    var img = {startX:0, startY:0, endX:0, endY:0, width:0, height:0};
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = gamePanel.getElement(i, rowElem);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endX = elem.x + elem.width;
+            img.height = elem.height;
+        }
         elem.kill();
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = img.endX - img.startX;
+    anim.height = img.height;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     var colElem = element.posX;
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = gamePanel.getElement(colElem, i);
+        if(i === 0) {
+            img.startX = elem.x;
+            img.startY = elem.y;
+        }
+        if (i === BOARD_COLS - 1) {
+            img.endY = elem.y + elem.height;
+            img.width = elem.width;
+        }
         elem.kill();
     }
+    var anim2 = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim2.width = img.width;
+    anim2.height = img.endY - img.startY;
+    anim2.animations.add('explote');
+    anim2.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += (BOARD_COLS * MATCH_MIN) + (BOARD_ROWS * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
@@ -320,15 +420,26 @@ function PowerD(element) {
     var rowElem = element.posY;
     var colElem = element.posX;
     var destroyed = 0;
+    var elem;
+    var img = {startX:0, startY:0};
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             if (Math.abs(i - colElem) < 2 && Math.abs(j - rowElem) < 2) {
                 destroyed++;
-                var elem = gamePanel.getElement(i, j);
+                elem = gamePanel.getElement(i, j);
+                if(destroyed === 1) {
+                    img.startX = elem.x;
+                    img.startY = elem.y;
+                }
                 elem.kill();
             }
         }
     }
+    var anim = game.add.sprite(img.startX, img.startY, 'powerExplosion');
+    anim.width = elem.x + elem.width - img.startX;
+    anim.height = elem.y + elem.height - img.startY;
+    anim.animations.add('explote');
+    anim.animations.play('explote', 15, false, true);
     removeKilledElems();
     scorePanel.score_general += (destroyed * MATCH_MIN);
     game.time.events.add(300, dropAndRefill);
@@ -394,18 +505,7 @@ function selectElement(element) {
             gamePanel.timer.loop(TIME_HELP, helpTest, this.game, this, true);
             gamePanel.timer.start();
             unselectHint();
-            if (gamePanel.selectedPower.name === CORUNDUM) {
-                PowerA(element);
-            }
-            else if (gamePanel.selectedPower.name === ICE || gamePanel.selectedPower.name === RUBY) {
-                PowerB(element);
-            }
-            else if (gamePanel.selectedPower.name === SUGAR || gamePanel.selectedPower.name === SAPPHIRE || gamePanel.selectedPower.name === QUARTZ) {
-                PowerC(element);
-            }
-            else if (gamePanel.selectedPower.name === SALT) {
-                PowerD(element);
-            }
+            gamePanel.runPower(element);
             gamePanel.selectedPower = null;
         }
         else {
@@ -477,6 +577,11 @@ function killElemRange(fromX, fromY, toX, toY) {
     for (var i = fromX; i <= toX; i++) {
         for (var j = fromY; j <= toY; j++) {
             var elem = gamePanel.getElement(i, j);
+            var anim = game.add.sprite(elem.x, elem.y, 'explosion');
+            anim.width = elem.width;
+            anim.height = elem.height;
+            anim.animations.add('explote');
+            anim.animations.play('explote', 15, false, true);
             elem.kill();
         }
     }
@@ -653,7 +758,7 @@ function boardRefilled() {
         }
 
         var firstTime = localStorage.getItem(FIRSTTIME);
-        if (firstTime === null) {
+        if (firstTime === null || firstTime) {
             if (currentTuto === 1 && tutoPanel === null) {
                 gamePanel.unHint = false;
                 gamePanel.timer.stop();

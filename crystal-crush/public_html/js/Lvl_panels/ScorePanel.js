@@ -10,6 +10,7 @@ ScorePanel = function(game, x, y, width, height) {
     this.width = width;
     this.height = height;
     this.background;
+    this.separator;
 
     this.score_general = 0;
     this.countElems = [];
@@ -156,10 +157,10 @@ ScorePanel.prototype = {
             elemsX[9] = elemsPanelX + elemsPanelW * 3 / nb_pow + (elemsPanelW / nb_pow - img_size * 4 / 3) / 2;
             elemsY[9] = elemsY[6];
 
-            var separatorX = elemsPanelX;
-            var separatorY = elemsPanelY + 2 * img_size;
+            var separatorH = img_size * 0.25;
             var separatorW = elemsPanelW;
-            var separatorH = img_size * 0.5;
+            var separatorX = elemsPanelX;
+            var separatorY = elemsPanelY + 2 * img_size + separatorH / 2;
 
         }
 
@@ -196,10 +197,13 @@ ScorePanel.prototype = {
         }
 
         // Separator
+        this.separator = game.add.sprite(separatorX, separatorY, 'bar');
+        this.separator.width = separatorW;
+        this.separator.height = separatorH;
 
     },
     update: function() {
-        this.highScore = scorePanel.score_general > scorePanel.highScore ?
+        this.highScore = (!gamePanel.beginningGame && scorePanel.score_general > scorePanel.highScore) ?
                 scorePanel.score_general : scorePanel.highScore;
         this.score_txt.text = CrystalCrush.language.scoreText + " : " +
                 (gamePanel.beginningGame ? gamePanel.currentScore : this.score_general);
@@ -212,7 +216,7 @@ ScorePanel.prototype = {
     },
     addMatch2: function(elem_name, count) {
         var idx = panelElements.indexOf(elem_name);
-        this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);
+        this.countElems[idx] += (gamePanel.beginningGame ? 0 : count);        
         //If it's the first time playing
         if (elem_name === NA || elem_name === CL) {
             var idNa = panelElements.indexOf(NA);
@@ -224,6 +228,9 @@ ScorePanel.prototype = {
                 currentTuto++;
                 tutoPanel.create();
             }
+        }
+        if(!gamePanel.beginningGame){
+            gamePanel.fadeElement(scorePanel.getElement(idx));
         }
         //End if
     },
@@ -247,6 +254,9 @@ ScorePanel.prototype = {
             }
         } else {
             points = ((MATCH_MIN * 3 + 1) * seq);
+        }
+        if (audioActivated) {
+            gamePanel.matchSound.play();
         }
         this.score_general += points;
         this.addMatch2(elem_name, 1);

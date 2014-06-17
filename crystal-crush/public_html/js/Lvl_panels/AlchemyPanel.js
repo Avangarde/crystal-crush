@@ -38,10 +38,17 @@ AlchemyPanel.prototype = {
         this.grid.height = this.gridHeight;
         this.grid.inputEnabled = true;
         this.grid.events.onInputDown.add(this.addElementToGrid);
+
         var createButton = game.add.button(this.buttonX, this.buttonY, 'createButton2', this.createCrystal, this, 2, 1, 0);
         createButton.width = this.buttonWidth;
         createButton.height = this.buttonHeight;
         createButton.anchor.setTo(0.5, 0.5);
+
+        var backToMenuButton = game.add.button(this.buttonX, createButton.y + createButton.height + margin, 'backToMenu', this.backToMenu, this, 2, 1, 0);
+        backToMenuButton.width = this.buttonWidth;
+        backToMenuButton.height = this.buttonHeight;
+        backToMenuButton.anchor.setTo(0.5, 0.5);
+
         this.alcElements = this.game.add.group();
         this.elementToAdd;
     },
@@ -163,18 +170,25 @@ AlchemyPanel.prototype = {
             }
         }
         if (guest !== "no match") {
-            tutoPanel = new PopUpPanel(game, buttonGame.x -
-                    (buttonGame.width / 2 + buttonGame.width / 10),
-                    buttonGame.y, TUTO_WIDTH, TUTO_HEIGHT, this, 'tuto');
-            currentTuto++;
-            tutoPanel.create();
+            if (currentTuto === 8) {
+                tutoPanel = new PopUpPanel(game, buttonGame.x -
+                        (buttonGame.width / 2 + buttonGame.width / 10),
+                        buttonGame.y, TUTO_WIDTH, TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+            }
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
             alchemyPanel.killElemRange(0, 0, 3, 3);
             alchemyPanel.removeKilledElems();
-            game.input.onDown.add(tutoPanel.killTuto, self);
+            if (audioActivated) {
+                gamePanel.elementCreatedSound.play();
+            }
         } else {
             this.fadeGrid();
+            if (audioActivated) {
+                gamePanel.createMistakeSound.play();
+            }
         }
     },
     killElemRange: function(fromX, fromY, toX, toY) {
@@ -213,8 +227,11 @@ AlchemyPanel.prototype = {
     unFadeGrid: function() {
         game.add.tween(this.grid).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true);
 
+    }, backToMenu: function() {
+        if (audioActivated) {
+            gamePanel.ambientMusic.stop();
+        }
+        this.game.state.start('home');
     }
-
-
 };
 

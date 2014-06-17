@@ -2,7 +2,7 @@ var WIN_MENU_WIDTH = 1500;
 var WIN_MENU_HEIGHT = 751;
 var WIN_BUTTON_WIDTH = 593 / 2;
 var WIN_BUTTON_HEIGHT = 81;
-var SHAREFB_BUTTON_DIM = 256;
+var SHAREFB_BUTTON_DIM = 100;
 
 
 CrystalCrush.Win = function(game) {
@@ -67,7 +67,6 @@ CrystalCrush.Win.prototype = {
         var message = scorePanel.score_general === scorePanel.highScore ?
                 CrystalCrush.language.winMessageFBHighScore.replace("?", scorePanel.score_general) :
                 CrystalCrush.language.winMessageFBScore.replace("?", scorePanel.score_general);
-        console.log(message);
         FB.ui({
             method: 'feed',
             name: 'Crystal Crush',

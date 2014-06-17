@@ -15,28 +15,10 @@ RecipesPanel = function(game, x, y, width, height, lvl) {
 };
 RecipesPanel.prototype = {
     create: function() {
-        var powerImgs = []
-        switch(this.lvl){
-            case 1:
-                powerImgs[0] = 'salt';
-                powerImgs[1] = 'ice';
-                powerImgs[2] = 'sugar';
-                break;
-            case 2:
-                powerImgs[0] = 'corondum';
-                powerImgs[1] = 'sapphire';
-                powerImgs[2] = 'ruby';
-                powerImgs[3] = 'quartz';
-                break;
-            case 3:
-                powerImgs[0] = 'aluminium';
-                powerImgs[1] = 'brass';
-                powerImgs[2] = 'steel';
-                powerImgs[3] = 'gold';
-            default:
-                break;
-        }
-        
+        var powerImgs = [];
+        for (var i = 0; i < powerNames.length; i++){
+            powerImgs[i] = powerNames[i]+'recipe';
+        }        
         
         this.background = game.add.sprite(this.x, this.y, 'recipesPanel');
         this.background.width = this.width;
@@ -60,15 +42,23 @@ RecipesPanel.prototype = {
 
 
         for(var i = 0 ; i < nb_powers ; i++){
-            this.buttons[i] = game.add.button(buttonX[i], buttonY[i], powerImgs[i], this.openPopUp, this, 0, 0, 0);
+            var x = function(i){openPopUp(i);};
+            this.buttons[i] = game.add.button(buttonX[i], buttonY[i], powerImgs[i], x, this, 0, 0, 0);
+            //(function(i){openPopUp(i)})(i)
             this.buttons[i].width  = buttonWidth;
             this.buttons[i].height = buttonHeight;
-            
         }
     },
+
     update: function() {
-    },
-    openPopUp: function(){
-        console.log("open popup");
     }
+}
+
+function openPopUp(i){
+    if(i.key ==='ice'){
+        console.log('i = ice');
+    }
+    
+    console.log(i.key);
+    //var my_popUp = new InfoPopUp(game, 
 }
