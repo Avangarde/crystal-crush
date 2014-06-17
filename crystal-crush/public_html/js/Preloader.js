@@ -97,21 +97,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.spritesheet('playAgain', CrystalCrush.language.playAgainButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);
         this.game.load.image('backToMenuIcon', 'assets/buttons/home.png');
 
-
-
-
-
-
-
-        //this.game.load.spritesheet('muteIcon', 'assets/buttons/home.png',);
-        //GUIDO ^
-        this.game.load.image('muteIcon','assets/buttons/mute.png');
-
-
-
-
-
-
+        this.game.load.spritesheet('muteIcon', 'assets/buttons/sound.png' , 100,100);
 
         this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
@@ -139,6 +125,20 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(STEEL+RECIPE, CrystalCrush.language.steelRecipe);
         this.game.load.image(GOLD+RECIPE, CrystalCrush.language.goldRecipe);
         
+        this.game.load.image(SALT+INFO, CrystalCrush.language.saltInfo);
+        this.game.load.image(ICE+INFO, CrystalCrush.language.iceInfo);
+        this.game.load.image(SUGAR+INFO, CrystalCrush.language.sugarInfo);
+
+        this.game.load.image(SAPPHIRE+INFO, CrystalCrush.language.sapphireInfo);
+        this.game.load.image(QUARTZ+INFO, CrystalCrush.language.quartzInfo);
+        this.game.load.image(RUBY+INFO, CrystalCrush.language.rubyInfo);
+        this.game.load.image(CORUNDUM+INFO, CrystalCrush.language.corondumInfo);
+
+        this.game.load.image(ALUMINIUM+INFO, CrystalCrush.language.aluminiumInfo);
+        this.game.load.image(BRASS+INFO, CrystalCrush.language.brassInfo);
+        this.game.load.image(STEEL+INFO, CrystalCrush.language.steelInfo);
+        this.game.load.image(GOLD+INFO, CrystalCrush.language.goldInfo);
+       
         //Audio
         this.game.load.audio('ambientMusic', CrystalCrush.audio.ambientMusic);
         this.game.load.audio('matchSound', CrystalCrush.audio.matchSound);
