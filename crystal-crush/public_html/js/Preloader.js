@@ -126,19 +126,19 @@ CrystalCrush.Preloader.prototype = {
         // RecipesPanel
         this.game.load.image('recipesPanel', 'assets/panels/recipesPanel.png');
 
-        this.game.load.image(SALT+'recipe', CrystalCrush.language.saltRecipe);
-        this.game.load.image(ICE+'recipe', CrystalCrush.language.iceRecipe);
-        this.game.load.image(SUGAR+'recipe', CrystalCrush.language.sugarRecipe);
+        this.game.load.image(SALT+RECIPE, CrystalCrush.language.saltRecipe);
+        this.game.load.image(ICE+RECIPE, CrystalCrush.language.iceRecipe);
+        this.game.load.image(SUGAR+RECIPE, CrystalCrush.language.sugarRecipe);
 
-        this.game.load.image(SAPPHIRE+'recipe', CrystalCrush.language.sapphireRecipe);
-        this.game.load.image(QUARTZ+'recipe', CrystalCrush.language.quartzRecipe);
-        this.game.load.image(RUBY+'recipe', CrystalCrush.language.rubyRecipe);
-        this.game.load.image(CORUNDUM+'recipe', CrystalCrush.language.corondumRecipe);
+        this.game.load.image(SAPPHIRE+RECIPE, CrystalCrush.language.sapphireRecipe);
+        this.game.load.image(QUARTZ+RECIPE, CrystalCrush.language.quartzRecipe);
+        this.game.load.image(RUBY+RECIPE, CrystalCrush.language.rubyRecipe);
+        this.game.load.image(CORUNDUM+RECIPE, CrystalCrush.language.corondumRecipe);
 
-        this.game.load.image(ALUMINIUM+'recipe', CrystalCrush.language.aluminiumRecipe);
-        this.game.load.image(BRASS+'recipe', CrystalCrush.language.brassRecipe);
-        this.game.load.image(STEEL+'recipe', CrystalCrush.language.steelRecipe);
-        this.game.load.image(GOLD+'recipe', CrystalCrush.language.goldRecipe);
+        this.game.load.image(ALUMINIUM+RECIPE, CrystalCrush.language.aluminiumRecipe);
+        this.game.load.image(BRASS+RECIPE, CrystalCrush.language.brassRecipe);
+        this.game.load.image(STEEL+RECIPE, CrystalCrush.language.steelRecipe);
+        this.game.load.image(GOLD+RECIPE, CrystalCrush.language.goldRecipe);
         
         //Audio
         this.game.load.audio('ambientMusic', CrystalCrush.audio.ambientMusic);

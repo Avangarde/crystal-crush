@@ -30,6 +30,8 @@ PopUpPanel = function(game, x , y , width , height, father, type) {
     this.father = father;
 
     this.clickCounter = 0;
+
+    this.infoToDisplay;
 };
 
 PopUpPanel.prototype = {

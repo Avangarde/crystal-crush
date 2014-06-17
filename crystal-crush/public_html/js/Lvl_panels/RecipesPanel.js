@@ -17,7 +17,7 @@ RecipesPanel.prototype = {
     create: function() {
         var powerImgs = [];
         for (var i = 0; i < powerNames.length; i++){
-            powerImgs[i] = powerNames[i]+'recipe';
+            powerImgs[i] = powerNames[i]+RECIPE;
         }        
         
         this.background = game.add.sprite(this.x, this.y, 'recipesPanel');
@@ -55,9 +55,9 @@ RecipesPanel.prototype = {
 }
 
 function openPopUp(i){
-    if(i.key ==='ice'){
-        console.log('i = ice');
-    }
-    console.log(i.key);
-    //var my_popUp = new InfoPopUp(game, 
+    var mystring = i.key.substring(0, i.key.length - 6) + INFO;
+    var my_popUp = new PopUpPanel(game, game.camera.x + xPopup ,null,null,null,this,'info'); 
+    my_popUp.infoToDisplay = my_string;
+    //my_popUp.create();
+    console.log(my_string);
 }
