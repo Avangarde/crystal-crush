@@ -33,22 +33,22 @@ GamePanel = function(game, x, y, width, height) {
 };
 
 GamePanel.prototype = {
-    preload: function() {        
+    preload: function() {
     },
     create: function() {
-        if (audioActivated) {
-            this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
-            this.ambientMusic.play();
-            this.matchSound = game.add.audio('matchSound');
-            this.elementCreatedSound = game.add.audio('elementCreatedSound');
-            this.createMistakeSound = game.add.audio('createMistakeSound');
-            this.winSound = game.add.audio('winSound');
-            this.lostSound = game.add.audio('lostSound');
-            this.powerASound = game.add.audio('powerASound');
-            this.powerBSound = game.add.audio('powerBSound');
-            this.powerCSound = game.add.audio('powerCSound');
-            this.powerDSound = game.add.audio('powerDSound');
-        }
+
+        this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
+        this.ambientMusic.play();
+        this.matchSound = game.add.audio('matchSound');
+        this.elementCreatedSound = game.add.audio('elementCreatedSound');
+        this.createMistakeSound = game.add.audio('createMistakeSound');
+        this.winSound = game.add.audio('winSound');
+        this.lostSound = game.add.audio('lostSound');
+        this.powerASound = game.add.audio('powerASound');
+        this.powerBSound = game.add.audio('powerBSound');
+        this.powerCSound = game.add.audio('powerCSound');
+        this.powerDSound = game.add.audio('powerDSound');
+
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
@@ -268,7 +268,7 @@ GamePanel.prototype = {
             }
             PowerC(element);
         }
-        else if(powerD.indexOf(this.selectedPower.name) !== -1){
+        else if (powerD.indexOf(this.selectedPower.name) !== -1) {
             if (audioActivated) {
                 this.powerDSound.play();
             }
@@ -277,6 +277,7 @@ GamePanel.prototype = {
 
     },
     checkWinLose: function() {
+        localStorage.setItem(FIRSTTIME, false);
         if (scorePanel.score_general >= this.game.targetScore) {
             if (audioActivated) {
                 this.ambientMusic.stop();
@@ -284,14 +285,14 @@ GamePanel.prototype = {
             }
             console.log("here");
             this.game.state.start("win");
-            localStorage.setItem(FIRSTTIME, false);
+            
         } else if (this.game.numMoves === 0) {
             if (audioActivated) {
                 this.ambientMusic.stop();
                 this.lostSound.play();
             }
             console.log("here");
-            this.game.state.start("lost");            
+            this.game.state.start("lost");
         }
     },
     fadeElement: function(element) {
@@ -312,10 +313,10 @@ GamePanel.prototype = {
 function PowerA(element) {
     allowInput = false;
     var rowElem = element.posY;
-    var img = {startX:0, startY:0, endX:0, height:0};
+    var img = {startX: 0, startY: 0, endX: 0, height: 0};
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = gamePanel.getElement(i, rowElem);
-        if(i === 0) {
+        if (i === 0) {
             img.startX = elem.x;
             img.startY = elem.y;
         }
@@ -341,10 +342,10 @@ function PowerA(element) {
 function PowerB(element) {
     allowInput = false;
     var colElem = element.posX;
-    var img = {startX:0, startY:0, endY:0, width:0};
+    var img = {startX: 0, startY: 0, endY: 0, width: 0};
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = gamePanel.getElement(colElem, i);
-        if(i === 0) {
+        if (i === 0) {
             img.startX = elem.x;
             img.startY = elem.y;
         }
@@ -370,10 +371,10 @@ function PowerB(element) {
 function PowerC(element) {
     allowInput = false;
     var rowElem = element.posY;
-    var img = {startX:0, startY:0, endX:0, endY:0, width:0, height:0};
+    var img = {startX: 0, startY: 0, endX: 0, endY: 0, width: 0, height: 0};
     for (var i = 0; i < BOARD_COLS; i++) {
         var elem = gamePanel.getElement(i, rowElem);
-        if(i === 0) {
+        if (i === 0) {
             img.startX = elem.x;
             img.startY = elem.y;
         }
@@ -391,7 +392,7 @@ function PowerC(element) {
     var colElem = element.posX;
     for (var i = 0; i < BOARD_ROWS; i++) {
         var elem = gamePanel.getElement(colElem, i);
-        if(i === 0) {
+        if (i === 0) {
             img.startX = elem.x;
             img.startY = elem.y;
         }
@@ -420,13 +421,13 @@ function PowerD(element) {
     var colElem = element.posX;
     var destroyed = 0;
     var elem;
-    var img = {startX:0, startY:0};
+    var img = {startX: 0, startY: 0};
     for (var i = 0; i < BOARD_COLS; i++) {
         for (var j = 0; j < BOARD_ROWS; j++) {
             if (Math.abs(i - colElem) < 2 && Math.abs(j - rowElem) < 2) {
                 destroyed++;
                 elem = gamePanel.getElement(i, j);
-                if(destroyed === 1) {
+                if (destroyed === 1) {
                     img.startX = elem.x;
                     img.startY = elem.y;
                 }
@@ -757,7 +758,7 @@ function boardRefilled() {
         }
 
         var firstTime = localStorage.getItem(FIRSTTIME);
-        if (firstTime === null || firstTime) {
+        if (firstTime === null) {
             if (currentTuto === 1 && tutoPanel === null) {
                 gamePanel.unHint = false;
                 gamePanel.timer.stop();

@@ -28,7 +28,7 @@ PopUpPanel = function(game, x, y, width, height, father, type) {
 
     this.xButton;
     this.father = father;
-
+    
     this.clickCounter = 0;
 
 };
@@ -48,6 +48,9 @@ PopUpPanel.prototype = {
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
+        this.welcome = game.add.sprite(this.x,this.y,game.welcomeImg);
+        this.welcome.width = this.width;
+        this.welcome.height = this.height;
         game.paused = true;
         gamePanel.timer.pause();
         game.input.onDown.add(this.unpause, self);
@@ -177,6 +180,7 @@ createInfo: function (){
     destroypopUp: function() {        
         popUpPanel.background.kill();
         popUpPanel.xButton.kill();
+        popUpPanel.welcome.destroy();
         if (popUpPanel.type === 'welcome') {
             welcomePopUp.destroy();
             welcomePopUp = null;
