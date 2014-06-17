@@ -66,6 +66,7 @@ PopUpPanel.prototype = {
         this.xButton.x = this.x + this.width - this.xButton.width;
     },
     createInfo: function() {
+        
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
@@ -213,7 +214,15 @@ function eventInBorder(event, button) {
             }
         }
         return false;
+    }else{
+        if (event.x  >= button.x - game.camera.x && event.x <= button.x + button.width - game.camera.x ) {
+            if (event.y >= button.y && event.y <= button.y + button.height) {
+                return true;
+            }
+        }
+        return false;
     }
+    
 }
 
 
