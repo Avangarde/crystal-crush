@@ -29,6 +29,10 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('highscore_img', CrystalCrush.language.highScoreButton);
         this.game.load.image('about', CrystalCrush.language.aboutButton);
 	this.game.load.image('aboutScreen', CrystalCrush.language.aboutScreen);
+    // <GUIDOOOO>
+        var ABOUT_BUTTON_HEIGHT = 100;
+        var ABOUT_BUTTON_WIDTH  = 100;
+    // <\GUIDOOOO>
 	this.game.load.spritesheet('backToHomeButton', CrystalCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
         
         this.game.load.image('backgroundLvl1', 'assets/backgrounds/kitchenLevel.png');
