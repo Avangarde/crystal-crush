@@ -22,8 +22,8 @@ create: function() {
 
 
     // GUIDOOOO
-    //this.muteButton = game.add.button(xmute, ymute, 'muteIcon', this.muteUnmute, this, 0 , 0 , 0);
-    this.muteButton = game.add.button(xmute, ymute, 'muteIcon', this.muteUnmute, this);
+    this.muteButton = game.add.button(xmute, ymute, 'muteIcon', this.muteUnmute, this, 0 , 0 , 0);
+    // this.muteButton = game.add.button(xmute, ymute, 'muteIcon', this.muteUnmute, this);
 
     this.muteButton.width  = this.backToMenuIcon.width;
     this.muteButton.height = this.backToMenuIcon.height;
