@@ -45,6 +45,18 @@ Language.English = function() {
     this.welcomeLvl1 = 'assets/panels/en/welcomeLvl1.png';
     this.welcomeLvl2 = 'assets/panels/en/welcomeLvl2.png';
     this.welcomeLvl3 = 'assets/panels/en/welcomeLvl3.png';
+    
+    this.tuto1 = 'assets/tutoriel/Tuto1.png';
+    this.tuto2 = 'assets/tutoriel/Tuto2.png';
+    this.tuto3 = 'assets/tutoriel/Tuto3.png';
+    this.tuto4 = 'assets/tutoriel/Tuto4.png';
+    this.tuto5 = 'assets/tutoriel/Tuto5.png';
+    this.tuto6 = 'assets/tutoriel/Tuto6.png';
+    this.tuto7 = 'assets/tutoriel/Tuto7.png';
+    this.tuto8 = 'assets/tutoriel/Tuto8.png';
+    this.tuto9 = 'assets/tutoriel/Tuto9.png';
+    this.tuto10 = 'assets/tutoriel/Tuto10.png';
+    this.tuto11 = 'assets/tutoriel/Tuto11.png';
 };
 
 Language.French = function() {
@@ -89,4 +101,15 @@ Language.French = function() {
     this.welcomeLvl1;
     this.welcomeLvl2;
     this.welcomeLvl3;
+    this.tuto1;
+    this.tuto2;
+    this.tuto3;
+    this.tuto4;
+    this.tuto5;
+    this.tuto6;
+    this.tuto7;
+    this.tuto8;
+    this.tuto9;
+    this.tuto10;
+    this.tuto11;
 };
