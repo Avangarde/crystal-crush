@@ -33,19 +33,21 @@ GamePanel.prototype = {
     preload: function() {        
     },
     create: function() {
+        
+        this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);        
+        this.matchSound = game.add.audio('matchSound');
+        this.elementCreatedSound = game.add.audio('elementCreatedSound');
+        this.createMistakeSound = game.add.audio('createMistakeSound');
+        this.winSound = game.add.audio('winSound');
+        this.lostSound = game.add.audio('lostSound');
+        this.powerASound = game.add.audio('powerASound');
+        this.powerBSound = game.add.audio('powerBSound');
+        this.powerCSound = game.add.audio('powerCSound');
+        this.powerDSound = game.add.audio('powerDSound');
         if (audioActivated) {
-            this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
             this.ambientMusic.play();
-            this.matchSound = game.add.audio('matchSound');
-            this.elementCreatedSound = game.add.audio('elementCreatedSound');
-            this.createMistakeSound = game.add.audio('createMistakeSound');
-            this.winSound = game.add.audio('winSound');
-            this.lostSound = game.add.audio('lostSound');
-            this.powerASound = game.add.audio('powerASound');
-            this.powerBSound = game.add.audio('powerBSound');
-            this.powerCSound = game.add.audio('powerCSound');
-            this.powerDSound = game.add.audio('powerDSound');
         }
+
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');
