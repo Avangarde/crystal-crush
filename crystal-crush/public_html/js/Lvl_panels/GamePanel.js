@@ -29,6 +29,7 @@ GamePanel = function(game, x, y, width, height) {
     this.playsLeft = false;
     this.currentScore = 0;
     this.isPower = false;
+    this.unHint = true;
     this.matchAnimation;
 };
 
@@ -36,9 +37,8 @@ GamePanel.prototype = {
     preload: function() {
     },
     create: function() {
-
-        this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);
-        this.ambientMusic.play();
+        
+        this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);        
         this.matchSound = game.add.audio('matchSound');
         this.elementCreatedSound = game.add.audio('elementCreatedSound');
         this.createMistakeSound = game.add.audio('createMistakeSound');
@@ -48,6 +48,9 @@ GamePanel.prototype = {
         this.powerBSound = game.add.audio('powerBSound');
         this.powerCSound = game.add.audio('powerCSound');
         this.powerDSound = game.add.audio('powerDSound');
+        if (audioActivated) {
+            this.ambientMusic.play();
+        }
 
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
@@ -277,13 +280,13 @@ GamePanel.prototype = {
 
     },
     checkWinLose: function() {
-        localStorage.setItem(FIRSTTIME, false);
+        
         if (scorePanel.score_general >= this.game.targetScore) {
             if (audioActivated) {
                 this.ambientMusic.stop();
                 this.winSound.play();
             }
-            console.log("here");
+            localStorage.setItem(FIRSTTIME, false);
             this.game.state.start("win");
             
         } else if (this.game.numMoves === 0) {
@@ -291,7 +294,6 @@ GamePanel.prototype = {
                 this.ambientMusic.stop();
                 this.lostSound.play();
             }
-            console.log("here");
             this.game.state.start("lost");
         }
     },
