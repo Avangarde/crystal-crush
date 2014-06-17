@@ -29,11 +29,15 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('highscore_img', CrystalCrush.language.highScoreButton);
         this.game.load.image('about', CrystalCrush.language.aboutButton);
 	this.game.load.image('aboutScreen', CrystalCrush.language.aboutScreen);
-	//this.game.load.spritesheet('backToHomeButton', CrystalCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
+	    //this.game.load.spritesheet('backToHomeButton', CrystalCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
         
         this.game.load.image('backgroundLvl1', 'assets/backgrounds/kitchenLevel.png');
         this.game.load.image('backgroundLvl2', 'assets/backgrounds/beachLevel.png');
         this.game.load.image('backgroundLvl3', 'assets/backgrounds/forgeLevel.png');
+        
+        this.game.load.image('welcomeLvl1', 'assets/panels/welcomeLvl1.png');
+        this.game.load.image('welcomeLvl2', 'assets/panels/welcomeLvl2.png');
+        this.game.load.image('welcomeLvl3', 'assets/panels/welcomeLvl3.png');
         this.game.load.text('crystals', 'files/crystals.txt');
         
         this.game.load.image('en', 'assets/Home/en.jpg');
@@ -56,12 +60,12 @@ CrystalCrush.Preloader.prototype = {
 	this.game.load.image(FE, 'assets/sprites/Fe.png');
         this.game.load.image(SELECT, 'assets/sprites/selection.png');     
         this.game.load.image(SELECTHINT, 'assets/sprites/selectionHint.png');     
-        this.game.load.image('gamePanel', 'assets/gamePanel.png');
+        this.game.load.image('gamePanel', 'assets/panels/gamePanel.png');
         this.game.load.spritesheet('explosion', 'assets/sprites/BlueExplosion.png', 120, 120, 12);
         this.game.load.spritesheet('powerExplosion', 'assets/sprites/RedExplosion.png', 120, 120, 12);
         
         //ScorePanel
-        this.game.load.image('scorePanelBackground', 'assets/scorePanel.png');
+        this.game.load.image('scorePanelBackground', 'assets/panels/scorePanel.png');
         this.game.load.spritesheet('createElement', CrystalCrush.language.createCrystalButton, BUTTONWIDTH, BUTTONHEIGHT);
         this.game.load.image('camera', 'assets/camera.png');
         this.game.load.image(SALT, 'assets/sprites/salt_crystal.png');
@@ -79,7 +83,7 @@ CrystalCrush.Preloader.prototype = {
                 
         
         //popUpPanel
-        this.game.load.image('PopUpBackground', 'assets/popUpPanel.png');
+        this.game.load.image('PopUpBackground', 'assets/panels/popUpPanel.png');
         this.game.load.image('xButton', 'assets/buttons/xButton.png');
         this.game.load.image('playButton', CrystalCrush.language.playButton);
         //Tutorial images
@@ -97,7 +101,7 @@ CrystalCrush.Preloader.prototype = {
         
         
         //AlchemyPanel
-        this.game.load.image('alchemyPanel', 'assets/alchemyPanel.png');
+        this.game.load.image('alchemyPanel', 'assets/panels/alchemyPanel.png');
         this.game.load.image('grid', 'assets/sprites/Grille_2.png');
         this.game.load.spritesheet('createButton2', CrystalCrush.language.createButton, CREATE_BUTTON_WIDTH, CREATE_BUTTON_HEIGHT);
 	this.game.load.image('gridMistake','assets/sprites/Grille_Mistake.png');
@@ -123,7 +127,7 @@ CrystalCrush.Preloader.prototype = {
 
 
 
-        this.game.load.spritesheet('share', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
+        this.game.load.spritesheet('shareFb', 'assets/buttons/share_fb.png', SHAREFB_BUTTON_DIM, SHAREFB_BUTTON_DIM);
         
         //WinPanel
         this.game.load.image('win', 'assets/backgrounds/win.png');      
@@ -133,7 +137,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.spritesheet('nextLevel', CrystalCrush.language.nextLevelButton, LOST_BUTTON_WIDTH, LOST_BUTTON_HEIGHT);        
         
         // RecipesPanel
-        this.game.load.image('recipesPanel', 'assets/recipesPanel.png');
+        this.game.load.image('recipesPanel', 'assets/panels/recipesPanel.png');
 
         this.game.load.image(SALT+'recipe', CrystalCrush.language.saltRecipe);
         this.game.load.image(ICE+'recipe', CrystalCrush.language.iceRecipe);

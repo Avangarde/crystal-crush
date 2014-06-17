@@ -25,17 +25,15 @@ create: function() {
     //this.muteButton = game.add.button(xmute, ymute, 'muteIcon', this.muteUnmute, this, 0 , 0 , 0);
     this.muteButton = game.add.button(xmute, ymute, 'muteIcon', this.muteUnmute, this);
 
-    this.muteUnmute.width  = this.backToMenuIcon.width;
-    this.muteUnmute.height = this.backToMenuIcon.height;
+    this.muteButton.width  = this.backToMenuIcon.width;
+    this.muteButton.height = this.backToMenuIcon.height;
 
-    //GUIDOO
-    /*
+    //GUIDOO    
     if(audioActivated){
         this.muteButton.setFrames(0,0,0);
     }else{
         this.muteButton.setFrames(1,1,1);
     }
-    */
 
 },
 backToMenu: function(){
@@ -48,15 +46,17 @@ backToMenu: function(){
 
 muteUnmute: function(){
     audioActivated = !audioActivated;
-   /* if(audioActivated){
+    if(audioActivated){
         this.muteButton.setFrames(0,0,0);
     }else{
         this.muteButton.setFrames(1,1,1);
     }
-     */   
+       
     if(audioActivated){
+        gamePanel.ambientMusic.play();
         console.log('audio activated');
     }else{
+        gamePanel.ambientMusic.stop();
         console.log('audio desactivated');
     }
 

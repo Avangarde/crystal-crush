@@ -29,7 +29,6 @@ GamePanel = function(game, x, y, width, height) {
     this.playsLeft = false;
     this.currentScore = 0;
     this.isPower = false;
-    this.unHint = true;
     this.matchAnimation;
 };
 
@@ -49,7 +48,7 @@ GamePanel.prototype = {
             this.powerBSound = game.add.audio('powerBSound');
             this.powerCSound = game.add.audio('powerCSound');
             this.powerDSound = game.add.audio('powerDSound');
-        }        
+        }
         this.timer = this.game.time.create(this.game);
         this.timer.loop(TIME_HELP, helpTest, this.game, this, true);
         this.background = game.add.sprite(this.x, this.y, 'gamePanel');

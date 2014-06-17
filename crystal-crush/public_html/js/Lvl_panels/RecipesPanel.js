@@ -58,7 +58,6 @@ function openPopUp(i){
     if(i.key ==='ice'){
         console.log('i = ice');
     }
-    
     console.log(i.key);
     //var my_popUp = new InfoPopUp(game, 
 }

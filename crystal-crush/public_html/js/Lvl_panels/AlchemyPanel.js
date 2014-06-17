@@ -44,11 +44,6 @@ AlchemyPanel.prototype = {
         createButton.height = this.buttonHeight;
         createButton.anchor.setTo(0.5, 0.5);
 
-        var backToMenuButton = game.add.button(this.buttonX, createButton.y + createButton.height + margin, 'backToMenu', this.backToMenu, this, 2, 1, 0);
-        backToMenuButton.width = this.buttonWidth;
-        backToMenuButton.height = this.buttonHeight;
-        backToMenuButton.anchor.setTo(0.5, 0.5);
-
         this.alcElements = this.game.add.group();
         this.elementToAdd;
     },
@@ -227,11 +222,6 @@ AlchemyPanel.prototype = {
     unFadeGrid: function() {
         game.add.tween(this.grid).to({alpha: 1}, 2000, Phaser.Easing.Linear.None, true);
 
-    }, backToMenu: function() {
-        if (audioActivated) {
-            gamePanel.ambientMusic.stop();
-        }
-        this.game.state.start('home');
     }
 };
 

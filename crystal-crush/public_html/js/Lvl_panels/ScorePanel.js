@@ -45,7 +45,7 @@ ScorePanel.prototype = {
 
         // Text : Score, HighScore, MovesLeft
         this.score_txt = game.add.text(this.x + this.width * 0.15,
-                this.y + margin, '' + this.score_general, style1);
+                this.y + margin, '' + this.score_general + '/' + this.game.targetScore , style1);
         this.highScore_txt = game.add.text(this.x + this.width * 0.15,
                 this.y + this.score_txt.height + margin, '' + this.highScore, style1);
         this.moves_txt = game.add.text(this.x + this.width * 0.15,
@@ -206,7 +206,7 @@ ScorePanel.prototype = {
         this.highScore = (!gamePanel.beginningGame && scorePanel.score_general > scorePanel.highScore) ?
                 scorePanel.score_general : scorePanel.highScore;
         this.score_txt.text = CrystalCrush.language.scoreText + " : " +
-                (gamePanel.beginningGame ? gamePanel.currentScore : this.score_general);
+                (gamePanel.beginningGame ? gamePanel.currentScore + '/' + this.game.targetScore: this.score_general + '/' + this.game.targetScore);
         this.highScore_txt.text = CrystalCrush.language.highScoreText + " : " + this.highScore;
         this.moves_txt.text = CrystalCrush.language.movesLeftText + " : " + this.game.numMoves;
         for (var i = 0; i < panelElements.length; i++) {
@@ -254,6 +254,9 @@ ScorePanel.prototype = {
             }
         } else {
             points = ((MATCH_MIN * 3 + 1) * seq);
+        }
+        if (audioActivated) {
+            gamePanel.matchSound.play();
         }
         if (audioActivated) {
             gamePanel.matchSound.play();
