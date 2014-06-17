@@ -25,11 +25,12 @@ PopUpPanel = function(game, x, y, width, height, father, type) {
 
     this.background;
     this.type = type;
-
+    this.welcome;
     this.xButton;
     this.father = father;
-
+    this.infoToDisplay;
     this.clickCounter = 0;
+    this.infoPanel;
 
 };
 
@@ -68,6 +69,9 @@ PopUpPanel.prototype = {
         this.background = game.add.sprite(this.x, this.y, 'PopUpBackground');
         this.background.width = this.width;
         this.background.height = this.height;
+        this.infoPanel = game.add.sprite(this.x, this.y, this.infoToDisplay);
+        this.infoPanel.width = this.width;
+        this.infoPanel.height = this.height;
         game.paused = true;
         game.input.onDown.add(this.unpause, self);
         this.xButton = game.add.sprite(this.x + this.width - 55, this.y + 5, 'xButton');
@@ -118,6 +122,15 @@ PopUpPanel.prototype = {
         popUpPanel.destroypopUp();
     },
     unpauseInfo: function(event) {
+        if (eventInBorder(event, popUpPanel.xButton)) {
+            this.resumeWelcome();
+        } else if (!eventInBorder(event, popUpPanel)) {
+            if (popUpPanel.clickCounter == 0) {
+                popUpPanel.clickCounter++;
+            } else {
+                this.resumeWelcome();
+            }
+        }
     },
     killTuto: function(event) {
         var we = (welcomePopUp === null);
@@ -178,11 +191,14 @@ PopUpPanel.prototype = {
     },
     destroypopUp: function() {
         popUpPanel.background.kill();
-        popUpPanel.xButton.kill();
-        popUpPanel.welcome.destroy();
+        popUpPanel.xButton.kill();        
         if (popUpPanel.type === 'welcome') {
             welcomePopUp.destroy();
             welcomePopUp = null;
+            popUpPanel.welcome.destroy();
+            game.input.onDown.remove(popUpPanel.unpause, self);
+        } else{
+            popUpPanel.infoPanel.kill();
             game.input.onDown.remove(popUpPanel.unpause, self);
         }
 

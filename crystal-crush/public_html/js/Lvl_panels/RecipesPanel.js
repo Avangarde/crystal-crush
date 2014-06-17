@@ -55,8 +55,8 @@ RecipesPanel.prototype = {
 
 function openPopUp(i){
     var my_string = i.key.substring(0, i.key.length - 7) + INFO;
-    var my_popUp = new PopUpPanel(game, game.camera.x + xPopup ,null,null,null,this,'info'); 
-    my_popUp.infoToDisplay = my_string;
+    popUpPanel = new PopUpPanel(game, game.camera.x + xPopup ,null,null,null,this,'info'); 
+    popUpPanel.infoToDisplay = my_string;
     //my_popUp.create();
     console.log(my_string);
 }
