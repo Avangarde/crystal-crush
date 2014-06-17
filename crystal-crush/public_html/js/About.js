@@ -1,26 +1,35 @@
-CrystalCrush.About = function(){//game){
-    //this.game = game;
-}
+var ABOUT_BUTTON_WIDTH = 593 / 2;
+var ABOUT_BUTTON_HEIGHT = 81;
+//var SHAREFB_BUTTON_DIM = 256;
+
+
+CrystalCrush.About = function(game) {
+    this.game = game;
+    this.background;    
+    this.buttonBackToHome;
+};
 
 CrystalCrush.About.prototype = {
-create : function () {
+    create: function() {
+        //BackGround
+        this.background = game.add.sprite(0, 0, 'aboutScreen');
+        //this.winMenu.anchor.setTo(0.5, 0.5);
+        this.background.width = canvasWidth;
+        this.background.height = canvasHeight;
+            
+        //Buttons
+              
 
-	     var background = game.add.sprite(0,0, 'backgroundHome');
-	     background.width = canvasWidth;
-             background.height = canvasHeight;
-
-             var title = game.add.sprite(canvasWidth/4,canvasHeight/4, 'title');
-             title.width = 1.5*canvasWidth/3;
-             title.height = 1.5*canvasHeight/9;
-
-             var b1 = game.add.button(canvasWidth/3,canvasHeight/3 + canvasHeight*0.24, 'play', this.actionToHome, this,0,0,0);
-             b1.width = canvasWidth/3;
-             b1.height = canvasHeight/9;
-
-         },
-update : function () {},
-actionToHome : function(){
-    this.game.state.start('home', CrystalCrush.Home);
-}
-}
-
+	var buttonWidth = canvasWidth * 0.15;
+	var buttonHeight = buttonWidth * ABOUT_BUTTON_HEIGHT / ABOUT_BUTTON_WIDTH;
+        this.buttonBackToHome = game.add.button(canvasWidth/12, 4*canvasHeight/5, 'backToHomeButton', this.backToMenu, this, 1, 0, 0);
+        //this.buttonBackToHome.anchor.setTo(0.5, 0.5);
+        this.buttonBackToHome.height = ABOUT_BUTTON_HEIGHT;
+        this.buttonBackToHome.width = ABOUT_BUTTON_WIDTH;
+    },
+    update: function() {
+    },
+    backToMenu: function() {
+        this.game.state.start('home');
+    }
+};
