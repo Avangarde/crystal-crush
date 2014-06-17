@@ -9,6 +9,7 @@ var popUpPanel = null;
 var popUpName = null;
 var recipesPanel = null;
 var optionPanel = null;
+var tutoPanel = null;
 
 var crystals;
 

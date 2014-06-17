@@ -165,6 +165,13 @@ AlchemyPanel.prototype = {
             }
         }
         if (guest !== "no match") {
+            if (currentTuto === 8) {
+                tutoPanel = new PopUpPanel(game, buttonGame.x -
+                        (buttonGame.width / 2 + buttonGame.width / 10),
+                        buttonGame.y, TUTO_WIDTH, TUTO_HEIGHT, this, 'tuto');
+                currentTuto++;
+                tutoPanel.create();
+            }
             scorePanel.score_general += 200;
             scorePanel.addMatch2(guest.trim(), 1);
             alchemyPanel.killElemRange(0, 0, 3, 3);

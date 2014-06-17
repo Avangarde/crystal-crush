@@ -1,4 +1,3 @@
-
 CrystalCrush.Preloader = function (game) {
 
 	this.background = null;
@@ -141,6 +140,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image(GOLD+RECIPE, CrystalCrush.language.goldRecipe);
         
         //Audio
+        if(false){
         this.game.load.audio('ambientMusic', CrystalCrush.audio.ambientMusic);
         this.game.load.audio('matchSound', CrystalCrush.audio.matchSound);
         this.game.load.audio('elementCreatedSound', CrystalCrush.audio.elementCreatedSound);
@@ -151,6 +151,7 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.audio('powerBSound', CrystalCrush.audio.powerBSound);
         this.game.load.audio('powerCSound', CrystalCrush.audio.powerCSound);
         this.game.load.audio('powerDSound', CrystalCrush.audio.powerDSound);
+        }
 
     },
     create: function() {
