@@ -29,6 +29,7 @@ GamePanel = function(game, x, y, width, height) {
     this.playsLeft = false;
     this.currentScore = 0;
     this.isPower = false;
+    this.unHint = true;
     this.matchAnimation;
 };
 
@@ -279,13 +280,13 @@ GamePanel.prototype = {
 
     },
     checkWinLose: function() {
-        localStorage.setItem(FIRSTTIME, false);
+        
         if (scorePanel.score_general >= this.game.targetScore) {
             if (audioActivated) {
                 this.ambientMusic.stop();
                 this.winSound.play();
             }
-            console.log("here");
+            localStorage.setItem(FIRSTTIME, false);
             this.game.state.start("win");
             
         } else if (this.game.numMoves === 0) {
@@ -293,7 +294,6 @@ GamePanel.prototype = {
                 this.ambientMusic.stop();
                 this.lostSound.play();
             }
-            console.log("here");
             this.game.state.start("lost");
         }
     },
