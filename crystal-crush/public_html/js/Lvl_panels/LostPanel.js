@@ -33,7 +33,7 @@ CrystalCrush.Lost.prototype = {
         this.buttonPlayAgain.height = buttonHeight;
         this.buttonPlayAgain.width = buttonWidth;
 
-        this.buttonBackToMenu = game.add.button(canvasWidth / 2 + buttonWidth / 2 + margin, 2 * rowHeight + margin, 'nextLevel', this.nextLevel, this, 1, 0, 0);
+        this.buttonBackToMenu = game.add.button(canvasWidth / 2 + buttonWidth / 2 + margin, 2 * rowHeight + margin, 'backToMenu', this.backToMenu, this, 1, 0, 0);
         this.buttonBackToMenu.anchor.setTo(0.5, 0.5);
         this.buttonBackToMenu.height = buttonHeight;
         this.buttonBackToMenu.width = buttonWidth;
