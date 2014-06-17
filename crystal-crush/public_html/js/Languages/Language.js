@@ -25,23 +25,14 @@ Language.English = function() {
     this.brassRecipe = 'assets/buttons/en/brass_crystal_button.png';
     this.steelRecipe = 'assets/buttons/en/steel_crystal_button.png';
     this.goldRecipe = 'assets/buttons/en/gold_crystal_button.png';
-    
-    this.saltInfo = 'assets/panels/en/saltInfo.png';
-    this.iceInfo = 'assets/panels/en/iceInfo.png';
-    this.sugarInfo = 'assets/panels/en/sugarInfo.png';
-    this.sapphireInfo = 'assets/panels/en/sapphireInfo.png';
-    this.quartzInfo = 'assets/panels/en/quartzInfo.png';
-    this.rubyInfo = 'assets/panels/en/rubyInfo.png';
-    this.corondumInfo = 'assets/panels/en/corondumInfo.png';
-    this.aluminiumInfo = 'assets/panels/en/aluminiumInfo.png';
-    this.brassInfo = 'assets/panels/en/brassInfo.png';
-    this.steelInfo = 'assets/panels/en/steelInfo.png';
-    this.goldInfo = 'assets/panels/en/goldInfo.png';
     this.winMessageFBHighScore = 'I got ?, a new high score in #CrystalCrush, try to beat me !';
     this.winMessageFBScore = 'I got ? points in #CrystalCrush, try to beat me!';
     this.lostMessageFBHighScore = 'I got ?, a new high score in #CrystalCrush, try to beat me !';
     this.lostMessageFBScore = 'I got ? points in #CrystalCrush, try to beat me!';
     this.aboutScreen = 'assets/Home/about_en.png';
+    this.welcomeLvl1 = 'assets/panels/en/welcomeLvl1.png';
+    this.welcomeLvl2 = 'assets/panels/en/welcomeLvl2.png';
+    this.welcomeLvl3 = 'assets/panels/en/welcomeLvl3.png';
 };
 
 Language.French = function() {
@@ -67,20 +58,12 @@ Language.French = function() {
     this.brassRecipe;
     this.steelRecipe;
     this.goldRecipe;
-    this.saltInfo;
-    this.iceInfo;
-    this.sugarInfo;
-    this.sapphireInfo;
-    this.quartzInfo;
-    this.rubyInfo;
-    this.corondumInfo;
-    this.aluminiumInfo;
-    this.brassInfo;
-    this.steelInfo;
-    this.goldInfo;
     this.winMessageFBHighScore;
     this.winMessageFBScore;
     this.lostMessageFBHighScore;
     this.lostMessageFBScore;
     this.aboutScreen = 'assets/Home/about_fr.png';
+    this.welcomeLvl1;
+    this.welcomeLvl2;
+    this.welcomeLvl3;
 };
