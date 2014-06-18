@@ -63,10 +63,9 @@ CrystalCrush.Lost.prototype = {
         var message = scorePanel.score_general === scorePanel.highScore ?
                 CrystalCrush.language.lostMessageFBHighScore.replace("?", scorePanel.score_general) :
                 CrystalCrush.language.lostMessageFBScore.replace("?", scorePanel.score_general);
-        console.log(message);
         FB.ui({
             method: 'feed',
-            name: 'Crystal Crush',
+            name: 'Atomic Crush',
             caption: 'Match-crystal puzzle video game for web and mobile devices',
             description: (
                     message
