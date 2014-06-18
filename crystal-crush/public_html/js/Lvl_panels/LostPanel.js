@@ -1,10 +1,3 @@
-var LOST_MENU_WIDTH = 1500;
-var LOST_MENU_HEIGHT = 751;
-var LOST_BUTTON_WIDTH = 593 / 2;
-var LOST_BUTTON_HEIGHT = 81;
-var SHAREFB_BUTTON_DIM = 100;
-
-
 CrystalCrush.Lost = function(game) {
     this.game = game;
     this.buttonPlayAgain;
@@ -21,15 +14,16 @@ CrystalCrush.Lost.prototype = {
         //BackGround
         lostMenu = this.game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'lost');
         lostMenu.anchor.setTo(0.5, 0.5);
+        var tempLostMenuWidth = lostMenu.width;
         lostMenu.width = canvasWidth;
-        lostMenu.height = canvasWidth * LOST_MENU_HEIGHT / LOST_MENU_WIDTH;
+        lostMenu.height = canvasWidth * lostMenu.height / tempLostMenuWidth;
 
         //Buttons
         var buttonWidth = canvasWidth * 0.15;
-        var buttonHeight = buttonWidth * LOST_BUTTON_HEIGHT / LOST_BUTTON_WIDTH;
         var rowHeight = canvasHeight / 6;
         this.buttonPlayAgain = game.add.button(canvasWidth / 2 - buttonWidth / 2, 2 * rowHeight + margin, 'playAgain', this.playAgain, this, 1, 0, 0);
         this.buttonPlayAgain.anchor.setTo(0.5, 0.5);
+        var buttonHeight = buttonWidth * this.buttonPlayAgain.height / this.buttonPlayAgain.width;
         this.buttonPlayAgain.height = buttonHeight;
         this.buttonPlayAgain.width = buttonWidth;
 
