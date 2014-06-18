@@ -1,13 +1,13 @@
-CrystalCrush = {
+AtomicCrush = {
     audio: null,
     language: null
 };
 
-CrystalCrush.Boot = function (game) {
+AtomicCrush.Boot = function (game) {
     this.game = game;
 };
 
-CrystalCrush.Boot.prototype = {
+AtomicCrush.Boot.prototype = {
 
     preload: function () {
         this.game.load.image('preloaderBar', 'assets/preload.png');
@@ -28,8 +28,8 @@ CrystalCrush.Boot.prototype = {
         if (!this.game.device.desktop) {
             this.game.scale.forceOrientation(true, false);
         }
-        CrystalCrush.language = new Language.English();
-        CrystalCrush.audio = new Audio();
+        AtomicCrush.language = new Language.English();
+        AtomicCrush.audio = new Audio();
         game.state.start('preloader');
     },
 

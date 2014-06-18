@@ -3,13 +3,13 @@ var ABOUT_BUTTON_HEIGHT = 81;
 //var SHAREFB_BUTTON_DIM = 256;
 
 
-CrystalCrush.About = function(game) {
+AtomicCrush.About = function(game) {
     this.game = game;
     this.background;    
     this.buttonBackToHome;
 };
 
-CrystalCrush.About.prototype = {
+AtomicCrush.About.prototype = {
     create: function() {
         //BackGround
         this.background = game.add.sprite(0, 0, 'aboutScreen');
