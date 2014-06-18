@@ -88,6 +88,19 @@ CrystalCrush.Preloader.prototype = {
         this.game.load.image('PopUpBackground', 'assets/panels/popUpPanel.png');
         this.game.load.image('xButton', 'assets/buttons/xButton.png');
         this.game.load.image('playButton', CrystalCrush.language.playButton);
+        
+        //Tutorial images
+        this.game.load.image('TUTO1', CrystalCrush.language.tuto1);
+        this.game.load.image('TUTO2', CrystalCrush.language.tuto2);
+        this.game.load.image('TUTO3', CrystalCrush.language.tuto3);
+        this.game.load.image('TUTO4', CrystalCrush.language.tuto4);
+        this.game.load.image('TUTO5', CrystalCrush.language.tuto5);
+        this.game.load.image('TUTO6', CrystalCrush.language.tuto6);
+        this.game.load.image('TUTO7', CrystalCrush.language.tuto7);
+        this.game.load.image('TUTO8', CrystalCrush.language.tuto8);
+        this.game.load.image('TUTO9', CrystalCrush.language.tuto9);
+        this.game.load.image('TUTO10', CrystalCrush.language.tuto10);
+        this.game.load.image('TUTO11', CrystalCrush.language.tuto11);
 
         //AlchemyPanel
         this.game.load.image('alchemyPanel', 'assets/panels/alchemyPanel.png');
