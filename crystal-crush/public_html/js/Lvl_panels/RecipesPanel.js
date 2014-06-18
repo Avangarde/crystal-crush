@@ -33,7 +33,7 @@ RecipesPanel.prototype = {
         }
         var nb_powers = powerNames.length;
         for(var i = 0; i < nb_powers ; i++){
-            buttonX[i] = this.x + (this.width - buttonWidth)/2
+            buttonX[i] = this.x + (this.width - buttonWidth)/2;
             buttonY[i] = this.y + i * this.height / nb_powers + (this.height / nb_powers - buttonHeight ) / 2;
         }
         

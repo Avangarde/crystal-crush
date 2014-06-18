@@ -1,6 +1,3 @@
-var CREATE_BUTTON_WIDTH = 394;
-var CREATE_BUTTON_HEIGHT = 80;
-
 AlchemyPanel = function(game, x, y, width, height) {
 
     this.game = game;
@@ -19,9 +16,7 @@ AlchemyPanel = function(game, x, y, width, height) {
     this.gridX = this.x + this.width / 2 - this.gridWidth / 2;
     this.gridY = this.y + margin;
     this.buttonWidth = this.columns * ELEM_SIZE;
-    this.buttonHeight = this.buttonWidth * CREATE_BUTTON_HEIGHT / CREATE_BUTTON_WIDTH;
     this.buttonX = this.gridX + this.gridWidth / 2;
-    this.buttonY = this.gridY + this.gridHeight + this.buttonHeight;
     this.elementToAdd;
 };
 
@@ -40,6 +35,9 @@ AlchemyPanel.prototype = {
         this.grid.events.onInputDown.add(this.addElementToGrid);
 
         var createButton = game.add.button(this.buttonX, this.buttonY, 'createButton2', this.createCrystal, this, 2, 1, 0);
+        this.buttonHeight = this.buttonWidth * createButton.height / createButton.width;
+        this.buttonY = this.gridY + this.gridHeight + this.buttonHeight;
+        createButton.y = this.buttonY;
         createButton.width = this.buttonWidth;
         createButton.height = this.buttonHeight;
         createButton.anchor.setTo(0.5, 0.5);

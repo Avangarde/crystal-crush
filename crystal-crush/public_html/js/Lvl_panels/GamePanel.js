@@ -1,5 +1,3 @@
-var LOST_MENU_WIDTH = 1500;
-var LOST_MENU_HEIGHT = 751;
 var TIME_HELP = 10000;
 var TUTO_WIDTH = canvasWidth / 5;
 var TUTO_HEIGHT = canvasHeight / 6;

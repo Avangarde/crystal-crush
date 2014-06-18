@@ -1,4 +1,4 @@
-CrystalCrush.Level = function() {
+AtomicCrush.Level = function() {
 };
 
 var gamePanel = null;
@@ -13,7 +13,7 @@ var tutoPanel = null;
 
 var crystals;
 
-CrystalCrush.Level.prototype = {
+AtomicCrush.Level.prototype = {
     preload: function() {
 
         allowInput = true;
@@ -60,4 +60,4 @@ CrystalCrush.Level.prototype = {
     }
 };
 
-var level = new CrystalCrush.Level();
+var level = new AtomicCrush.Level();

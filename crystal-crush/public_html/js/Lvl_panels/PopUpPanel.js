@@ -2,23 +2,23 @@
 // PopUp types: 'welcome', 'tuto', 'info'
 PopUpPanel = function(game, x, y, width, height, father, type) {
 
-    if (x == null) {
-        this.x = xPopup
+    if (x === null) {
+        this.x = xPopup;
     } else {
         this.x = x;
     }
-    if (y == null) {
-        this.y = yPopup
+    if (y === null) {
+        this.y = yPopup;
     } else {
         this.y = y;
     }
-    if (width == null) {
-        this.width = widthPopup
+    if (width === null) {
+        this.width = widthPopup;
     } else {
         this.width = width;
     }
-    if (height == null) {
-        this.height = heightPopup
+    if (height === null) {
+        this.height = heightPopup;
     } else {
         this.height = height;
     }
@@ -104,12 +104,12 @@ PopUpPanel.prototype = {
     unpauseWelcome: function(event) {
         if (eventInBorder(event, popUpPanel.xButton)) {
             this.resumeWelcome();
-        } else if (popUpName = 'welcome') {
+        } else if (popUpName === 'welcome') {
             if (welcomePopUp.eventInButton(event)) {
                 this.resumeWelcome();
             }
         } else if (!eventInBorder(event, popUpPanel)) {
-            if (popUpPanel.clickCounter == 0) {
+            if (popUpPanel.clickCounter === 0) {
                 popUpPanel.clickCounter++;
             } else {
                 this.resumeWelcome();
@@ -126,7 +126,7 @@ PopUpPanel.prototype = {
         if (eventInBorder(event, popUpPanel.xButton)) {
             this.resumeWelcome();
         } else if (!eventInBorder(event, popUpPanel)) {
-            if (popUpPanel.clickCounter == 0) {
+            if (popUpPanel.clickCounter === 0) {
                 popUpPanel.clickCounter++;
             } else {
                 this.resumeWelcome();
