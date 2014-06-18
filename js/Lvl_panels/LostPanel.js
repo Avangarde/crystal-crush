@@ -5,18 +5,18 @@ var LOST_BUTTON_HEIGHT = 81;
 var SHAREFB_BUTTON_DIM = 100;
 
 
-CrystalCrush.Lost = function(game) {
+AtomicCrush.Lost = function(game) {
     this.game = game;
     this.buttonPlayAgain;
     this.buttonShareFb;
     this.buttonBackToMenu;
     this.score_txt;
     this.highScore_txt;
-    this.messageFBHiScore = "I got ?, a new high score in #CrystalCrush, try to beat me !";
-    this.messageFBScore = "I got ? points in #CrystalCrush, try to beat me!";
+    this.messageFBHiScore = "I got ?, a new high score in #AtomicCrush, try to beat me !";
+    this.messageFBScore = "I got ? points in #AtomicCrush, try to beat me!";
 };
 
-CrystalCrush.Lost.prototype = {
+AtomicCrush.Lost.prototype = {
     create: function() {
         //BackGround
         lostMenu = this.game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'lost');
@@ -61,8 +61,8 @@ CrystalCrush.Lost.prototype = {
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
-                CrystalCrush.language.lostMessageFBHighScore.replace("?", scorePanel.score_general) :
-                CrystalCrush.language.lostMessageFBScore.replace("?", scorePanel.score_general);
+                AtomicCrush.language.lostMessageFBHighScore.replace("?", scorePanel.score_general) :
+                AtomicCrush.language.lostMessageFBScore.replace("?", scorePanel.score_general);
         FB.ui({
             method: 'feed',
             name: 'Atomic Crush',

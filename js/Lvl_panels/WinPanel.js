@@ -5,7 +5,7 @@ var WIN_BUTTON_HEIGHT = 81;
 var SHAREFB_BUTTON_DIM = 100;
 
 
-CrystalCrush.Win = function(game) {
+AtomicCrush.Win = function(game) {
     this.game = game;
     this.buttonPlayAgain;
     this.buttonShareFb;
@@ -16,7 +16,7 @@ CrystalCrush.Win = function(game) {
     this.highScore_txt;
 };
 
-CrystalCrush.Win.prototype = {
+AtomicCrush.Win.prototype = {
     create: function() {
         //BackGround
         this.winMenu = game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'win');
@@ -67,8 +67,8 @@ CrystalCrush.Win.prototype = {
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
-                CrystalCrush.language.winMessageFBHighScore.replace("?", scorePanel.score_general) :
-                CrystalCrush.language.winMessageFBScore.replace("?", scorePanel.score_general);
+                AtomicCrush.language.winMessageFBHighScore.replace("?", scorePanel.score_general) :
+                AtomicCrush.language.winMessageFBScore.replace("?", scorePanel.score_general);
         FB.ui({
             method: 'feed',
             name: 'Crystal Crush',

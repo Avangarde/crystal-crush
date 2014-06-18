@@ -205,10 +205,10 @@ ScorePanel.prototype = {
     update: function() {
         this.highScore = (!gamePanel.beginningGame && scorePanel.score_general > scorePanel.highScore) ?
                 scorePanel.score_general : scorePanel.highScore;
-        this.score_txt.text = CrystalCrush.language.scoreText + " : " +
+        this.score_txt.text = AtomicCrush.language.scoreText + " : " +
                 (gamePanel.beginningGame ? gamePanel.currentScore + '/' + this.game.targetScore: this.score_general + '/' + this.game.targetScore);
-        this.highScore_txt.text = CrystalCrush.language.highScoreText + " : " + this.highScore;
-        this.moves_txt.text = CrystalCrush.language.movesLeftText + " : " + this.game.numMoves;
+        this.highScore_txt.text = AtomicCrush.language.highScoreText + " : " + this.highScore;
+        this.moves_txt.text = AtomicCrush.language.movesLeftText + " : " + this.game.numMoves;
         for (var i = 0; i < panelElements.length; i++) {
             this.txt_group[i].text = this.countElems[i];
         }

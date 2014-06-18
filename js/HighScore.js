@@ -1,8 +1,8 @@
-CrystalCrush.HighScore = function(game){
+AtomicCrush.HighScore = function(game){
 this.game = game;
 }
 
-CrystalCrush.HighScore.prototype = {
+AtomicCrush.HighScore.prototype = {
 
 preload: function(){
     game.load.image('title','assets/Home/Title.png');
@@ -15,7 +15,7 @@ create: function(){
 update : function () {},
 
 actionToHome: function () {
-    this.game.state.start('home', CrystalCrush.Home);
+    this.game.state.start('home', AtomicCrush.Home);
     }
     }
     
