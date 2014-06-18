@@ -54,10 +54,8 @@ muteUnmute: function(){
        
     if(audioActivated){
         gamePanel.ambientMusic.play();
-        console.log('audio activated');
     }else{
         gamePanel.ambientMusic.stop();
-        console.log('audio desactivated');
     }
 
 }

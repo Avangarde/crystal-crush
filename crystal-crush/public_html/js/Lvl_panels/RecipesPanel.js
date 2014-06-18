@@ -1,13 +1,12 @@
 var RECIPEBUTTONWIDTH = 408;
 var RECIPEBUTTONHEIGHT = 185;
 
-RecipesPanel = function(game, x, y, width, height, lvl) {
+RecipesPanel = function(game, x, y, width, height) {
 
     this.game = game; this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.lvl = lvl;
     this.background;
 
     this.buttons = [];
