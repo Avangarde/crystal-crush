@@ -1,13 +1,12 @@
 var RECIPEBUTTONWIDTH = 408;
 var RECIPEBUTTONHEIGHT = 185;
 
-RecipesPanel = function(game, x, y, width, height, lvl) {
+RecipesPanel = function(game, x, y, width, height) {
 
     this.game = game; this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.lvl = lvl;
     this.background;
 
     this.buttons = [];
@@ -34,7 +33,7 @@ RecipesPanel.prototype = {
         }
         var nb_powers = powerNames.length;
         for(var i = 0; i < nb_powers ; i++){
-            buttonX[i] = this.x + (this.width - buttonWidth)/2
+            buttonX[i] = this.x + (this.width - buttonWidth)/2;
             buttonY[i] = this.y + i * this.height / nb_powers + (this.height / nb_powers - buttonHeight ) / 2;
         }
         

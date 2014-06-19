@@ -1,4 +1,4 @@
-CrystalCrush.Level = function() {
+AtomicCrush.Level = function() {
 };
 
 var gamePanel = null;
@@ -13,7 +13,7 @@ var tutoPanel = null;
 
 var crystals;
 
-CrystalCrush.Level.prototype = {
+AtomicCrush.Level.prototype = {
     preload: function() {
 
         allowInput = true;
@@ -31,7 +31,7 @@ CrystalCrush.Level.prototype = {
         gamePanel = new GamePanel(game, xGamePanel, yGamePanel, widthGamePanel, heightGamePanel);
         alchemyPanel = new AlchemyPanel(game, xAlchemyPanel, yAlchemyPanel, widthAlchemyPanel, heightAlchemyPanel);
         welcomePopUp = new WelcomePopUp(game);
-        recipesPanel = new RecipesPanel(game, xRecipesPanel, yRecipesPanel, widthRecipesPanel, heightRecipesPanel, game.numLevel);
+        recipesPanel = new RecipesPanel(game, xRecipesPanel, yRecipesPanel, widthRecipesPanel, heightRecipesPanel);
         optionPanel = new OptionPanel(game, xOptionPanel, yOptionPanel, widthOptionPanel, heightOptionPanel);
     },
     create: function() {
@@ -60,4 +60,4 @@ CrystalCrush.Level.prototype = {
     }
 };
 
-var level = new CrystalCrush.Level();
+var level = new AtomicCrush.Level();

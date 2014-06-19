@@ -1,5 +1,3 @@
-var LOST_MENU_WIDTH = 1500;
-var LOST_MENU_HEIGHT = 751;
 var TIME_HELP = 10000;
 var TUTO_WIDTH = canvasWidth / 5;
 var TUTO_HEIGHT = canvasHeight / 6;
@@ -37,7 +35,7 @@ GamePanel.prototype = {
     preload: function() {
     },
     create: function() {
-        
+        currentTuto = 1;
         this.ambientMusic = game.add.audio('ambientMusic', 0.5, true);        
         this.matchSound = game.add.audio('matchSound');
         this.elementCreatedSound = game.add.audio('elementCreatedSound');
@@ -758,10 +756,10 @@ function boardRefilled() {
             removeKilledElems();
             gamePanel.fillBoard();
         }
-
+        
         var firstTime = localStorage.getItem(FIRSTTIME);
         if (firstTime === null) {
-            if (currentTuto === 1 && tutoPanel === null) {
+            if (currentTuto === 1) {
                 gamePanel.unHint = false;
                 gamePanel.timer.stop();
                 helpTest(true);

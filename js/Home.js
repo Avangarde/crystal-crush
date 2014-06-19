@@ -1,8 +1,8 @@
-CrystalCrush.Home = function(){//game){
+AtomicCrush.Home = function(){//game){
     //this.game = game;
 }
 
-CrystalCrush.Home.prototype = {
+AtomicCrush.Home.prototype = {
 create : function () {
 
 	     var background = game.add.sprite(0,0, 'backgroundHome');
@@ -47,26 +47,26 @@ create : function () {
          },
 update : function () {},
 actionToLvl1 : function(){
-    this.game.state.start('lvl1', CrystalCrush.Lvl1);
+    this.game.state.start('lvl1', AtomicCrush.Lvl1);
 },
 actionToLvl2 : function(){
-    this.game.state.start('lvl2', CrystalCrush.Lvl2);
+    this.game.state.start('lvl2', AtomicCrush.Lvl2);
 },
 actionToLvl3 : function(){
-    this.game.state.start('lvl3', CrystalCrush.Lvl3);
+    this.game.state.start('lvl3', AtomicCrush.Lvl3);
 },
 actionToAbout : function(){
-    this.game.state.start('about', CrystalCrush.About);
+    this.game.state.start('about', AtomicCrush.About);
 },
 actionToHighScore : function(){
-    this.game.state.start('highscore');  //, CrystalCrush.HighScore);
+    this.game.state.start('highscore');  //, AtomicCrush.HighScore);
 },
     toEnglish: function() {
-        CrystalCrush.language = new Language.English();
+        AtomicCrush.language = new Language.English();
         this.game.state.start('preloader');
     },
     toFrench: function() {
-        CrystalCrush.language = new Language.French();
+        AtomicCrush.language = new Language.French();
         this.game.state.start('preloader');
     }
 }

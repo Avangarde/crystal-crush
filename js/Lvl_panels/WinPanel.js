@@ -1,11 +1,4 @@
-var WIN_MENU_WIDTH = 1500;
-var WIN_MENU_HEIGHT = 751;
-var WIN_BUTTON_WIDTH = 593 / 2;
-var WIN_BUTTON_HEIGHT = 81;
-var SHAREFB_BUTTON_DIM = 100;
-
-
-CrystalCrush.Win = function(game) {
+AtomicCrush.Win = function(game) {
     this.game = game;
     this.buttonPlayAgain;
     this.buttonShareFb;
@@ -16,21 +9,20 @@ CrystalCrush.Win = function(game) {
     this.highScore_txt;
 };
 
-CrystalCrush.Win.prototype = {
+AtomicCrush.Win.prototype = {
     create: function() {
         //BackGround
         this.winMenu = game.add.sprite(canvasWidth / 2, canvasHeight / 2, 'win');
         this.winMenu.anchor.setTo(0.5, 0.5);
         this.winMenu.width = canvasWidth;
-//        this.winMenu.height = canvasWidth * WIN_MENU_HEIGHT / WIN_MENU_WIDTH;
         this.winMenu.height = canvasHeight;
 
         //Buttons
         var rowHeight = canvasHeight / 7;
         var buttonWidth = canvasWidth * 0.15;
-        var buttonHeight = buttonWidth * WIN_BUTTON_HEIGHT / WIN_BUTTON_WIDTH;
         this.buttonPlayAgain = game.add.button(canvasWidth / 2 - buttonWidth / 2, 2 * rowHeight + margin, 'playAgain', this.playAgain, this, 1, 0, 0);
         this.buttonPlayAgain.anchor.setTo(0.5, 0.5);
+        var buttonHeight = buttonWidth * this.buttonPlayAgain.height / this.buttonPlayAgain.width;
         this.buttonPlayAgain.height = buttonHeight;
         this.buttonPlayAgain.width = buttonWidth;
 
@@ -67,11 +59,11 @@ CrystalCrush.Win.prototype = {
     },
     shareFb: function() {
         var message = scorePanel.score_general === scorePanel.highScore ?
-                CrystalCrush.language.winMessageFBHighScore.replace("?", scorePanel.score_general) :
-                CrystalCrush.language.winMessageFBScore.replace("?", scorePanel.score_general);
+                AtomicCrush.language.winMessageFBHighScore.replace("?", scorePanel.score_general) :
+                AtomicCrush.language.winMessageFBScore.replace("?", scorePanel.score_general);
         FB.ui({
             method: 'feed',
-            name: 'Crystal Crush',
+            name: 'Atomic Crush',
             caption: 'Match-crystal puzzle video game for web and mobile devices',
             description: (
                     message

@@ -1,11 +1,10 @@
-CrystalCrush.Lvl2 = function() {
+AtomicCrush.Lvl2 = function() {
 };
 
-CrystalCrush.Lvl2.prototype = {
+AtomicCrush.Lvl2.prototype = {
     preload: function() {
         this.game.numMoves = 30;
         this.game.targetScore = 2000;
-        this.game.numLevel = 2;
         this.game.activeLevel = "lvl2";
         this.game.nextLevel = "lvl3";
         this.game.backGround = "backgroundLvl2";
