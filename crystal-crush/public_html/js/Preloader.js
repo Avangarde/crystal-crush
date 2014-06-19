@@ -32,7 +32,12 @@ AtomicCrush.Preloader.prototype = {
         this.game.load.image('about', AtomicCrush.language.aboutButton);
         this.game.load.image('aboutScreen', AtomicCrush.language.aboutScreen);
         this.game.load.spritesheet('backToHomeButton', AtomicCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
+        
+        this.game.load.image('en', 'assets/Home/en.jpg');
+        this.game.load.image('fr', 'assets/Home/fr.jpg');
+        this.game.load.image('es', 'assets/Home/es.jpg');
 
+        //Levels
         this.game.load.image('backgroundLvl1', 'assets/backgrounds/kitchenLevel.png');
         this.game.load.image('backgroundLvl2', 'assets/backgrounds/beachLevel.png');
         this.game.load.image('backgroundLvl3', 'assets/backgrounds/forgeLevel.png');
@@ -42,9 +47,7 @@ AtomicCrush.Preloader.prototype = {
         this.game.load.image('welcomeLvl3', AtomicCrush.language.welcomeLvl3);
         this.game.load.text('crystals', 'files/crystals.txt');
 
-        this.game.load.image('en', 'assets/Home/en.jpg');
-        this.game.load.image('fr', 'assets/Home/fr.jpg');
-        this.game.load.image('es', 'assets/Home/es.jpg');
+        
 
         //GamePanel
         this.game.load.image(CU, 'assets/sprites/Cu.png');
