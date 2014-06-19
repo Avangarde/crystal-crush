@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-        <title>Crystal Crush</title>
+        <title>Atomic Crush</title>
 
         <link rel="stylesheet" type="text/css" href="css/styles.css">
 
@@ -30,8 +30,8 @@
         <script type="text/javascript" src="js/Lvl_panels/WinPanel.js"></script>                                                                                
         <script type="text/javascript" src="js/Lvl_panels/RecipesPanel.js"></script>                                                                                
         <script type="text/javascript" src="js/HighScore.js"></script>
-    <!--    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.5.1.js"></script>
-        <script src="https://connect.facebook.net/en_US/all.js"></script> -->
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.5.1.js"></script>
+        <script src="https://connect.facebook.net/en_US/all.js"></script> 
     </head>
 
     <body>
@@ -40,21 +40,21 @@
 
             (function() {
                 game = new Phaser.Game(canvasWidth, canvasHeight);
-                game.state.add('boot', CrystalCrush.Boot);
-                game.state.add('preloader', CrystalCrush.Preloader);                
-                game.state.add('home', CrystalCrush.Home);
-                game.state.add('lvl1', CrystalCrush.Lvl1);
-                game.state.add('lvl2', CrystalCrush.Lvl2);                        
-                game.state.add('lvl3', CrystalCrush.Lvl3);
-                game.state.add('highscore', CrystalCrush.HighScore);
-                game.state.add('about', CrystalCrush.About);
-                game.state.add('win', CrystalCrush.Win);
-                game.state.add('lost', CrystalCrush.Lost);
+                game.state.add('boot', AtomicCrush.Boot);
+                game.state.add('preloader', AtomicCrush.Preloader);                
+                game.state.add('home', AtomicCrush.Home);
+                game.state.add('lvl1', AtomicCrush.Lvl1);
+                game.state.add('lvl2', AtomicCrush.Lvl2);                        
+                game.state.add('lvl3', AtomicCrush.Lvl3);
+                game.state.add('highscore', AtomicCrush.HighScore);
+                game.state.add('about', AtomicCrush.About);
+                game.state.add('win', AtomicCrush.Win);
+                game.state.add('lost', AtomicCrush.Lost);
 
                 game.state.start('boot');
             })();
         </script>
-<!--        <script>
+        <script>
             window.fbAsyncInit = function() {
                 FB.init({
                     appId: '1418350445113450',
@@ -62,7 +62,7 @@
                     version: 'v2.0'
                 });
             };
-        </script>   -->
+        </script>   
     </body>
 
 </html>

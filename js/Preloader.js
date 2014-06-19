@@ -1,4 +1,4 @@
-AtomicCrush.Preloader = function(game) {
+AtomicCrush.Preloader = function (game) {
 
     this.background = null;
     this.preloadBar = null;
@@ -30,8 +30,17 @@ AtomicCrush.Preloader.prototype = {
 
         this.game.load.image('highscore_img', AtomicCrush.language.highScoreButton);
         this.game.load.image('about', AtomicCrush.language.aboutButton);
-        this.game.load.image('aboutScreen', AtomicCrush.language.aboutScreen);
-        this.game.load.spritesheet('backToHomeButton', AtomicCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
+	this.game.load.image('aboutScreen', AtomicCrush.language.aboutScreen);
+	this.game.load.spritesheet('backToHomeButton', AtomicCrush.language.backToMenuButton, ABOUT_BUTTON_WIDTH, ABOUT_BUTTON_HEIGHT);
+        
+        this.game.load.image('backgroundLvl1', 'assets/backgrounds/kitchenLevel.png');
+        this.game.load.image('backgroundLvl2', 'assets/backgrounds/beachLevel.png');
+        this.game.load.image('backgroundLvl3', 'assets/backgrounds/forgeLevel.png');
+        
+        this.game.load.image('welcomeLvl1', AtomicCrush.language.welcomeLvl1);
+        this.game.load.image('welcomeLvl2', AtomicCrush.language.welcomeLvl2);
+        this.game.load.image('welcomeLvl3', AtomicCrush.language.welcomeLvl3);
+        this.game.load.text('crystals', 'files/crystals.txt');
         
         this.game.load.image('en', 'assets/Home/en.jpg');
         this.game.load.image('fr', 'assets/Home/fr.jpg');
@@ -139,25 +148,25 @@ AtomicCrush.Preloader.prototype = {
         this.game.load.image(RUBY + RECIPE, AtomicCrush.language.rubyRecipe);
         this.game.load.image(CORUNDUM + RECIPE, AtomicCrush.language.corondumRecipe);
 
-        this.game.load.image(ALUMINIUM + RECIPE, AtomicCrush.language.aluminiumRecipe);
-        this.game.load.image(BRASS + RECIPE, AtomicCrush.language.brassRecipe);
-        this.game.load.image(STEEL + RECIPE, AtomicCrush.language.steelRecipe);
-        this.game.load.image(GOLD + RECIPE, AtomicCrush.language.goldRecipe);
+        this.game.load.image(ALUMINIUM+RECIPE, AtomicCrush.language.aluminiumRecipe);
+        this.game.load.image(BRASS+RECIPE, AtomicCrush.language.brassRecipe);
+        this.game.load.image(STEEL+RECIPE, AtomicCrush.language.steelRecipe);
+        this.game.load.image(GOLD+RECIPE, AtomicCrush.language.goldRecipe);
+        
+        this.game.load.image(SALT+INFO, AtomicCrush.language.saltInfo);
+        this.game.load.image(ICE+INFO, AtomicCrush.language.iceInfo);
+        this.game.load.image(SUGAR+INFO, AtomicCrush.language.sugarInfo);
 
-        this.game.load.image(SALT + INFO, AtomicCrush.language.saltInfo);
-        this.game.load.image(ICE + INFO, AtomicCrush.language.iceInfo);
-        this.game.load.image(SUGAR + INFO, AtomicCrush.language.sugarInfo);
+        this.game.load.image(SAPPHIRE+INFO, AtomicCrush.language.sapphireInfo);
+        this.game.load.image(QUARTZ+INFO, AtomicCrush.language.quartzInfo);
+        this.game.load.image(RUBY+INFO, AtomicCrush.language.rubyInfo);
+        this.game.load.image(CORUNDUM+INFO, AtomicCrush.language.corondumInfo);
 
-        this.game.load.image(SAPPHIRE + INFO, AtomicCrush.language.sapphireInfo);
-        this.game.load.image(QUARTZ + INFO, AtomicCrush.language.quartzInfo);
-        this.game.load.image(RUBY + INFO, AtomicCrush.language.rubyInfo);
-        this.game.load.image(CORUNDUM + INFO, AtomicCrush.language.corondumInfo);
-
-        this.game.load.image(ALUMINIUM + INFO, AtomicCrush.language.aluminiumInfo);
-        this.game.load.image(BRASS + INFO, AtomicCrush.language.brassInfo);
-        this.game.load.image(STEEL + INFO, AtomicCrush.language.steelInfo);
-        this.game.load.image(GOLD + INFO, AtomicCrush.language.goldInfo);
-
+        this.game.load.image(ALUMINIUM+INFO, AtomicCrush.language.aluminiumInfo);
+        this.game.load.image(BRASS+INFO, AtomicCrush.language.brassInfo);
+        this.game.load.image(STEEL+INFO, AtomicCrush.language.steelInfo);
+        this.game.load.image(GOLD+INFO, AtomicCrush.language.goldInfo);
+       
         //Audio
         this.game.load.audio('ambientMusic', AtomicCrush.audio.ambientMusic);
         this.game.load.audio('matchSound', AtomicCrush.audio.matchSound);
