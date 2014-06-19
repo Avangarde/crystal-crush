@@ -15,7 +15,10 @@ To install Atomic Crush, you must simply copy the atomic-crush directory on your
 
 ### 2.2 In Android
 
-To install Atomic Crush in your Android phone, copy the file `AtomicCrush.apk` in your device and execute the file to do a manual installation.
+To install Atomic Crush in your Android phone, copy the file `AtomicCrush.apk` in your device and execute the file to do a manual installation. You can also download the .apk file from the next link (but, at this moment, the application does not work properly):
+
+[Atomic Crush](https://build.phonegap.com/apps/962960/download/android/?qr_key=XGY2yaXBYMSAqqCge9ey)
+
 
 ## 3. F.A.Q
 
